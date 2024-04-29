@@ -33,12 +33,12 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="28dp"
-            android:layout_marginBottom="-20dp"
-            android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/secondary">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="28dp"
+        android:layout_marginBottom="-20dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/secondary">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,20 +47,8 @@
             android:orientation="vertical"
             android:padding="28dp">
 
-
             <EditText
-                android:id="@+id/signUpNames"
-                android:layout_width="327dp"
-                android:layout_height="54dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/input"
-                android:ems="10"
-                android:hint="Full names"
-                android:inputType="text"
-                android:paddingStart="12dp" />
-
-            <EditText
-                android:id="@+id/signUpEmail"
+                android:id="@+id/emailLogIn"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
@@ -71,7 +59,7 @@
                 android:paddingStart="12dp" />
 
             <EditText
-                android:id="@+id/signUpPassword"
+                android:id="@+id/passwordLogIn"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:background="@drawable/input"
@@ -81,14 +69,14 @@
                 android:paddingStart="12dp" />
 
             <Button
-                android:id="@+id/signUp"
+                android:id="@+id/logIn"
                 android:layout_width="251dp"
                 android:layout_height="56dp"
                 android:layout_marginTop="44dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/btnradius"
                 android:backgroundTint="@color/primary"
-                android:text="Sign Up"
+                android:text="Log In"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:backgroundTint="@null">
@@ -105,7 +93,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have an account?"
+                    android:text="Don't have an account?"
                     android:textStyle="bold">
 
                 </TextView>
@@ -113,24 +101,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Sign In"
+                    android:text=" Sign Up"
                     android:textColor="@color/primary"
                     android:textStyle="bold">
 
                 </TextView>
 
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
 
-            </View>
 
         </LinearLayout>
 
 
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 
@@ -139,4 +122,3 @@
 
 
 </RelativeLayout>
-

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.w3c.dom.Text;
+
 public class getStarted extends AppCompatActivity {
     Button signUpPage;
+    TextView signInText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +30,18 @@ public class getStarted extends AppCompatActivity {
 
 
         signUpPage = findViewById(R.id.signUpPage);
-
+        signInText = findViewById(R.id.SignIn);
         signUpPage.setOnClickListener(v -> openSignUpPage(v));
+        signInText.setOnClickListener(v -> openLoginPage(v));
     }
 
     public void openSignUpPage(View view) {
         Intent intent = new Intent(this, signup.class);
         startActivity(intent);
     }
+    public void openLoginPage(View view) {
+        Intent intent = new Intent(this, login.class);
+        startActivity(intent);
+    }
+
 }
