@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
 
 public class getStarted extends AppCompatActivity {
     Button signUpPage;
-    TextView signInText;
+    TextView signInText = findViewById(R.id.SignInPage);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public class getStarted extends AppCompatActivity {
 
 
         signUpPage = findViewById(R.id.signUpPage);
-        signInText = findViewById(R.id.SignIn);
         signUpPage.setOnClickListener(v -> openSignUpPage(v));
         signInText.setOnClickListener(v -> openLoginPage(v));
     }
