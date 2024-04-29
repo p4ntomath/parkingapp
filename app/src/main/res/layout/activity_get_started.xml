@@ -55,6 +55,7 @@
         android:layout_height="56dp"
         android:layout_marginTop="44dp"
         android:background="@drawable/btnradius"
+        app:backgroundTint="@null"
         android:backgroundTint="@color/primary"
         android:text="Sign Up"
         android:textSize="18dp"
