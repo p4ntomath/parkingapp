@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="28dp"
-            android:layout_marginBottom="-20dp"
+            android:layout_marginBottom="-25dp"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/secondary">
 
@@ -113,12 +113,13 @@
                 <TextView
                     android:id="@+id/signInText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Sign In"
+                    android:layout_height="match_parent"
                     android:clickable="true"
                     android:onClick="openSignInPage"
+                    android:text=" Sign In"
                     android:textColor="@color/primary"
-                    android:textStyle="bold">
+                    android:textStyle="bold"
+                    tools:ignore="TouchTargetSizeCheck">
 
                 </TextView>
 
