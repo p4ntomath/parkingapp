@@ -73,6 +73,8 @@
         android:layout_marginTop="29dp"
         android:layout_marginBottom="112dp"
         android:text=" Sign In"
+        android:clickable="true"
+        android:onClick="openSignInPage"
         android:textColor="@color/primary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

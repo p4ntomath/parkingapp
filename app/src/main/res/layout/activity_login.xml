@@ -103,6 +103,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" Sign Up"
+                    android:clickable="true"
+                    android:onClick="openSignUpPage"
                     android:textColor="@color/primary"
                     android:textStyle="bold">
 

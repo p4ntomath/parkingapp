@@ -28,5 +28,10 @@ public class login extends AppCompatActivity {
 
     }
 
+    public void openSignUpPage(View view){
+        Intent intent = new Intent(this, signup.class);
+        startActivity(intent);
+    }
+
 
 }

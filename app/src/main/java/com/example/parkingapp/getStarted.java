@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 
 public class getStarted extends AppCompatActivity {
     Button signUpPage;
+    Button loginPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,11 @@ public class getStarted extends AppCompatActivity {
 
     public void openSignUpPage(View view) {
         Intent intent = new Intent(this, signup.class);
+        startActivity(intent);
+    }
+
+    public void openSignInPage(View view){
+        Intent intent = new Intent(this, login.class);
         startActivity(intent);
     }
 
