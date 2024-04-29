@@ -36,91 +36,92 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="28dp"
-            android:layout_marginBottom="-30dp"
+            android:layout_marginBottom="-60dp"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/secondary">
 
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical"
-             android:padding="28dp"
-             android:gravity="center"
-             >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="479dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="28dp">
 
 
-             <EditText
-                 android:id="@+id/editTextText"
-                 android:layout_width="327dp"
-                 android:layout_height="54dp"
-                 android:layout_marginBottom="30dp"
-                 android:background="@drawable/input"
-                 android:paddingStart="12dp"
-                 android:ems="10"
-                 android:inputType="text"
-                 android:text="Name"
-                 />
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="327dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/input"
+                android:ems="10"
+                android:hint="Full names"
+                android:inputType="text"
+                android:paddingStart="12dp" />
 
-             <EditText
-                 android:id="@+id/editTextTextEmailAddress2"
-                 android:layout_width="327dp"
-                 android:layout_height="54dp"
-                 android:layout_marginBottom="30dp"
-                 android:background="@drawable/input"
-                 android:ems="10"
-                 android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/editTextTextEmailAddress2"
+                android:layout_width="327dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/input"
+                android:ems="10"
+                android:hint="Email Adress"
+                android:inputType="textEmailAddress"
+                android:paddingStart="12dp" />
 
-             <EditText
-                 android:id="@+id/editTextTextPassword2"
-                 android:layout_width="327dp"
-                 android:layout_height="54dp"
-                 android:background="@drawable/input"
-                 android:ems="10"
-                 android:inputType="textPassword"/>
+            <EditText
+                android:id="@+id/editTextTextPassword2"
+                android:layout_width="327dp"
+                android:layout_height="54dp"
+                android:background="@drawable/input"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingStart="12dp" />
 
-             <Button
-                 android:id="@+id/signUp"
-                 android:layout_width="251dp"
-                 android:layout_height="56dp"
-                 android:layout_marginTop="44dp"
-                 android:background="@drawable/btnradius"
-                 android:backgroundTint="@color/primary"
-                 android:text="Sign Up"
-                 android:textSize="18dp"
-                 android:textStyle="bold"
-                 android:layout_marginBottom="30dp"
-                 app:backgroundTint="@null">
+            <Button
+                android:id="@+id/signUp"
+                android:layout_width="251dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/btnradius"
+                android:backgroundTint="@color/primary"
+                android:text="Sign Up"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:backgroundTint="@null">
 
-             </Button>
+            </Button>
 
-             <LinearLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:orientation="horizontal"
-                 android:layout_marginBottom="40dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:orientation="horizontal">
 
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account?"
+                    android:textStyle="bold">
 
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Already have an account?"
-                     android:textStyle="bold">
+                </TextView>
 
-                 </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Sign In"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold">
 
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text=" Sign In"
-                     android:textColor="@color/primary"
-                     android:textStyle="bold">
+                </TextView>
 
-                 </TextView>
+            </LinearLayout>
 
-             </LinearLayout>
-
-         </LinearLayout>
+        </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>
