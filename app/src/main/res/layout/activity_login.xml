@@ -69,7 +69,7 @@
                 android:paddingStart="12dp" />
 
             <Button
-                android:id="@+id/logIn"
+                android:id="@+id/logInBtn"
                 android:layout_width="251dp"
                 android:layout_height="56dp"
                 android:layout_marginTop="44dp"

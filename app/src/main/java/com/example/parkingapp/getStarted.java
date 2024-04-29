@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
 
 public class getStarted extends AppCompatActivity {
     Button signUpPage;
-    TextView signInText = findViewById(R.id.SignInPage);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,16 +31,13 @@ public class getStarted extends AppCompatActivity {
 
         signUpPage = findViewById(R.id.signUpPage);
         signUpPage.setOnClickListener(v -> openSignUpPage(v));
-        signInText.setOnClickListener(v -> openLoginPage(v));
+
     }
 
     public void openSignUpPage(View view) {
         Intent intent = new Intent(this, signup.class);
         startActivity(intent);
     }
-    public void openLoginPage(View view) {
-        Intent intent = new Intent(this, login.class);
-        startActivity(intent);
-    }
+
 
 }

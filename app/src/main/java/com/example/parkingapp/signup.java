@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class signup extends AppCompatActivity {
-    TextView signInPage = findViewById(R.id.signInText);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +24,10 @@ public class signup extends AppCompatActivity {
             return insets;
         });
 
-        signInPage.setOnClickListener(v -> openLoginPage(v));
+
 
 
     }
 
-    public void openLoginPage(View view) {
-        Intent intent = new Intent(this, login.class);
-        startActivity(intent);
-    }
+
 }
