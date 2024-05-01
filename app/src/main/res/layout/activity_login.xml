@@ -54,7 +54,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Email Adress"
+                android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp" />
 
@@ -67,17 +67,21 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:drawableEnd="@drawable/eye"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
                 <TextView
+                    android:id="@+id/forgotPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Forgot your Password?"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:onClick="openSignUpPage"/>
+
             </RelativeLayout>
 
 
