@@ -42,7 +42,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="479dp"
+            android:layout_height="520dp"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="28dp">
@@ -55,7 +55,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Full names"
+                android:hint="Full Names"
                 android:inputType="text"
                 android:paddingStart="12dp" />
 
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Email Adress"
+                android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp" />
 
@@ -78,7 +78,59 @@
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:paddingStart="12dp" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableEnd="@drawable/eye"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/userTypeSelection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/student"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Student"
+                            app:buttonTint ="@null"
+                            android:buttonTint="@color/black"
+                            android:alpha="0.7"
+                            android:textColor="@color/black"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/staff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Staff"
+                            app:buttonTint ="@null"
+                            android:buttonTint="@color/black"
+                            android:alpha="0.7"
+                            android:textColor="@color/black" />
+                    </RadioGroup>
+
+
+
+
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+
 
             <Button
                 android:id="@+id/signUpBtn"
@@ -110,6 +162,7 @@
 
                 </TextView>
 
+
                 <TextView
                     android:id="@+id/signInText"
                     android:layout_width="wrap_content"
@@ -126,7 +179,7 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="23dp"
                 >
 
             </View>
