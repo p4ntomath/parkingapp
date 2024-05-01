@@ -42,7 +42,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="479dp"
+            android:layout_height="520dp"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="28dp">
@@ -55,7 +55,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Full names"
+                android:hint="Full Names"
                 android:inputType="text"
                 android:paddingStart="12dp" />
 
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Email Adress"
+                android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp" />
 
@@ -78,7 +78,57 @@
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:paddingStart="12dp" />
+                android:paddingStart="12dp"
+                android:drawableEnd="@drawable/eye"/>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <CheckBox-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Remember me"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:alpha="0.7"/>-->
+<!--            </RelativeLayout>-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Student"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="@color/primary"
+                        android:alpha="0.7">
+                    </RadioButton>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Staff"
+                        android:buttonTint="@color/primary"
+                        android:layout_centerVertical="true"
+                        android:alpha="0.7">
+
+                    </RadioButton>
+
+
+
+
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+
 
             <Button
                 android:id="@+id/signUpBtn"
@@ -110,6 +160,7 @@
 
                 </TextView>
 
+
                 <TextView
                     android:id="@+id/signInText"
                     android:layout_width="wrap_content"
@@ -126,7 +177,7 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="23dp"
                 >
 
             </View>
