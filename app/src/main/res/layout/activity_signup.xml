@@ -55,7 +55,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Full Names"
+                android:hint="Full Name"
                 android:inputType="text"
                 android:paddingStart="12dp" />
 
@@ -70,17 +70,25 @@
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp" />
 
-            <EditText
-                android:id="@+id/signUpPassword"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpInputLayout"
                 android:layout_width="327dp"
-                android:layout_height="54dp"
-                android:background="@drawable/input"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:drawableEnd="@drawable/eye"/>
+                android:layout_height="60dp"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input"
+                    android:hint="Password"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="wrap_content"

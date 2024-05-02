@@ -1,8 +1,11 @@
 package com.example.parkingapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +13,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class signup extends AppCompatActivity {
 
+    Button signUpBtn;
+    EditText signUpNames;
+    EditText signUpEmail;
+    EditText signUpPassword;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +34,11 @@ public class signup extends AppCompatActivity {
             return insets;
         });
 
+        signUpBtn = findViewById(R.id.signUpBtn);
+        signUpNames = findViewById(R.id.signUpNames);
+        signUpEmail = findViewById(R.id.signUpEmail);
+        signUpPassword = findViewById(R.id.signUpPassword);
+        signUpBtn.setOnClickListener(this::SignUp);
 
     }
 
@@ -30,6 +46,11 @@ public class signup extends AppCompatActivity {
         Intent intent = new Intent(this, login.class);
         startActivity(intent);
     }
+    public void SignUp(View view){
+        signUpNames.setText("");
+        signUpEmail.setText("");
+        signUpPassword.setText("");
 
+    }
 
 }
