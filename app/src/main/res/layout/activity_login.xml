@@ -56,7 +56,8 @@
                 android:ems="10"
                 android:hint="Email Address"
                 android:inputType="textEmailAddress"
-                android:paddingStart="12dp" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpInputLayout"
@@ -71,6 +72,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/input"
                     android:hint="Password"
+                    android:paddingEnd="12dp"
                     android:ems="10"
                     android:inputType="textPassword"
                     />

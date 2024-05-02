@@ -3,6 +3,7 @@ package com.example.parkingapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,33 @@ public class login extends AppCompatActivity {
         Intent intent = new Intent(this, signup.class);
         startActivity(intent);
     }
+
+
+    public boolean validateEmail(String email){
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+    public boolean validatePassword(String password){
+        return password.length() >= 8;}
+
+    public boolean validateForm(String email, String password){
+        if(email.isEmpty()){
+            logInEmail.setError("Email is required");
+            return false;
+        }
+        else if(!validateEmail(email)){
+            logInEmail.setError("Email is invalid");
+        }
+        else if(password.isEmpty()){
+            logInPassword.setError("Password is required");
+            return false;
+        }
+        else if(!validatePassword(password)){
+            logInPassword.setError("Password must be at least 8 characters");
+            return false;
+        }
+        return true;
+    }
+
     public void logIn(View view){
         logInEmail.setText("");
         logInPassword.setText("");
