@@ -136,7 +136,6 @@
                 android:id="@+id/signUpBtn"
                 android:layout_width="251dp"
                 android:layout_height="56dp"
-                android:layout_marginTop="44dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/btnradius"
                 android:backgroundTint="@color/primary"
