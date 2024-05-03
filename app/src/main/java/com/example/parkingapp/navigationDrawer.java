@@ -39,6 +39,8 @@ public class navigationDrawer extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         frameLayout = findViewById(R.id.fragmentLayout);
 
+        replaceFragment(new home_fragment());
+        navigationView.setCheckedItem(R.id.nav_home);
 
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,19 +59,19 @@ public class navigationDrawer extends AppCompatActivity {
                     replaceFragment(new home_fragment());
                     return true;
                 }else if (id == R.id.nav_booking) {
-                    // Handle profile item click
+                    replaceFragment(new booking_Fragment());
                     return true;
                 }else if (id == R.id.nav_reserve) {
-                    // Handle settings item click
+                    replaceFragment(new reserve_fragment());
                     return true;
                 }else if (id == R.id.nav_help) {
-                    // Handle settings item click
+                    replaceFragment(new help_fragment());
                     return true;
                 }else if (id == R.id.nav_about) {
-                    // Handle settings item click
+                    replaceFragment(new about_fragment());
                     return true;
                 }else if(id == R.id.nav_logout){
-                    // Handle settings item click
+                    replaceFragment(new logout_fragment());
                     return true;
                 }
                 return false;

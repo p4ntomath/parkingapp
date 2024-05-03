@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link myreservations_fragment#newInstance} factory method to
+ * Use the {@link reserve_fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class myreservations_fragment extends Fragment {
+public class reserve_fragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class myreservations_fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public myreservations_fragment() {
+    public reserve_fragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +37,8 @@ public class myreservations_fragment extends Fragment {
      * @return A new instance of fragment myreservations_fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static myreservations_fragment newInstance(String param1, String param2) {
-        myreservations_fragment fragment = new myreservations_fragment();
+    public static reserve_fragment newInstance(String param1, String param2) {
+        reserve_fragment fragment = new reserve_fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
