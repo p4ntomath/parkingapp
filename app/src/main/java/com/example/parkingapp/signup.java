@@ -54,9 +54,11 @@ public class signup extends AppCompatActivity {
         startActivity(intent);
     }
     public boolean validatePassword(String password) {
-        return password.length() >= 8;}
+        return password.length() >= 8 && password.length() <= 16;}
     public boolean validateEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }public boolean validateUserId(String userId) {
+        return userId.length() == 7;
     }
 
     public boolean validateUserType(int userTypeId) {
@@ -67,6 +69,11 @@ public class signup extends AppCompatActivity {
 
         if (userIdString.isEmpty()) {
             signUpuserId.setError("Please enter your Person Number");
+            return false;
+        }
+        else if (!validateUserId(userIdString)) {
+            signUpuserId.setError("Please enter a valid Person Number");
+            signUpuserId.setText("");
             return false;
         }else if (email.isEmpty()) {
             signUpEmail.setError("Please enter your email");
