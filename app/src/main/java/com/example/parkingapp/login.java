@@ -17,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class login extends AppCompatActivity {
 
     Button logInBtn ;
-    EditText logInEmail;
+    EditText logInUserId;
     EditText logInPassword;
 
     @SuppressLint("MissingInflatedId")
@@ -32,7 +32,7 @@ public class login extends AppCompatActivity {
             return insets;
         });
         logInBtn = findViewById(R.id.logInBtn);
-        logInEmail = findViewById(R.id.logInEmail);
+        logInUserId = findViewById(R.id.logInUserId);
         logInPassword = findViewById(R.id.logInPassword);
         logInBtn.setOnClickListener(v -> logIn(v));
 
@@ -46,19 +46,14 @@ public class login extends AppCompatActivity {
     }
 
 
-    public boolean validateEmail(String email){
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+
     public boolean validatePassword(String password){
         return password.length() >= 8;}
 
     public boolean validateForm(String email, String password){
         if(email.isEmpty()){
-            logInEmail.setError("Email is required");
+            logInUserId.setError("Person Number is required");
             return false;
-        }
-        else if(!validateEmail(email)){
-            logInEmail.setError("Email is invalid");
         }
         else if(password.isEmpty()){
             logInPassword.setError("Password is required");
@@ -73,11 +68,11 @@ public class login extends AppCompatActivity {
 
     public void logIn(View view){
 
-        String email = logInEmail.getText().toString();
+        String email = logInUserId.getText().toString();
         String password = logInPassword.getText().toString();
         if(validateForm(email, password)){
             //Retrieval of data from database
-            logInEmail.setText("");
+            logInUserId.setText("");
             logInPassword.setText("");
         }
 

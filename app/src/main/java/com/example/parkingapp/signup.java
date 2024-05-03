@@ -21,7 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class signup extends AppCompatActivity {
 
     Button signUpBtn;
-    EditText signUpNames;
+    EditText signUpuserId;
     EditText signUpEmail;
     EditText signUpPassword;
     RadioGroup userType;
@@ -40,7 +40,7 @@ public class signup extends AppCompatActivity {
         });
 
         signUpBtn = findViewById(R.id.signUpBtn);
-        signUpNames = findViewById(R.id.signUpNames);
+        signUpuserId = findViewById(R.id.signUpUserId);
         signUpEmail = findViewById(R.id.signUpEmail);
         signUpPassword = findViewById(R.id.signUpPassword);
         userType = findViewById(R.id.userTypeSelection);
@@ -63,10 +63,10 @@ public class signup extends AppCompatActivity {
         return userTypeId != -1;
     }
 
-    public boolean validateForm(String names, String email, String password, int userTypeId) {
+    public boolean validateForm(String userIdString, String email, String password, int userTypeId) {
 
-        if (names.isEmpty()) {
-            signUpNames.setError("Please enter your name");
+        if (userIdString.isEmpty()) {
+            signUpuserId.setError("Please enter your Person Number");
             return false;
         }else if (email.isEmpty()) {
             signUpEmail.setError("Please enter your email");
@@ -89,16 +89,16 @@ public class signup extends AppCompatActivity {
 
 
     public void SignUp(View view) {
-        String names = signUpNames.getText().toString();
+        String userIdString = signUpuserId.getText().toString();
         String email = signUpEmail.getText().toString();
         String password = signUpPassword.getText().toString();
         int selectedId = userType.getCheckedRadioButtonId();
 
-        if (validateForm(names, email, password, selectedId)){
+        if (validateForm(userIdString, email, password, selectedId)){
             //Insertion of data to Database
             errorMessage.setVisibility(View.GONE);
             userType.clearCheck();
-            signUpNames.setText("");
+            signUpuserId.setText("");
             signUpEmail.setText("");
             signUpPassword.setText("");
         }

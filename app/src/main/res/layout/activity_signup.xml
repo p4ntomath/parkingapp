@@ -49,14 +49,14 @@
 
 
             <EditText
-                android:id="@+id/signUpNames"
+                android:id="@+id/signUpUserId"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Full Name"
-                android:inputType="text"
+                android:hint="Person Number"
+                android:inputType="number"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
 

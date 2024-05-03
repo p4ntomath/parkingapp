@@ -48,14 +48,15 @@
             android:padding="28dp">
 
             <EditText
-                android:id="@+id/logInEmail"
+
+                android:id="@+id/logInUserId"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Email Address"
-                android:inputType="textEmailAddress"
+                android:hint="Person Number"
+                android:inputType="number"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
 
