@@ -72,8 +72,16 @@ public class login extends AppCompatActivity {
     }
 
     public void logIn(View view){
-        logInEmail.setText("");
-        logInPassword.setText("");
+
+        String email = logInEmail.getText().toString();
+        String password = logInPassword.getText().toString();
+        if(validateForm(email, password)){
+            //Retrieval of data from database
+            logInEmail.setText("");
+            logInPassword.setText("");
+        }
+
+
 
     }
 

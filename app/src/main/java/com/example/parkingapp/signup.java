@@ -7,6 +7,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,8 @@ public class signup extends AppCompatActivity {
     EditText signUpNames;
     EditText signUpEmail;
     EditText signUpPassword;
+    RadioGroup userType;
+    TextView errorMessage;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -39,6 +43,8 @@ public class signup extends AppCompatActivity {
         signUpNames = findViewById(R.id.signUpNames);
         signUpEmail = findViewById(R.id.signUpEmail);
         signUpPassword = findViewById(R.id.signUpPassword);
+        userType = findViewById(R.id.userTypeSelection);
+        errorMessage = findViewById(R.id.errorMessage);
         signUpBtn.setOnClickListener(this::SignUp);
 
     }
@@ -53,8 +59,11 @@ public class signup extends AppCompatActivity {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    public boolean validateUserType(int userTypeId) {
+        return userTypeId != -1;
+    }
 
-    public boolean validateForm(String names, String email, String password) {
+    public boolean validateForm(String names, String email, String password, int userTypeId) {
 
         if (names.isEmpty()) {
             signUpNames.setError("Please enter your name");
@@ -70,6 +79,10 @@ public class signup extends AppCompatActivity {
             signUpPassword.setError("Password must be at least 8 characters");
             signUpPassword.setText("");
             return false;
+        }else if (!validateUserType(userTypeId)) {
+            errorMessage.setVisibility(View.VISIBLE);
+            errorMessage.setText("Please select a user type");
+            return false;
         }
         return true;
     }
@@ -79,10 +92,12 @@ public class signup extends AppCompatActivity {
         String names = signUpNames.getText().toString();
         String email = signUpEmail.getText().toString();
         String password = signUpPassword.getText().toString();
+        int selectedId = userType.getCheckedRadioButtonId();
 
-        if (validateForm(names, email, password)){
+        if (validateForm(names, email, password, selectedId)){
             //Insertion of data to Database
-
+            errorMessage.setVisibility(View.GONE);
+            userType.clearCheck();
             signUpNames.setText("");
             signUpEmail.setText("");
             signUpPassword.setText("");
