@@ -48,27 +48,37 @@
             android:padding="28dp">
 
             <EditText
-                android:id="@+id/emailLogIn"
+
+                android:id="@+id/logInUserId"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Email Address"
-                android:inputType="textEmailAddress"
-                android:paddingStart="12dp" />
-
-            <EditText
-                android:id="@+id/passwordLogIn"
-                android:layout_width="327dp"
-                android:layout_height="54dp"
-                android:background="@drawable/input"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:hint="Person Number"
+                android:inputType="number"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:drawableEnd="@drawable/eye"/>
+                android:paddingEnd="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpInputLayout"
+                android:layout_width="327dp"
+                android:layout_height="60dp"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/logInPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/input"
+                    android:hint="Password"
+                    android:paddingEnd="12dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

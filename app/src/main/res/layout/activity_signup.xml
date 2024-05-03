@@ -49,15 +49,16 @@
 
 
             <EditText
-                android:id="@+id/signUpNames"
+                android:id="@+id/signUpUserId"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
                 android:ems="10"
-                android:hint="Full Names"
-                android:inputType="text"
-                android:paddingStart="12dp" />
+                android:hint="Person Number"
+                android:inputType="number"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
 
             <EditText
                 android:id="@+id/signUpEmail"
@@ -68,24 +69,34 @@
                 android:ems="10"
                 android:hint="Email Address"
                 android:inputType="textEmailAddress"
-                android:paddingStart="12dp" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
 
-            <EditText
-                android:id="@+id/signUpPassword"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpInputLayout"
                 android:layout_width="327dp"
                 android:layout_height="54dp"
-                android:background="@drawable/input"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:drawableEnd="@drawable/eye"/>
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="12dp"
+                    android:background="@drawable/input"
+                    android:hint="Password"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:paddingTop="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -124,13 +135,24 @@
 
 
 
+
                 </LinearLayout>
+
 
 
 
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/errorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text=""
+                android:textColor="#B31A1A"
+                android:visibility="gone">
 
+            </TextView>
 
             <Button
                 android:id="@+id/signUpBtn"
