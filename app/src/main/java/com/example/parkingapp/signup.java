@@ -123,7 +123,7 @@ public class signup extends AppCompatActivity {
         if (validateForm(userIdString, email, password, selectedId)){
             //Insertion of data to Database
 
-            String url = "https://lamp.ms.wits.ac.za/home/s2586491/signup.php";
+            String url = "https://lamp.ms.wits.ac.za/home/s2691450/signup.php";
 
             AsyncTask.execute(() -> {
                 OkHttpClient client = new OkHttpClient();
@@ -150,9 +150,14 @@ public class signup extends AppCompatActivity {
                                 Intent intent = new Intent(this, login.class);
                                 startActivity(intent);
                             });
-                        } else {
-                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to create account", Toast.LENGTH_SHORT).show());
+                        } else if(responseBody.equals("failed")){
+                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to create an account", Toast.LENGTH_SHORT).show());
                         }
+                        else if(responseBody.equals("exists")){
+                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Account already exists. Sign in", Toast.LENGTH_SHORT).show());
+                        }
+                    }else{
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to connect to the database", Toast.LENGTH_SHORT).show());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
