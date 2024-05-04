@@ -68,7 +68,8 @@ public class signup extends AppCompatActivity {
         return password.length() >= 8 && password.length() <= 16;}
     public boolean validateEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }public boolean validateUserId(String userId) {
+    }
+    public boolean validateUserId(String userId) {
         return userId.length() == 7;
     }
 
