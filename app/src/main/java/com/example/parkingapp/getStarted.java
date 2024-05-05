@@ -20,7 +20,7 @@ public class getStarted extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        userSessionManager userSessionManager = new userSessionManager(getApplicationContext());
+        userSessionManager userSessionManager = new userSessionManager(this);
 
         if (userSessionManager.isLoggedIn()) {
             Intent intent = new Intent(this, navigationDrawer.class);

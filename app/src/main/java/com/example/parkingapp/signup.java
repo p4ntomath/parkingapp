@@ -148,7 +148,7 @@ public class signup extends AppCompatActivity {
                         if(responseBody.equals("success")){
                             runOnUiThread(() -> {
                                 Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
-                                userSessionManager sessionManager = new userSessionManager(getApplicationContext());
+                                userSessionManager sessionManager = new userSessionManager(this);
                                 sessionManager.createSession(userIdString,uType,email,password);
                                 //intent to navigation drawer
                                 Intent intent = new Intent(this, navigationDrawer.class);

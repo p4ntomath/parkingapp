@@ -25,6 +25,7 @@ public class userSessionManager {
         editor.putString(KEY_USER_TYPE, userType);
         editor.putString(KEY_USER_EMAIL, userEmail);
         editor.putString(KEY_USER_PASSWORD, userPassword);
+        editor.commit();
     }
     public String getUserId(){
         return sharedPreferences.getString(KEY_USER_ID, null);
