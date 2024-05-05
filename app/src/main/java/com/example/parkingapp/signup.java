@@ -148,6 +148,9 @@ public class signup extends AppCompatActivity {
                         if(responseBody.equals("success")){
                             runOnUiThread(() -> {
                                 Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
+                                userSessionManager sessionManager = new userSessionManager(getApplicationContext());
+                                sessionManager.createSession(userIdString,uType,email,password);
+                                //intent to navigation drawer
                                 Intent intent = new Intent(this, navigationDrawer.class);
                                 startActivity(intent);
                             });
@@ -164,6 +167,8 @@ public class signup extends AppCompatActivity {
                     e.printStackTrace();
                 }
             });
+
+
 
             errorMessage.setVisibility(View.GONE);
             userType.clearCheck();

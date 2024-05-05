@@ -20,6 +20,15 @@ public class getStarted extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        userSessionManager userSessionManager = new userSessionManager(getApplicationContext());
+
+        if (userSessionManager.isLoggedIn()) {
+            Intent intent = new Intent(this, navigationDrawer.class);
+            startActivity(intent);
+            finish();
+        }
+
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_get_started);
