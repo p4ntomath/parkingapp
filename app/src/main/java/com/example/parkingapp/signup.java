@@ -148,7 +148,7 @@ public class signup extends AppCompatActivity {
                         if(responseBody.equals("success")){
                             runOnUiThread(() -> {
                                 Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(this, login.class);
+                                Intent intent = new Intent(this, navigationDrawer.class);
                                 startActivity(intent);
                             });
                         } else if(responseBody.equals("failed")){
