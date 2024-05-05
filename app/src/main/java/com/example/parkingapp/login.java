@@ -2,17 +2,23 @@ package com.example.parkingapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.io.IOException;
+
+import okhttp3.*;
 
 public class login extends AppCompatActivity {
 
@@ -34,7 +40,12 @@ public class login extends AppCompatActivity {
         logInBtn = findViewById(R.id.logInBtn);
         logInUserId = findViewById(R.id.logInUserId);
         logInPassword = findViewById(R.id.logInPassword);
-        logInBtn.setOnClickListener(v -> logIn(v));
+        logInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logIn();
+            }
+        });
 
 
     }
@@ -45,14 +56,21 @@ public class login extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    public boolean validateUserId(String userId) {
+        return userId.length() == 7;
+    }
 
     public boolean validatePassword(String password){
         return password.length() >= 8;}
 
-    public boolean validateForm(String email, String password){
-        if(email.isEmpty()){
+    public boolean validateForm(String userIdString, String password){
+        if(userIdString.isEmpty()){
             logInUserId.setError("Person Number is required");
+            return false;
+        }
+        else if (!validateUserId(userIdString)) {
+            logInUserId.setError("Please enter a valid Person Number");
+            logInUserId.setText("");
             return false;
         }
         else if(password.isEmpty()){
@@ -66,18 +84,55 @@ public class login extends AppCompatActivity {
         return true;
     }
 
-    public void logIn(View view){
+    private void logIn(){
 
-        String email = logInUserId.getText().toString();
+        String userIdString = logInUserId.getText().toString();
         String password = logInPassword.getText().toString();
-        if(validateForm(email, password)){
+
+        if(validateForm(userIdString, password)){
             //Retrieval of data from database
+            String url = "https://lamp.ms.wits.ac.za/home/s2586491/login.php";
+
+            AsyncTask.execute(()->{
+                OkHttpClient client = new OkHttpClient();
+
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("userIdString", userIdString)
+                        .add("password", password)
+                        .build();
+
+                try{
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(requestBody)
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+
+                    if(response.isSuccessful()){
+                        String responseBody = response.body().string();
+                        if(responseBody.equals("exists")){
+                            runOnUiThread(() -> {
+                                Toast.makeText(getApplicationContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(this, navigationDrawer.class);
+                                startActivity(intent);
+                            });
+                        }else if(responseBody.equals("does not exist")){
+                            runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Account does not exist", Toast.LENGTH_SHORT).show() );
+                        }
+                    }else{
+                        runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Failed to connect to the database", Toast.LENGTH_SHORT).show() );
+                    }
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+
+
+            });
+
             logInUserId.setText("");
             logInPassword.setText("");
         }
-
-
-
     }
 
 
