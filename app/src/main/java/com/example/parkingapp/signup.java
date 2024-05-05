@@ -147,13 +147,19 @@ public class signup extends AppCompatActivity {
                             openNavigationDrawer();
                         });
                     } else if(responseBody.equals("failed")){
-                        toast("Failed to create an account");
+                        runOnUiThread(()->{
+                            toast("Failed to create an account");
+                        });
+
                     }
                     else if(responseBody.equals("exists")){
-                        toast("Account already exists. Sign in");
+                        runOnUiThread(()-> {
+                            toast("Account already exists. Sign in");
+                        });
                     }
                 }else{
-                    toast("Failed to create an account");
+                    runOnUiThread(()->
+                            toast("Failed to create an account"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

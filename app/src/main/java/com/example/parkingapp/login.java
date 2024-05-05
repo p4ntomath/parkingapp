@@ -84,6 +84,13 @@ public class login extends AppCompatActivity {
         return true;
     }
 
+    public void openNavDrawer(){
+        Intent intent = new Intent(this, navigationDrawer.class);
+        startActivity(intent);
+    }
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
     public void SQLReq(String userIdString, String password){
 
         String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
@@ -108,15 +115,14 @@ public class login extends AppCompatActivity {
                     String responseBody = response.body().string();
                     if(responseBody.equals("exists")){
                         runOnUiThread(() -> {
-                            Toast.makeText(getApplicationContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(this, navigationDrawer.class);
-                            startActivity(intent);
+                            toast("Logged in Successful");
+                            openNavDrawer();
                         });
                     }else if(responseBody.equals("does not exist")){
-                        runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Account does not exist", Toast.LENGTH_SHORT).show() );
+                        runOnUiThread(()-> toast("User does not exist") );
                     }
                 }else{
-                    runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Failed to connect to the database", Toast.LENGTH_SHORT).show() );
+                    runOnUiThread(()-> toast("Failed to connect to database") );
                 }
             }catch(IOException e){
                 e.printStackTrace();
