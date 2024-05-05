@@ -14,17 +14,17 @@
         android:theme="@style/Theme.Parkingapp"
         tools:targetApi="31">
 
+
         <activity
-            android:name=".navigationDrawer"
+            android:name=".getStarted"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".getStarted"
+            android:name=".navigationDrawer"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

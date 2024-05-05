@@ -91,7 +91,7 @@ public class login extends AppCompatActivity {
 
         if(validateForm(userIdString, password)){
             //Retrieval of data from database
-            String url = "https://lamp.ms.wits.ac.za/home/s2586491/login.php";
+            String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
 
             AsyncTask.execute(()->{
                 OkHttpClient client = new OkHttpClient();
