@@ -106,6 +106,61 @@ public class signup extends AppCompatActivity {
         return true;
     }
 
+    public void openNavigationDrawer() {
+        Intent intent = new Intent(this, navigationDrawer.class);
+        startActivity(intent);
+    }
+    public void storeToSharedPreferences(String userIdString,String email,String password,String uType){
+        userSessionManager sessionManager = new userSessionManager(this);
+        sessionManager.createSession(userIdString,uType,email,password);
+    }
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    public void SQLReq(String userIdString, String email, String password, String uType){
+
+        String url = "https://lamp.ms.wits.ac.za/home/s2691450/signup.php";
+
+        AsyncTask.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("userIdString", userIdString)
+                    .add("password", password)
+                    .add("userType", uType)
+                    .build();
+
+            try{
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(requestBody)
+                        .build();
+
+                Response response = client.newCall(request).execute();
+
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    if(responseBody.equals("success")){
+                        runOnUiThread(() -> {
+                            toast("Account created successfully");
+                            storeToSharedPreferences(userIdString,email,password,uType);
+                            openNavigationDrawer();
+                        });
+                    } else if(responseBody.equals("failed")){
+                        toast("Failed to create an account");
+                    }
+                    else if(responseBody.equals("exists")){
+                        toast("Account already exists. Sign in");
+                    }
+                }else{
+                    toast("Failed to create an account");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
 
     private void SignUp() {
         String userIdString = signUpuserId.getText().toString();
@@ -115,60 +170,14 @@ public class signup extends AppCompatActivity {
         String uType;
 
         if(selectedId == R.id.student){
-            uType = "Student";
-        }
+            uType = "Student";}
         else{
-            uType = "Staff";
-        }
+            uType = "Staff";}
 
         if (validateForm(userIdString, email, password, selectedId)){
+
             //Insertion of data to Database
-
-            String url = "https://lamp.ms.wits.ac.za/home/s2691450/signup.php";
-
-            AsyncTask.execute(() -> {
-                OkHttpClient client = new OkHttpClient();
-
-                RequestBody requestBody = new FormBody.Builder()
-                        .add("userIdString", userIdString)
-                        .add("password", password)
-                        .add("userType", uType)
-                        .build();
-
-                try{
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(requestBody)
-                            .build();
-
-                    Response response = client.newCall(request).execute();
-
-                    if (response.isSuccessful()) {
-                        String responseBody = response.body().string();
-                        if(responseBody.equals("success")){
-                            runOnUiThread(() -> {
-                                Toast.makeText(getApplicationContext(), "Account created successfully", Toast.LENGTH_SHORT).show();
-                                userSessionManager sessionManager = new userSessionManager(this);
-                                sessionManager.createSession(userIdString,uType,email,password);
-                                //intent to navigation drawer
-                                Intent intent = new Intent(this, navigationDrawer.class);
-                                startActivity(intent);
-                            });
-                        } else if(responseBody.equals("failed")){
-                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to create an account", Toast.LENGTH_SHORT).show());
-                        }
-                        else if(responseBody.equals("exists")){
-                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Account already exists. Sign in", Toast.LENGTH_SHORT).show());
-                        }
-                    }else{
-                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to connect to the database", Toast.LENGTH_SHORT).show());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-
+            SQLReq(userIdString,email,password,uType);
 
             errorMessage.setVisibility(View.GONE);
             userType.clearCheck();
