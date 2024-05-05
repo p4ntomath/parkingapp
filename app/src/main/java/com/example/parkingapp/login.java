@@ -84,6 +84,55 @@ public class login extends AppCompatActivity {
         return true;
     }
 
+    public void openNavDrawer(){
+        Intent intent = new Intent(this, navigationDrawer.class);
+        startActivity(intent);
+    }
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    public void SQLReq(String userIdString, String password){
+
+        String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
+
+        AsyncTask.execute(()->{
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("userIdString", userIdString)
+                    .add("password", password)
+                    .build();
+
+            try{
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(requestBody)
+                        .build();
+
+                Response response = client.newCall(request).execute();
+
+                if(response.isSuccessful()){
+                    String responseBody = response.body().string();
+                    if(responseBody.equals("exists")){
+                        runOnUiThread(() -> {
+                            toast("Logged in Successful");
+                            openNavDrawer();
+                        });
+                    }else if(responseBody.equals("does not exist")){
+                        runOnUiThread(()-> toast("User does not exist") );
+                    }
+                }else{
+                    runOnUiThread(()-> toast("Failed to connect to database") );
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+
+        });
+
+    }
+
     private void logIn(){
 
         String userIdString = logInUserId.getText().toString();
@@ -91,44 +140,7 @@ public class login extends AppCompatActivity {
 
         if(validateForm(userIdString, password)){
             //Retrieval of data from database
-            String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
-
-            AsyncTask.execute(()->{
-                OkHttpClient client = new OkHttpClient();
-
-                RequestBody requestBody = new FormBody.Builder()
-                        .add("userIdString", userIdString)
-                        .add("password", password)
-                        .build();
-
-                try{
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(requestBody)
-                            .build();
-
-                    Response response = client.newCall(request).execute();
-
-                    if(response.isSuccessful()){
-                        String responseBody = response.body().string();
-                        if(responseBody.equals("exists")){
-                            runOnUiThread(() -> {
-                                Toast.makeText(getApplicationContext(), "Logged in successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(this, navigationDrawer.class);
-                                startActivity(intent);
-                            });
-                        }else if(responseBody.equals("does not exist")){
-                            runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Account does not exist", Toast.LENGTH_SHORT).show() );
-                        }
-                    }else{
-                        runOnUiThread(()-> Toast.makeText(getApplicationContext(),"Failed to connect to the database", Toast.LENGTH_SHORT).show() );
-                    }
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-
-
-            });
+            SQLReq(userIdString, password);
 
             logInUserId.setText("");
             logInPassword.setText("");
