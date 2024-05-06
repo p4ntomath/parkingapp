@@ -26,10 +26,9 @@ public class navigationDrawer extends AppCompatActivity {
     ImageButton menuBtn;
     FrameLayout frameLayout;
 
-    TextView userIdTextView;
-    TextView userTypeTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_navigation_drawer);
@@ -38,6 +37,7 @@ public class navigationDrawer extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         drawerLayout = findViewById(R.id.drawer);
         menuBtn = findViewById(R.id.menuBtn);
         navigationView = findViewById(R.id.navigationView);
@@ -47,23 +47,12 @@ public class navigationDrawer extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.nav_home);
 
 
-        userIdTextView = findViewById(R.id.userIdDisplay);
-        userTypeTextView = findViewById(R.id.userTypeDisplay);
-
-
-        userSessionManager userSessionManager = new userSessionManager(this);
-        if(userSessionManager.isLoggedIn()){
-            displayProfile(userSessionManager.getUserId(),userSessionManager.getUserType());
-        }
-
-
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.open();
             }
         });
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -93,12 +82,7 @@ public class navigationDrawer extends AppCompatActivity {
             }
         });
     }
-    public void displayProfile(String userId,String userType){
 
-        userIdTextView.setText(userId);
-        userTypeTextView.setText(userType);
-
-    }
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
