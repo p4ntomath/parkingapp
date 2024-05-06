@@ -133,13 +133,14 @@ public class login extends AppCompatActivity {
                     if(returnedOutcome.equals("exists")){
                         runOnUiThread(() -> {
                             toast("Logged in Successful");
+                            storeToSharedPreferences(returnedUserID,returnedEmail,returnedPassword,returnedUserType);
                             openNavDrawer();
                         });
-                    } else if(returnedOutcome.equals("does not exist")){
+                    } else{
                         runOnUiThread(()-> toast("User does not exist") );
                     }
                 } else{
-                    runOnUiThread(()-> toast("Failed to connect to database") );
+                    runOnUiThread(()-> toast("Failed to connect to database"));
                 }
             } catch(IOException | JSONException e){
                 e.printStackTrace();
