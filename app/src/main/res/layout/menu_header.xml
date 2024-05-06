@@ -29,7 +29,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/userIdDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
@@ -44,7 +44,7 @@
     </TextView>
 
     <TextView
-        android:id="@+id/userType"
+        android:id="@+id/userTypeDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

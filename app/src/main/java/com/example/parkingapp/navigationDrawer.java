@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,6 +25,9 @@ public class navigationDrawer extends AppCompatActivity {
     NavigationView navigationView;
     ImageButton menuBtn;
     FrameLayout frameLayout;
+
+    TextView userIdTextView;
+    TextView userTypeTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,16 @@ public class navigationDrawer extends AppCompatActivity {
 
         replaceFragment(new home_fragment());
         navigationView.setCheckedItem(R.id.nav_home);
+
+
+        userIdTextView = findViewById(R.id.userIdDisplay);
+        userTypeTextView = findViewById(R.id.userTypeDisplay);
+
+        userSessionManager userSessionManager = new userSessionManager(this);
+        if(userSessionManager.isLoggedIn()){
+            displayProfile(userSessionManager.getUserId(),userSessionManager.getUserType());
+        }
+
 
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +91,12 @@ public class navigationDrawer extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    public void displayProfile(String userId,String userType){
+
+        userIdTextView.setText(userId);
+        userTypeTextView.setText(userType);
+
     }
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
