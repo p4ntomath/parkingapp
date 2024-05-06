@@ -128,6 +128,7 @@ public class signup extends AppCompatActivity {
                     .add("userIdString", userIdString)
                     .add("password", password)
                     .add("userType", uType)
+                    .add("email", email)
                     .build();
 
             try{
