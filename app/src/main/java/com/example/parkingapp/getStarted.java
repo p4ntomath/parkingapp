@@ -23,14 +23,12 @@ public class getStarted extends AppCompatActivity {
         userSessionManager userSessionManager = new userSessionManager(this);
 
 
-        /*
         // Check if the user is already logged in
         if (userSessionManager.isLoggedIn()) {
             Intent intent = new Intent(this, navigationDrawer.class);
             startActivity(intent);
             finish();
         }
-        */
 
 
         super.onCreate(savedInstanceState);

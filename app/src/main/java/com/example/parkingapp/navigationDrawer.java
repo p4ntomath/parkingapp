@@ -5,6 +5,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,8 +26,10 @@ public class navigationDrawer extends AppCompatActivity {
     NavigationView navigationView;
     ImageButton menuBtn;
     FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_navigation_drawer);
@@ -34,6 +38,7 @@ public class navigationDrawer extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         drawerLayout = findViewById(R.id.drawer);
         menuBtn = findViewById(R.id.menuBtn);
         navigationView = findViewById(R.id.navigationView);
@@ -42,13 +47,13 @@ public class navigationDrawer extends AppCompatActivity {
         replaceFragment(new home_fragment());
         navigationView.setCheckedItem(R.id.nav_home);
 
+
         menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.open();
             }
         });
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -77,7 +82,23 @@ public class navigationDrawer extends AppCompatActivity {
                 return false;
             }
         });
+
+        userSessionManager userSessionManager = new userSessionManager(this);
+        if(userSessionManager.isLoggedIn()){
+            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+            String userId = userSessionManager.getUserId();
+            String userType = userSessionManager.getUserType();
+            View headerView = navigationView.getHeaderView(0);
+            TextView userIdTextView = headerView.findViewById(R.id.userIdDisplay);
+            TextView userTypeTextView = headerView.findViewById(R.id.userTypeDisplay);
+            userIdTextView.setText(userId);
+            userTypeTextView.setText(userType);
+        }
     }
+
+
+
+
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();

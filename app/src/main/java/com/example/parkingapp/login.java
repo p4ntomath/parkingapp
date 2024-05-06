@@ -16,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.*;
@@ -91,47 +95,68 @@ public class login extends AppCompatActivity {
     public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-    public void SQLReq(String userIdString, String password){
+    public void storeToSharedPreferences(String userIdString,String email,String password,String uType){
+        userSessionManager sessionManager = new userSessionManager(this);
+        sessionManager.createSession(userIdString,uType,email,password);
+    }
+    public void SQLReq(String userIdString, String password) {
+        OkHttpClient client = new OkHttpClient();
 
-        String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
+        String parseUrl = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(parseUrl).newBuilder();
+        urlBuilder.addQueryParameter("userIdString", userIdString);
+        urlBuilder.addQueryParameter("password", password);
+        String url = urlBuilder.build().toString();
 
-        AsyncTask.execute(()->{
-            OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("userIdString", userIdString)
-                    .add("password", password)
-                    .build();
-
-            try{
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(requestBody)
-                        .build();
-
-                Response response = client.newCall(request).execute();
-
-                if(response.isSuccessful()){
-                    String responseBody = response.body().string();
-                    if(responseBody.equals("exists")){
-                        runOnUiThread(() -> {
-                            toast("Logged in Successful");
-                            openNavDrawer();
-                        });
-                    }else if(responseBody.equals("does not exist")){
-                        runOnUiThread(()-> toast("User does not exist") );
-                    }
-                }else{
-                    runOnUiThread(()-> toast("Failed to connect to database") );
-                }
-            }catch(IOException e){
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                // Handle failure here
             }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        final String email = jsonObject.getString("EMAIL");
+                        final String uType = jsonObject.getString("USER_TYPE");
+                        final String userId = jsonObject.getString("USER_ID");
+                        final String password = jsonObject.getString("PASSWORD");
+                        final String outcome = jsonObject.getString("OUTCOME");
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (outcome.equals("exists")) {
+                                    toast("Login Successful");
+                                    storeToSharedPreferences(userId,email,password,uType);
+                                    openNavDrawer();
+                                }else{
+                                    toast("User" + userId + " does not exist");
+                                }
+
+                            }
+                        });
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+
+                }
+            }
         });
-
     }
+
 
     private void logIn(){
 
