@@ -16,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.*;
@@ -91,6 +95,10 @@ public class login extends AppCompatActivity {
     public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+    public void storeToSharedPreferences(String userIdString,String email,String password,String uType){
+        userSessionManager sessionManager = new userSessionManager(this);
+        sessionManager.createSession(userIdString,uType,email,password);
+    }
     public void SQLReq(String userIdString, String password){
 
         String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
@@ -111,14 +119,26 @@ public class login extends AppCompatActivity {
 
                 Response response = client.newCall(request).execute();
 
+
+
                 if(response.isSuccessful()){
-                    String responseBody = response.body().string();
-                    if(responseBody.equals("exists")){
+
+                    JSONObject jsonObject = new JSONObject(response.toString());
+
+                    String returnedUserID = jsonObject.getString("USER_ID");
+                    String returnedPassword = jsonObject.getString("PASSWORD");
+                    String returnedUserType = jsonObject.getString("USER_TYPE");
+                    String returnedEmail = jsonObject.getString("EMAIL");
+                    String returnedOutcome = jsonObject.getString("OUTCOME");
+
+
+                    if(returnedOutcome.equals("exists")){
                         runOnUiThread(() -> {
                             toast("Logged in Successful");
+                            storeToSharedPreferences(returnedUserID,returnedEmail,returnedPassword,returnedUserType);
                             openNavDrawer();
                         });
-                    }else if(responseBody.equals("does not exist")){
+                    }else if(returnedOutcome.equals("does not exist")){
                         runOnUiThread(()-> toast("User does not exist") );
                     }
                 }else{
@@ -126,6 +146,8 @@ public class login extends AppCompatActivity {
                 }
             }catch(IOException e){
                 e.printStackTrace();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
 
 
