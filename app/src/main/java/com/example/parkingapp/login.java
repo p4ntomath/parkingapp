@@ -136,7 +136,7 @@ public class login extends AppCompatActivity {
                             storeToSharedPreferences(returnedUserID,returnedEmail,returnedPassword,returnedUserType);
                             openNavDrawer();
                         });
-                    } else{
+                    }if(returnedOutcome.equals("does not exist")){
                         runOnUiThread(()-> toast("User does not exist") );
                     }
                 } else{
