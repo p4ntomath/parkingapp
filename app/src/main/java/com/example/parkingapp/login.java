@@ -101,7 +101,7 @@ public class login extends AppCompatActivity {
     }
     public void SQLReq(String userIdString, String password){
 
-        String url = "https://lam......";
+        String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
 
         AsyncTask.execute(()->{
             OkHttpClient client = new OkHttpClient();
