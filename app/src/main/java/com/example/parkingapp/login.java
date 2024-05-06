@@ -101,7 +101,7 @@ public class login extends AppCompatActivity {
     }
     public void SQLReq(String userIdString, String password){
 
-        String url = "https://lamp.ms.wits.ac.za/home/s2691450/login.php";
+        String url = "https://lam......";
 
         AsyncTask.execute(()->{
             OkHttpClient client = new OkHttpClient();
@@ -119,12 +119,10 @@ public class login extends AppCompatActivity {
 
                 Response response = client.newCall(request).execute();
 
-
-
                 if(response.isSuccessful()){
 
-                    JSONObject jsonObject = new JSONObject(response.toString());
-
+                    String responseData = response.body().string(); // Fetch response body
+                    JSONObject jsonObject = new JSONObject(responseData);
                     String returnedUserID = jsonObject.getString("USER_ID");
                     String returnedPassword = jsonObject.getString("PASSWORD");
                     String returnedUserType = jsonObject.getString("USER_TYPE");
@@ -137,20 +135,18 @@ public class login extends AppCompatActivity {
                             toast("Logged in Successful");
                             openNavDrawer();
                         });
-                    }else if(returnedOutcome.equals("does not exist")){
+                    } else if(returnedOutcome.equals("does not exist")){
                         runOnUiThread(()-> toast("User does not exist") );
                     }
-                }else{
+                } else{
                     runOnUiThread(()-> toast("Failed to connect to database") );
                 }
-            }catch(IOException | JSONException e){
+            } catch(IOException | JSONException e){
                 e.printStackTrace();
             }
-
-
         });
-
     }
+
 
     private void logIn(){
 
