@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -81,7 +82,22 @@ public class navigationDrawer extends AppCompatActivity {
                 return false;
             }
         });
+
+        userSessionManager userSessionManager = new userSessionManager(this);
+        if(userSessionManager.isLoggedIn()){
+            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+            String userId = userSessionManager.getUserId();
+            String userType = userSessionManager.getUserType();
+            View headerView = navigationView.getHeaderView(0);
+            TextView userIdTextView = headerView.findViewById(R.id.userIdDisplay);
+            TextView userTypeTextView = headerView.findViewById(R.id.userTypeDisplay);
+            userIdTextView.setText(userId);
+            userTypeTextView.setText(userType);
+        }
     }
+
+
+
 
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
