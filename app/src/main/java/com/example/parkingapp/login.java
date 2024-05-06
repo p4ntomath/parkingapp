@@ -135,7 +135,6 @@ public class login extends AppCompatActivity {
                     if(returnedOutcome.equals("exists")){
                         runOnUiThread(() -> {
                             toast("Logged in Successful");
-                            storeToSharedPreferences(returnedUserID,returnedEmail,returnedPassword,returnedUserType);
                             openNavDrawer();
                         });
                     }else if(returnedOutcome.equals("does not exist")){
@@ -144,10 +143,8 @@ public class login extends AppCompatActivity {
                 }else{
                     runOnUiThread(()-> toast("Failed to connect to database") );
                 }
-            }catch(IOException e){
+            }catch(IOException | JSONException e){
                 e.printStackTrace();
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
             }
 
 

@@ -50,10 +50,11 @@ public class navigationDrawer extends AppCompatActivity {
         userIdTextView = findViewById(R.id.userIdDisplay);
         userTypeTextView = findViewById(R.id.userTypeDisplay);
 
+        /*
         userSessionManager userSessionManager = new userSessionManager(this);
         if(userSessionManager.isLoggedIn()){
             displayProfile(userSessionManager.getUserId(),userSessionManager.getUserType());
-        }
+        }*/
 
 
         menuBtn.setOnClickListener(new View.OnClickListener() {
