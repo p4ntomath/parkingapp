@@ -63,7 +63,11 @@ public class navigationDrawer extends AppCompatActivity {
                 if (id == R.id.nav_home) {
                     replaceFragment(new home_fragment());
                     return true;
-                }else if (id == R.id.nav_booking) {
+                }else if (id == R.id.nav_parking) {
+                    replaceFragment(new findparking_fragment());
+                    return true;
+                }
+                else if (id == R.id.nav_booking) {
                     replaceFragment(new booking_Fragment());
                     return true;
                 }else if (id == R.id.nav_reserve) {
