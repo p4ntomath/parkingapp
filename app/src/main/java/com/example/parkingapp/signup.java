@@ -109,6 +109,7 @@ public class signup extends AppCompatActivity {
     public void openNavigationDrawer() {
         Intent intent = new Intent(this, navigationDrawer.class);
         startActivity(intent);
+        finish();
     }
     public void storeToSharedPreferences(String userIdString,String email,String password,String uType){
         userSessionManager sessionManager = new userSessionManager(this);

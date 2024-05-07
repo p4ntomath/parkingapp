@@ -94,10 +94,18 @@ public class navigationDrawer extends AppCompatActivity {
             userIdTextView.setText(userId);
             userTypeTextView.setText(userType);
         }
+
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(navigationView)) {
+            drawerLayout.close();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();

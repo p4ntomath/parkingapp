@@ -91,6 +91,7 @@ public class login extends AppCompatActivity {
     public void openNavDrawer(){
         Intent intent = new Intent(this, navigationDrawer.class);
         startActivity(intent);
+        finish();
     }
     public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
