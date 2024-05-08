@@ -9,7 +9,7 @@
     tools:context=".navigationDrawer">
 
     <include
-        layout="@layout/home_content">
+        layout="@layout/main_content">
     </include>
 
     <com.google.android.material.navigation.NavigationView
