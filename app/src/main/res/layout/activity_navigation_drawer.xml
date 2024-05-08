@@ -20,6 +20,17 @@
         app:headerLayout="@layout/menu_header"
         android:layout_gravity="start">
 
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="30dp"
+            android:text="Log Out"
+            android:textStyle="bold"
+            android:backgroundTint="@color/primary"/>
+
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

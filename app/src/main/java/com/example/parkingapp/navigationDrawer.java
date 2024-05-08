@@ -1,8 +1,13 @@
 package com.example.parkingapp;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +31,12 @@ public class navigationDrawer extends AppCompatActivity {
     NavigationView navigationView;
     ImageButton menuBtn;
     FrameLayout frameLayout;
+    Dialog dialog;
+    Button dialogCancelBtn,DialoglogOutbtn;
+    Button logOutBtn;
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,6 +48,33 @@ public class navigationDrawer extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_bg));
+        dialog.setCancelable(false);
+        dialogCancelBtn = dialog.findViewById(R.id.button_cancel);
+        DialoglogOutbtn = dialog.findViewById(R.id.button_logout);
+        logOutBtn = findViewById(R.id.logoutButton);
+
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }});
+
+        dialogCancelBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        DialoglogOutbtn.setOnClickListener(v -> logout());
+
+
 
         drawerLayout = findViewById(R.id.drawer);
         menuBtn = findViewById(R.id.menuBtn);
@@ -79,17 +116,15 @@ public class navigationDrawer extends AppCompatActivity {
                 }else if (id == R.id.nav_about) {
                     replaceFragment(new about_fragment());
                     return true;
-                }else if(id == R.id.nav_logout){
-                    replaceFragment(new logout_fragment());
-                    return true;
                 }
                 return false;
             }
         });
 
         userSessionManager userSessionManager = new userSessionManager(this);
+
         if(userSessionManager.isLoggedIn()){
-            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+
             String userId = userSessionManager.getUserId();
             String userType = userSessionManager.getUserType();
             View headerView = navigationView.getHeaderView(0);
@@ -98,6 +133,8 @@ public class navigationDrawer extends AppCompatActivity {
             userIdTextView.setText(userId);
             userTypeTextView.setText(userType);
         }
+
+
 
     }
 
@@ -114,5 +151,14 @@ public class navigationDrawer extends AppCompatActivity {
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+    }
+
+    public void logout() {
+        userSessionManager userSessionManager = new userSessionManager(this);
+        userSessionManager.logout();
+        Intent intent = new Intent(this, getStarted.class);
+        startActivity(intent);
+        finish();
+        dialog.dismiss();
     }
 }
