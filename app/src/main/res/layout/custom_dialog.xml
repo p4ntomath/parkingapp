@@ -32,7 +32,7 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_cancel"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
@@ -40,9 +40,10 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/btn_logout2"
             android:text="Cancel"
+            android:backgroundTint="@color/primary"
             android:textColor="@android:color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_logout"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
