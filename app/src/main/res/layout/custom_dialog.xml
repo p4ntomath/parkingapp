@@ -34,17 +34,17 @@
 
         <Button
             android:id="@+id/button_cancel"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:text="Log Out"
-            android:textColor="@android:color/white"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/btn_logout2"
-            android:layout_marginHorizontal="20dp"/>
+            android:text="Cancel"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/button_logout"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_logout"
             android:text="Comfirm"
