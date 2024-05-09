@@ -83,6 +83,7 @@ public class navigationDrawer extends AppCompatActivity {
 
         replaceFragment(new home_fragment());
         navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setItemIconTintList(null);
 
 
         menuBtn.setOnClickListener(new View.OnClickListener() {

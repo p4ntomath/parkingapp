@@ -9,30 +9,35 @@
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/homeicon"
-            android:title="Home"/>
+            android:icon="@drawable/home_icon"
+            android:title="Home" />
         <item
             android:id="@+id/nav_parking"
-            android:icon="@drawable/findparkingicon"
+            android:icon="@drawable/parking_icon"
             android:title="Find Parking"/>
 
         <item
             android:id="@+id/nav_booking"
-            android:icon="@drawable/bookingicon"
+            android:icon="@drawable/survey_icon"
+            android:iconTint="@color/darkpink"
             android:title="Booking"/>
 
         <item
+
             android:id="@+id/nav_reserve"
-            android:icon="@drawable/reserveicon"
+            android:icon="@drawable/planner_icon"
+            android:iconTintMode="src_atop"
+            android:iconTint="@color/black"
             android:title="My Reservations"/>
+
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/helpicon"
-            android:title="Help/Support"/>
+            android:icon="@drawable/assistant_icon"
+            android:title="Help/Support" />
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/abouticon"
+            android:icon="@drawable/info_icon"
             android:title="About Us"/>
     </group>
     <item

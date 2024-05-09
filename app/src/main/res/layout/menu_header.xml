@@ -4,29 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/header_background"
+    android:background="@drawable/nav_widget"
     tools:context=".navigationDrawer">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="84dp"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/darkpink"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <ImageView
             android:id="@+id/profilePicture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/profileicon" />
+            android:src="@drawable/customer_icon" />
+
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -37,6 +41,8 @@
         android:text="1234567"
         android:textSize="17dp"
         android:textStyle="bold"
+        android:textColor="@color/darkblue"
+        android:shadowColor="@color/darkblue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Student"
+        android:shadowColor="@color/darkblue"
+        android:textColor="@color/darkblue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"

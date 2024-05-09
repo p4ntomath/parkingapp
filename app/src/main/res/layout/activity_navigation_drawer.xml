@@ -16,9 +16,10 @@
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:menu="@menu/menu"
+        android:layout_gravity="start"
         app:headerLayout="@layout/menu_header"
-        android:layout_gravity="start">
+        app:menu="@menu/menu">
+
 
         <Button
             android:id="@+id/logoutButton"
@@ -27,11 +28,11 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="100dp"
             android:layout_marginBottom="75dp"
+            android:background="@drawable/btn_logout2"
+            android:backgroundTint="@color/skyblue"
             android:text="Log Out"
             android:textStyle="bold"
-            app:backgroundTint="@null"
-            android:background="@drawable/btn_logout2"
-            android:backgroundTint="@color/primary"/>
+            app:backgroundTint="@null" />
 
     </com.google.android.material.navigation.NavigationView>
 

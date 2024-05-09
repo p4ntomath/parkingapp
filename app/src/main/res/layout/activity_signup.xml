@@ -38,6 +38,13 @@
             android:layout_marginBottom="-25dp"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/secondary">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/assitant_style">
+            <!-- Your other views here -->
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,12 +89,11 @@
                     android:id="@+id/signUpPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingEnd="12dp"
                     android:background="@drawable/input"
-                    android:hint="Password"
                     android:ems="10"
+                    android:hint="Password"
                     android:inputType="textPassword"
-                    />
+                    android:paddingEnd="12dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,7 +165,7 @@
                 android:layout_height="56dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/btnradius"
-                android:backgroundTint="@color/primary"
+                android:backgroundTint="@color/skyblue"
                 android:text="Sign Up"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -178,6 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Already have an account?"
+                    android:textColor="@color/black"
                     android:textStyle="bold">
 
                 </TextView>
@@ -190,7 +197,7 @@
                     android:clickable="true"
                     android:onClick="openSignInPage"
                     android:text=" Sign In"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/darkblue"
                     android:textStyle="bold"
                     tools:ignore="TouchTargetSizeCheck">
 

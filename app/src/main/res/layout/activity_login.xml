@@ -37,109 +37,119 @@
         app:cardCornerRadius="28dp"
         android:layout_marginBottom="-25dp"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/secondary">
-
-        <LinearLayout
+        android:backgroundTint="@color/darkblue">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="479dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="28dp">
-
-            <EditText
-
-                android:id="@+id/logInUserId"
-                android:layout_width="327dp"
-                android:layout_height="54dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/input"
-                android:ems="10"
-                android:hint="Person Number"
-                android:inputType="number"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signUpInputLayout"
-                android:layout_width="327dp"
-                android:layout_height="60dp"
-                app:hintEnabled="false"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/logInPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/input"
-                    android:hint="Password"
-                    android:paddingEnd="12dp"
-                    android:ems="10"
-                    android:inputType="textPassword"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/forgotPassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Forgot your Password?"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:onClick="openSignUpPage"/>
-
-            </RelativeLayout>
-
-
-            <Button
-                android:id="@+id/logInBtn"
-                android:layout_width="251dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/btnradius"
-                android:backgroundTint="@color/primary"
-                android:text="Log In"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                app:backgroundTint="@null">
-
-            </Button>
+            android:layout_height="match_parent"
+            android:background="@drawable/assitant_style">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="479dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <EditText
+
+                    android:id="@+id/logInUserId"
+                    android:layout_width="327dp"
+                    android:layout_height="54dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/input"
+                    android:ems="10"
+                    android:hint="Person Number"
+                    android:inputType="number"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signUpInputLayout"
+                    android:layout_width="327dp"
+                    android:layout_height="60dp"
+                    app:hintEnabled="false"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/logInPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/input"
+                        android:ems="10"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:paddingEnd="12dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/forgotPassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:onClick="openSignUpPage"
+                        android:text="Forgot your Password?"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
 
 
-                <TextView
+                <Button
+                    android:id="@+id/logInBtn"
+                    android:layout_width="251dp"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="44dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/btnradius"
+                    android:backgroundTint="@color/primary"
+
+                    android:text="Log In"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+
+                    app:backgroundTint="@null">
+
+                </Button>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't have an account?"
-                    android:textStyle="bold">
+                    android:layout_marginBottom="0dp"
+                    android:orientation="horizontal">
 
-                </TextView>
 
-                <TextView
-                    android:id="@+id/signUpText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Sign Up"
-                    android:clickable="true"
-                    android:onClick="openSignUpPage"
-                    android:textColor="@color/primary"
-                    android:textStyle="bold">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Don't have an account?"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
 
-                </TextView>
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/signUpText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:onClick="openSignUpPage"
+                        android:text=" Sign Up"
+                        android:textColor="@color/darkblue"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                </LinearLayout>
+
 
             </LinearLayout>
-
-
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </androidx.cardview.widget.CardView>
