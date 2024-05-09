@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home_fragment">
 
     <fragment
@@ -13,4 +14,46 @@
         />
 
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_behavior ="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/menu_background"
+        android:backgroundTint="@color/white"
+        android:outlineSpotShadowColor="@color/black">
+
+        <ImageButton
+            android:id="@+id/sheetBar"
+            android:layout_width="90dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/removebar"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:layout_gravity="center|top"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom Sheet"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not Yet Implemented"
+            android:textColor="@color/black"
+
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
+
+
+
+
+    </FrameLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
