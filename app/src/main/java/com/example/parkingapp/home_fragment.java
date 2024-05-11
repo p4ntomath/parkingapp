@@ -72,15 +72,25 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // Define the southwest and northeast corners of the boundary
+        LatLng southwest = new LatLng(-26.192660, 28.02390);
+        LatLng northeast = new LatLng(-26.1859, 28.032700);
+
+        // Create a LatLngBounds object that contains the specified boundaries
+        LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+
+        // Set max zoom level
+
+        // Set camera bounds to prevent camera from leaving the specified boundaries
+        mMap.setLatLngBoundsForCameraTarget(bounds);
+
+        // Add marker to the middle of Wits Uni
         LatLng johannesburg = new LatLng(-26.1887, 28.0267);
         mMap.addMarker(new MarkerOptions().position(johannesburg).title("Middle Of Wits Uni"));
 
         // Move camera to Johannesburg and zoom closer
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 15));
-
-
-        mMap.setMaxZoomPreference(15); // Set max zoom level
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
     }
+
 
 }
