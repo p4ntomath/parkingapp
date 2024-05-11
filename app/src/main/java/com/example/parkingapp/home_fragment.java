@@ -80,6 +80,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
 
         // Set max zoom level
+        mMap.setMaxZoomPreference(17);
 
         // Set camera bounds to prevent camera from leaving the specified boundaries
         mMap.setLatLngBoundsForCameraTarget(bounds);
