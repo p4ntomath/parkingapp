@@ -8,6 +8,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +20,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class home_fragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -26,10 +31,26 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    List<item> items = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.home_fragment, container, false);
+
+        items.add(new item("Barnato Parking","Space : 35",R.drawable.applogo));
+        items.add(new item("Wits Plus Parking Lot","Space : 60",R.drawable.eye));
+        items.add(new item("Zesti Lemonz Parking Lot","Space : 79",R.drawable.findparkingicon));
+        items.add(new item("Hall 29 Parking Lot","Space : 100",R.drawable.homeicon));
+        items.add(new item("FNB Parking Lot","Space : 90",R.drawable.bookingicon));
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
+
+
+
+
 
         // Initialize the BottomSheetBehavior
         FrameLayout bottomSheet = view.findViewById(R.id.bottomSheet);

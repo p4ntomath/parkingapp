@@ -31,25 +31,36 @@
             android:src="@drawable/removebar"
             android:scaleType="centerCrop"
             android:background="@null"
-            android:layout_gravity="center|top"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bottom Sheet"
-            android:textColor="@color/primary"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Not Yet Implemented"
-            android:textColor="@color/black"
+            android:layout_gravity="center|top" />
 
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <SearchView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center|top"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_logout"
+                android:queryHint="Search Parking"
+                android:focusable="false"
+                app:searchHintIcon="@null"
+                android:iconifiedByDefault="false"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchBar"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical"
+                android:id="@+id/recyclerView"/>
 
 
+
+        </RelativeLayout>
 
 
     </FrameLayout>

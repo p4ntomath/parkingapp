@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.parkingapp"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.material:material:1.4.0")
     implementation ("com.google.android.material:material:1.3.0-alpha01")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
@@ -38,6 +39,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.car.ui.lib)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
