@@ -38,7 +38,7 @@
             android:layout_height="match_parent">
 
             <SearchView
-                android:id="@+id/searchBar"
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_marginHorizontal="20dp"
                 android:layout_gravity="center|top"
@@ -53,11 +53,21 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/searchBar"
+                android:layout_below="@id/searchView"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical"
                 android:id="@+id/recyclerView"/>
 
+            <TextView
+                android:id="@+id/noParking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchView"
+                android:gravity="center"
+                android:text="No Parking Found"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:textSize="15dp" />
 
 
         </RelativeLayout>

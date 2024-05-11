@@ -1,11 +1,15 @@
 package com.example.parkingapp;
 
+import static okhttp3.internal.Util.filterList;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,25 +36,15 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
     }
 
     List<item> items = new ArrayList<>();
+    SearchView searchView;
+    TextView noParking;
+    RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
-
-        items.add(new item("Barnato Parking","Space : 35",R.drawable.applogo));
-        items.add(new item("Wits Plus Parking Lot","Space : 60",R.drawable.eye));
-        items.add(new item("Zesti Lemonz Parking Lot","Space : 79",R.drawable.findparkingicon));
-        items.add(new item("Hall 29 Parking Lot","Space : 100",R.drawable.homeicon));
-        items.add(new item("FNB Parking Lot","Space : 90",R.drawable.bookingicon));
-
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
-
-
-
-
 
         // Initialize the BottomSheetBehavior
         FrameLayout bottomSheet = view.findViewById(R.id.bottomSheet);
@@ -68,6 +62,37 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+
+
+
+
+
+
+
+        addItems();//adding items to the list
+
+        // Initialize the RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
+
+
+         noParking = view.findViewById(R.id.noParking);
+        searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                return true;
+            }
+        });
+
 
 
         // Initialize the SupportMapFragment
@@ -88,6 +113,9 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
         return view;
     }
+
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -113,6 +141,36 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         // Move camera to Johannesburg and zoom closer
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
     }
+
+    public void addItems() {
+
+        items.add(new item("Barnato Parking", "Space : 35", R.drawable.applogo));
+        items.add(new item("Wits Plus Parking Lot", "Space : 60", R.drawable.eye));
+        items.add(new item("Zesti Lemonz Parking Lot", "Space : 79", R.drawable.findparkingicon));
+        items.add(new item("Hall 29 Parking Lot", "Space : 100", R.drawable.homeicon));
+        items.add(new item("FNB Parking Lot", "Space : 90", R.drawable.bookingicon));
+    }
+
+    private void filterList(String newText) {
+        List<item> filteredList = new ArrayList<>();
+        for (item item : items) {
+            if (item.getParkingName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            noParking.setVisibility(View.VISIBLE);
+        } else {
+            recycleViewAdapter adapter = (recycleViewAdapter) recyclerView.getAdapter();
+            adapter.setFilteredList(filteredList);
+            recyclerView.setVisibility(View.VISIBLE);
+            noParking.setVisibility(View.GONE);
+        }
+    }
+
+
 
 
 }

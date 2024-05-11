@@ -22,6 +22,10 @@ public class recycleViewAdapter extends RecyclerView.Adapter<viewHolder> {
         layoutInflater = LayoutInflater.from(context); // Initialize layoutInflater
     }
 
+    public void setFilteredList(List<item> filteredList) {
+        this.items = filteredList;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
