@@ -131,6 +131,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 filterList(newText);
                 return true;
             }
@@ -161,6 +162,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+
     }
 
     public void addItems() {

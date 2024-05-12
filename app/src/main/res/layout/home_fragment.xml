@@ -17,11 +17,11 @@
     <FrameLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
+        android:elevation="10dp"
         android:layout_height="500dp"
         app:layout_behavior ="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:background="@drawable/menu_background"
-        android:backgroundTint="@color/white"
-        android:outlineSpotShadowColor="@color/black">
+        android:backgroundTint="@color/white">
 
         <ImageButton
             android:id="@+id/sheetBar"
