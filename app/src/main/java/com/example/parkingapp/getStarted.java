@@ -30,7 +30,6 @@ public class getStarted extends AppCompatActivity {
             finish();
         }
 
-
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_get_started);
@@ -42,18 +41,10 @@ public class getStarted extends AppCompatActivity {
 
 
         signUpPage = findViewById(R.id.signUpPage);
-        signUpPage.setOnClickListener(v -> openSignUpPage(v));
 
     }
-
-    public void openSignUpPage(View view) {
-        Intent intent = new Intent(this, signup.class);
-        startActivity(intent);
-    }
-
-    public void openSignInPage(View view){
-        Intent intent = new Intent(this, login.class);
-        startActivity(intent);
+    public void openSignUpSheet(){
+        bottomsheet signUpSheet =
     }
 
 
