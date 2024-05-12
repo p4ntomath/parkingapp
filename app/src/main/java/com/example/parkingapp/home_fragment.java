@@ -39,6 +39,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
+    FrameLayout bottomSheet;
+    BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,67 +48,18 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        // Initialize the BottomSheetBehavior
-        FrameLayout bottomSheet = view.findViewById(R.id.bottomSheet);
-        BottomSheetBehavior<FrameLayout> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.setPeekHeight(600);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        ImageButton sheetBtn = view.findViewById(R.id.sheetBar);
-        sheetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ){
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }else{
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
 
 
 
 
-
-
-
+        bottomSheetBehavior(view);
         addItems();//adding items to the list
 
-        // Initialize the RecyclerView
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
+        initRecyclerView(view);
+
+        supportMapFragment();
 
 
-         noParking = view.findViewById(R.id.noParking);
-        searchView = view.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterList(newText);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                return true;
-            }
-        });
-
-
-
-        // Initialize the SupportMapFragment
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.map, mapFragment)
-                    .commit();
-        }
-
-        mapFragment.getMapAsync(this);
 
 
 
@@ -142,15 +95,88 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
     }
 
-    public void addItems() {
 
-        items.add(new item("Barnato Parking", "Space : 35", R.drawable.applogo));
-        items.add(new item("Wits Plus Parking Lot", "Space : 60", R.drawable.eye));
-        items.add(new item("Zesti Lemonz Parking Lot", "Space : 79", R.drawable.findparkingicon));
-        items.add(new item("Hall 29 Parking Lot", "Space : 100", R.drawable.homeicon));
-        items.add(new item("FNB Parking Lot", "Space : 90", R.drawable.bookingicon));
+
+
+    public void supportMapFragment(){
+
+
+        // Initialize the SupportMapFragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+
+        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.map, mapFragment)
+                    .commit();
+        }
+
+        mapFragment.getMapAsync(this);
+    }
+    public void initRecyclerView(View view){
+        // Initialize the RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
+
+
+        noParking = view.findViewById(R.id.noParking);
+        searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+    }
+    public void bottomSheetBehavior(View view){
+
+        // Initialize the BottomSheetBehavior
+        bottomSheet = view.findViewById(R.id.bottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setPeekHeight(600);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        ImageButton sheetBtn = view.findViewById(R.id.sheetBar);
+        sheetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }else{
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     }
 
+    public void addItems() {
+
+        items.add(new item("Barnato Parking", "Space : 35","Students", R.drawable.applogo));
+        items.add(new item("Wits Plus Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
+        items.add(new item("Zesti Lemonz Parking Lot", "Space : 79","Staff" ,R.drawable.findparkingicon));
+        items.add(new item("Hall 29 Parking Lot", "Space : 100","Students", R.drawable.homeicon));
+        items.add(new item("FNB Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
+        items.add(new item("John Moffat Parking Lot", "Space : 35","Students", R.drawable.applogo));
+        items.add(new item("Biology Building Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
+        items.add(new item("David Webster Parking Lot", "Space : 79","Students" ,R.drawable.findparkingicon));
+        items.add(new item("Northwest Engineering Parking Lot", "Space : 100","Staff", R.drawable.homeicon));
+        items.add(new item("Men's Res Roadside Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
+
+    }
     private void filterList(String newText) {
         List<item> filteredList = new ArrayList<>();
         for (item item : items) {

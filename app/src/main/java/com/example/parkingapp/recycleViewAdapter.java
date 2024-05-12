@@ -39,6 +39,7 @@ public class recycleViewAdapter extends RecyclerView.Adapter<viewHolder> {
         holder.parkingName.setText(items.get(position).getParkingName());
         holder.parkingSpace.setText(items.get(position).getParkingSpace());
         holder.parkingImage.setImageResource(items.get(position).getParkingImage());
+        holder.parkingType.setText(items.get(position).getParkingType());
     }
 
     @Override
