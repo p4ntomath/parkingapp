@@ -19,7 +19,8 @@
             <EditText
 
                 android:id="@+id/logInUserId"
-                android:layout_width="327dp"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="5dp"
                 android:layout_height="54dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/input"
@@ -31,9 +32,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/logInInputLayout"
-                android:layout_width="327dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 app:hintEnabled="false"
+                android:layout_marginHorizontal="5dp"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
