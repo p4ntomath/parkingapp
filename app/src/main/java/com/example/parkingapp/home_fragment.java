@@ -55,15 +55,9 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         bottomSheetBehavior(view);
         addItems();//adding items to the list
 
-        initRecyclerView(view);
+        initRecyclerView(view);//initializing the recyclerview
 
-        supportMapFragment();
-
-
-
-
-
-
+        supportMapFragment(); //support map fragment
         return view;
     }
 
@@ -151,22 +145,12 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(600);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        ImageButton sheetBtn = view.findViewById(R.id.sheetBar);
-        sheetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED ){
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }else{
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
+
 
     }
 
     public void addItems() {
-
+        // Add items to the list
         items.add(new item("Barnato Parking", "Space : 35","Students", R.drawable.applogo));
         items.add(new item("Wits Plus Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
         items.add(new item("Zesti Lemonz Parking Lot", "Space : 79","Staff" ,R.drawable.findparkingicon));
@@ -180,17 +164,24 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
     }
     private void filterList(String newText) {
+        // Initialize the filteredList
         List<item> filteredList = new ArrayList<>();
+        // Loop through the items list
         for (item item : items) {
+            // Check if the item's name contains the newText
             if (item.getParkingName().toLowerCase().contains(newText.toLowerCase())) {
+                // Add the item to the filteredList
                 filteredList.add(item);
             }
         }
 
+        // Set the filteredList to the adapter
         if (filteredList.isEmpty()) {
+            // If the filteredList is empty, show a message
             recyclerView.setVisibility(View.GONE);
             noParking.setVisibility(View.VISIBLE);
         } else {
+            // If the filteredList is not empty, update the adapter
             recycleViewAdapter adapter = (recycleViewAdapter) recyclerView.getAdapter();
             adapter.setFilteredList(filteredList);
             recyclerView.setVisibility(View.VISIBLE);
