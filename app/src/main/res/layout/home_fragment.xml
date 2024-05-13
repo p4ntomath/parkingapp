@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home_fragment">
 
     <fragment
@@ -13,4 +14,68 @@
         />
 
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/bottomSheet"
+        android:layout_width="match_parent"
+        android:elevation="10dp"
+        android:layout_height="500dp"
+        app:layout_behavior ="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:background="@drawable/menu_background"
+        android:backgroundTint="@color/white">
+
+        <ImageButton
+            android:id="@+id/sheetBar"
+            android:layout_width="90dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/removebar"
+            android:scaleType="centerCrop"
+            android:background="@null"
+            android:layout_gravity="center|top" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center|top"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_logout"
+                android:queryHint="Search Parking"
+                android:focusable="false"
+                app:searchHintIcon="@null"
+                android:iconifiedByDefault="false"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchView"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical"
+                android:id="@+id/recyclerView"/>
+
+            <TextView
+                android:id="@+id/noParking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/searchView"
+                android:gravity="center"
+                android:text="No Parking Found"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:textSize="15dp" />
+
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
