@@ -1,77 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
-    android:elevation="5dp">
+    android:elevation="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal">
 
-    <RelativeLayout
-        android:id="@+id/parkingSlots"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp">
+        android:layout_alignParentStart="true">
 
-
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/slot1"
             android:layout_width="160dp"
-            android:layout_height="80dp"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginVertical="10dp">
+            android:layout_height="70dp"
+            android:background="@drawable/bookingdrawable2"
+            app:backgroundTint="@null"
+            android:backgroundTint="@color/tertiary"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_margin="20dp"
+            android:src="@null"
+            >
+        </ImageButton>
 
-            <ImageButton
-                android:id="@+id/slot1"
-                android:layout_width="160dp"
-                android:layout_height="70dp"
-                android:scaleType="centerCrop"
-                android:backgroundTint="@color/tertiary"
-                android:src="@null"
-                android:background="@drawable/bookingdrawable2"
-                android:layout_gravity="center"
+        <View
 
-                />
-            <View
-                android:layout_width="140dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bookingdashedline">
+            android:layout_width="140dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bookingdashedline">
 
-            </View>
-        </LinearLayout>
+        </View>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/slot1Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:text="A10"
+            android:layout_margin="20dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            >
+
+        </TextView>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true">
+
+        <ImageButton
+            android:id="@+id/slot2"
             android:layout_width="160dp"
-            android:layout_height="80dp"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="15dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginVertical="10dp">
+            android:layout_height="70dp"
+            android:layout_gravity="center|left"
+            android:layout_margin="20dp"
+            android:background="@drawable/bookingdrawable2"
+            android:backgroundTint="@color/tertiary"
+            android:scaleType="centerCrop"
+            android:src="@null"
+            app:backgroundTint="@null">
 
-            <ImageButton
-                android:id="@+id/slot2"
-                android:layout_width="160dp"
-                android:layout_height="70dp"
-                android:scaleType="centerCrop"
-                android:src="@null"
-                android:backgroundTint="@color/tertiary"
-                android:background="@drawable/bookingdrawable2"
-                android:layout_gravity="center"
+        </ImageButton>
 
-                />
+        <View
 
-            <View
-                android:layout_width="140dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/bookingdashedline">
+            android:layout_width="140dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bookingdashedline">
 
-            </View>
-        </LinearLayout>
-    </RelativeLayout>
+        </View>
 
-</androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/slot2Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:text="A10"
+            android:textSize="20dp"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Barnato Parking"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginVertical="20dp"/>
+            android:layout_marginVertical="10dp"/>
 
     </LinearLayout>
 

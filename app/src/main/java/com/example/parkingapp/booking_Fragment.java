@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -73,21 +74,29 @@ public class booking_Fragment extends Fragment implements selectListner {
     }
 
     @Override
-    public void onItemClick(ImageButton button, int slot, int position) {
+    public void onItemClick(ImageButton button, TextView label, int slot, int position) {
+
+        int pattern = (position + 1)*2;
         if(slot==1){
             if (button.getDrawable() == null) {
                 button.setImageResource(R.drawable.cartopviewleft);
+                label.setText("");
                 adapter.setClickedPosition(position,slot,true);
             }else{
                 button.setImageDrawable(null);
+                String slotLabel = "A" + String.valueOf(pattern-1);
+                label.setText(slotLabel);
                 adapter.setClickedPosition(position,slot,false);
             }
         }
         else{
             if (button.getDrawable() == null) {
+                label.setText("");
                 adapter.setClickedPosition(position,slot,true);
                 button.setImageResource(R.drawable.cartopviewright);
             }else{
+                String slotLabel = "A" + String.valueOf(pattern);
+                label.setText(slotLabel);
                 adapter.setClickedPosition(position,slot,false);
                 button.setImageDrawable(null);
             }

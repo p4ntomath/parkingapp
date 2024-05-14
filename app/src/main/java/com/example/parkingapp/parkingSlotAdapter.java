@@ -48,25 +48,32 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
 
         holder.slot1.setImageResource(0);
         holder.slot2.setImageResource(0);
+        int pattern = (position + 1)*2;
+        String slot1Label = "A" + String.valueOf(pattern-1);
+        String slot2Label =  "A" + String.valueOf(pattern);
+        holder.slot1Label.setText(slot1Label);
+        holder.slot2Label.setText(slot2Label);
 
         if (selectedPositions.get(position).first) {
             holder.slot1.setImageResource(item.getSlotImage1());
+            holder.slot1Label.setText("");
         }
         if (selectedPositions.get(position).second) {
             holder.slot2.setImageResource(item.getSlotImage2());
+            holder.slot2Label.setText("");
         }
 
         //check if position is odd
         holder.slot1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listner.onItemClick(holder.slot1,1,position);
+                listner.onItemClick(holder.slot1,holder.slot1Label,1,position);
             }
         });
         holder.slot2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listner.onItemClick(holder.slot2,2,position);
+                listner.onItemClick(holder.slot2,holder.slot2Label,2,position);
             }
         });
     }
