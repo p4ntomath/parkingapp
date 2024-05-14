@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".booking_Fragment"
-    android:layout_marginTop="40dp"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
@@ -27,7 +27,8 @@
     <RelativeLayout
         android:id="@+id/headingSlot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp">
 
         <ImageButton
             android:id="@+id/leftButton"
@@ -126,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginVertical="10dp"
             >
 
             <ImageButton
