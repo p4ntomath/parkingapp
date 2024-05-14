@@ -72,8 +72,8 @@ public class booking_Fragment extends Fragment implements selectListner {
     }
 
     @Override
-    public void onItemClick(ImageButton button, int position) {
-        if(position==1){
+    public void onItemClick(ImageButton button, int slot) {
+        if(slot==1){
             if (button.getDrawable() == null) {
                 button.setImageResource(R.drawable.cartopviewleft);
             }else{
