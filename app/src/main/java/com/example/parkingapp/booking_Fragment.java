@@ -55,36 +55,40 @@ public class booking_Fragment extends Fragment implements selectListner {
         }
     }
 
-
+    parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
+    parkingSlotAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
+        adapter = new parkingSlotAdapter(getContext(), item,10,this);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.parkingSlotVertical);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new parkingSlotAdapter(getContext(), item,10,this));
+        recyclerView.setAdapter(adapter);
 
 
         return view;
     }
 
     @Override
-    public void onItemClick(ImageButton button, int slot) {
+    public void onItemClick(ImageButton button, int slot, int position) {
         if(slot==1){
             if (button.getDrawable() == null) {
                 button.setImageResource(R.drawable.cartopviewleft);
+                adapter.setClickedPosition(position,slot,true);
             }else{
                 button.setImageDrawable(null);
+                adapter.setClickedPosition(position,slot,false);
             }
         }
         else{
-
             if (button.getDrawable() == null) {
+                adapter.setClickedPosition(position,slot,true);
                 button.setImageResource(R.drawable.cartopviewright);
             }else{
+                adapter.setClickedPosition(position,slot,false);
                 button.setImageDrawable(null);
             }
 
