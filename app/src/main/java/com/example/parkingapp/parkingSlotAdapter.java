@@ -38,6 +38,7 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull parkingViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
         //check if position is odd
         holder.slot1.setOnClickListener(new View.OnClickListener() {
             @Override
