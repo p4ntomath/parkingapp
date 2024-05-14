@@ -60,15 +60,12 @@ public class booking_Fragment extends Fragment implements selectListner {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        List<parkingSlotItem> parkingSlots = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            parkingSlots.add(new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright));
-        }
+        parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.parkingSlotVertical);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new parkingSlotAdapter(getContext(), parkingSlots,this));
+        recyclerView.setAdapter(new parkingSlotAdapter(getContext(), item,10,this));
 
 
         return view;

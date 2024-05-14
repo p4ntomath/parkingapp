@@ -15,13 +15,15 @@ import java.util.List;
 public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> {
 
     Context context;
-    List<parkingSlotItem> parkingRows;
     LayoutInflater layoutInflater;
     private selectListner listner;
+    parkingSlotItem item;
+    int itemCount;
 
-    public parkingSlotAdapter(Context context, List<parkingSlotItem> parkingRows,selectListner listner) {
+    public parkingSlotAdapter(Context context,parkingSlotItem item,int itemCount,selectListner listner) {
         this.context = context;
-        this.parkingRows = parkingRows;
+        this.item = item;
+        this.itemCount = itemCount;
         layoutInflater = LayoutInflater.from(context);
         this.listner=listner;
     }
@@ -53,9 +55,6 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
 
     @Override
     public int getItemCount() {
-        if (parkingRows != null) {
-            return parkingRows.size();
-        }
-        return 0;
+        return itemCount;
     }
 }
