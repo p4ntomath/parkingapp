@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/mainLayout">
+
+    <RelativeLayout
+        android:id="@+id/parkingSlots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp">
+
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginVertical="10dp">
+
+            <ImageButton
+                android:id="@+id/slot1"
+                android:layout_width="160dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                android:backgroundTint="@color/tertiary"
+                android:src="@null"
+                android:background="@drawable/bookingdrawable2"
+                android:layout_gravity="center"
+
+                />
+            <View
+                android:layout_width="140dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bookingdashedline">
+
+            </View>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="10dp">
+
+            <ImageButton
+                android:id="@+id/slot2"
+                android:layout_width="160dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                android:src="@null"
+                android:backgroundTint="@color/tertiary"
+                android:background="@drawable/bookingdrawable2"
+                android:layout_gravity="center"
+
+                />
+
+            <View
+                android:layout_width="140dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bookingdashedline">
+
+            </View>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
