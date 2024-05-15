@@ -51,6 +51,7 @@ public class booking_Fragment extends Fragment implements selectListner {
     public void onItemClick(ImageButton button, TextView label, int slot, int position) {
 
         int pattern = (position + 1)*2;
+
         if(slot==1){
             if (button.getDrawable() == null) {
                 button.setImageResource(R.drawable.cartopviewleft);
