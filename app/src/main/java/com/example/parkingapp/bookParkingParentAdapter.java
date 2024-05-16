@@ -1,6 +1,7 @@
 package com.example.parkingapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingParentAdapter.ViewHolder> {
+public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingParentAdapter.ViewHolder> implements selectListner {
 
     public bookParkingParentAdapter(Context context, List<horizontalParkingModel> item) {
         this.context = context;
@@ -23,7 +24,8 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
 
     Context context;
     List<horizontalParkingModel> item;
-
+    bookParkingChildAdapter adapter;
+    char block;
 
 
     @NonNull
@@ -40,14 +42,15 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         holder.parkingBlock.setText(item.get(position).getParkingBlock());
         holder.availableSpots.setText(item.get(position).getAvailableSpots());
         String Block = item.get(position).getParkingBlock();
-        char lastChar = Block.charAt(Block.length() - 1);
-        bookParkingChildAdapter adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,lastChar);
+        block = Block.charAt(Block.length() - 1);
+        adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,block,this);
         holder.chilRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         holder.chilRecyclerView.setAdapter(adapter);
 
         holder.leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("onClick", "Left arrow clicked");
                 Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
 
             }
@@ -55,6 +58,7 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         holder.rightArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("onClick", "Right arrow clicked");
                 Toast.makeText(context,"right",Toast.LENGTH_SHORT).show();
             }
         });
@@ -69,6 +73,38 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
     public int getItemCount() {
         return item.size();
     }
+
+    @Override
+    public void onItemClick(ImageButton button, TextView label, int slot, int position,char blockParam) {
+        int pattern = (position + 1)*2;
+
+        if(slot==1){
+            if (button.getDrawable() == null) {
+                button.setImageResource(R.drawable.cartopviewleft);
+                label.setText("");
+                adapter.setClickedPosition(position,slot,true);
+            }else{
+                button.setImageDrawable(null);
+                String slotLabel = blockParam + String.valueOf(pattern-1);
+                label.setText(slotLabel);
+                adapter.setClickedPosition(position,slot,false);
+            }
+        }
+        else{
+            if (button.getDrawable() == null) {
+                label.setText("");
+                adapter.setClickedPosition(position,slot,true);
+                button.setImageResource(R.drawable.cartopviewright);
+            }else{
+                String slotLabel = blockParam + String.valueOf(pattern);
+                label.setText(slotLabel);
+                adapter.setClickedPosition(position,slot,false);
+                button.setImageDrawable(null);
+            }
+
+        }
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

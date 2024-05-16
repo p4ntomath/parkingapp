@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,8 @@ List<horizontalParkingModel> parent = new ArrayList<>();
         parent.add(new horizontalParkingModel("Hall29","Block E","10",item));
         bookParkingParentAdapter parentAdapter = new bookParkingParentAdapter(getContext(),parent);
         recyclerView1.setAdapter(parentAdapter);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView1);
         parentAdapter.notifyDataSetChanged();
 
 

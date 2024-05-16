@@ -33,6 +33,7 @@
 
         <ImageButton
             android:id="@+id/leftButton"
+            android:clickable="true"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/arrowleft"
@@ -84,6 +85,7 @@
         </LinearLayout>
 
         <ImageButton
+            android:clickable="true"
             android:id="@+id/rightButton"
             android:layout_width="60dp"
             android:layout_height="60dp"

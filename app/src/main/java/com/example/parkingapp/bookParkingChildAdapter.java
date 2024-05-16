@@ -1,12 +1,12 @@
 package com.example.parkingapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,15 +18,23 @@ import java.util.List;
 public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChildAdapter.ViewHolder> {
 
     Context context;
+    private selectListner listner;
     parkingSlotItem item;
     int itemCount;
     char block;
+    public List<Pair<Boolean, Boolean>> selectedPositions = new ArrayList<>();
+    Pair<Integer,Integer> prevSelected = null;//<Position,Side>
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
+        this.listner = listner;
+
         this.block = block;
+        for (int i = 0; i < itemCount; i++) {
+            selectedPositions.add(new Pair<>(false, false));
+        }
     }
     @NonNull
     @Override
@@ -37,18 +45,88 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
 
 
     @Override
-    public void onBindViewHolder(@NonNull bookParkingChildAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull bookParkingChildAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.slot1.setImageResource(0);
+        holder.slot2.setImageResource(0);
         int pattern = (position + 1)*2;
         String slot1Label = block + String.valueOf(pattern-1);
         String slot2Label =  block + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
+
+        if (selectedPositions.get(position).first) {
+            holder.slot1.setImageResource(item.getSlotImage1());
+            holder.slot1Label.setText("");
+        }
+        if (selectedPositions.get(position).second) {
+            holder.slot2.setImageResource(item.getSlotImage2());
+            holder.slot2Label.setText("");
+        }
+
+        //check if position is odd
+
+        holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
+        holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
+        holder.slot1Label.setOnClickListener(v -> leftSlotOnClick(position,holder));
+        holder.slot2Label.setOnClickListener(v -> rightSlotOnClick(position,holder));
     }
 
     @Override
     public int getItemCount() {
         return itemCount;
     }
+
+    public void setClickedPosition(int position,int side,boolean state) {
+        if (side==1){
+            selectedPositions.set(position, new Pair<>(state, selectedPositions.get(position).second));
+        }else{
+            selectedPositions.set(position, new Pair<>(selectedPositions.get(position).first, state));
+        }
+    }
+
+
+    public void rightSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
+        if (prevSelected!=null){
+
+            if (prevSelected.first == position && prevSelected.second == 2){
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = null;
+                notifyDataSetChanged();
+            }else{
+                setClickedPosition(prevSelected.first,prevSelected.second,false);
+                prevSelected = new Pair<>(position,2);
+                notifyDataSetChanged();
+            }
+
+        }
+        else if(prevSelected == null){
+            prevSelected = new Pair<>(position,2);
+        }
+        listner.onItemClick(holder.slot2,holder.slot2Label,2,position,block);
+    }
+    public void leftSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
+        if (prevSelected!=null){
+
+            if (prevSelected.first == position && prevSelected.second == 1){
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = null;
+                notifyDataSetChanged();
+            }else{
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = new Pair<>(position,1);
+                notifyDataSetChanged();
+            }
+
+        }
+        else if(prevSelected == null){
+            prevSelected = new Pair<>(position,1);
+        }
+        listner.onItemClick(holder.slot1,holder.slot1Label,1,position,block);
+    }
+
+
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
