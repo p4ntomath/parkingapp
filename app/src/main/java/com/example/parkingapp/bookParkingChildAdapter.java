@@ -20,11 +20,13 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     Context context;
     parkingSlotItem item;
     int itemCount;
+    char block;
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
+        this.block = block;
     }
     @NonNull
     @Override
@@ -37,8 +39,8 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     @Override
     public void onBindViewHolder(@NonNull bookParkingChildAdapter.ViewHolder holder, int position) {
         int pattern = (position + 1)*2;
-        String slot1Label = "A" + String.valueOf(pattern-1);
-        String slot2Label =  "A" + String.valueOf(pattern);
+        String slot1Label = block + String.valueOf(pattern-1);
+        String slot2Label =  block + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
     }

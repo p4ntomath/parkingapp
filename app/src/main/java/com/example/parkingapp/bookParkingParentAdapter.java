@@ -39,6 +39,12 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         holder.parkingName.setText(item.get(position).getParkingName());
         holder.parkingBlock.setText(item.get(position).getParkingBlock());
         holder.availableSpots.setText(item.get(position).getAvailableSpots());
+        String Block = item.get(position).getParkingBlock();
+        char lastChar = Block.charAt(Block.length() - 1);
+        bookParkingChildAdapter adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,lastChar);
+        holder.chilRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        holder.chilRecyclerView.setAdapter(adapter);
+
         holder.leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,11 +58,6 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
                 Toast.makeText(context,"right",Toast.LENGTH_SHORT).show();
             }
         });
-
-        bookParkingChildAdapter adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10);
-        holder.chilRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        holder.chilRecyclerView.setAdapter(adapter);
-
 
 
 
