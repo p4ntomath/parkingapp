@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +23,7 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
 
     Context context;
     List<horizontalParkingModel> item;
-    List<parkingSlotItem> childItem;
+
 
 
     @NonNull
@@ -38,9 +39,28 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         holder.parkingName.setText(item.get(position).getParkingName());
         holder.parkingBlock.setText(item.get(position).getParkingBlock());
         holder.availableSpots.setText(item.get(position).getAvailableSpots());
+        holder.leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        holder.rightArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"right",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         bookParkingChildAdapter adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10);
         holder.chilRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         holder.chilRecyclerView.setAdapter(adapter);
+
+
+
+
+
         adapter.notifyDataSetChanged();
     }
 
