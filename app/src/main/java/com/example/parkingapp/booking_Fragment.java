@@ -20,62 +20,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class booking_Fragment extends Fragment implements selectListner {
+public class booking_Fragment extends Fragment {
 
 
 
+RecyclerView recyclerView;
+List<horizontalParkingModel> parent = new ArrayList<>();
 
 
 
-
-
-
-    parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
-    parkingSlotAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        adapter = new parkingSlotAdapter(getContext(), item,10,this);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.parkingSlotVertical);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
+        RecyclerView recyclerView1 = view.findViewById(R.id.parentRecyclerView);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        parent.add(new horizontalParkingModel("Hall29","Block A","10",item));
+        parent.add(new horizontalParkingModel("Hall29","Block B","12",item));
+        parent.add(new horizontalParkingModel("Hall29","Block C","22",item));
+        parent.add(new horizontalParkingModel("Hall29","Block D","12",item));
+        parent.add(new horizontalParkingModel("Hall29","Block E","10",item));
+        bookParkingParentAdapter parentAdapter = new bookParkingParentAdapter(getContext(),parent);
+        recyclerView1.setAdapter(parentAdapter);
+        parentAdapter.notifyDataSetChanged();
+
+
 
 
         return view;
     }
 
-    @Override
-    public void onItemClick(ImageButton button, TextView label, int slot, int position) {
 
-        int pattern = (position + 1)*2;
-
-        if(slot==1){
-            if (button.getDrawable() == null) {
-                button.setImageResource(R.drawable.cartopviewleft);
-                label.setText("");
-                adapter.setClickedPosition(position,slot,true);
-            }else{
-                button.setImageDrawable(null);
-                String slotLabel = "A" + String.valueOf(pattern-1);
-                label.setText(slotLabel);
-                adapter.setClickedPosition(position,slot,false);
-            }
-        }
-        else{
-            if (button.getDrawable() == null) {
-                label.setText("");
-                adapter.setClickedPosition(position,slot,true);
-                button.setImageResource(R.drawable.cartopviewright);
-            }else{
-                String slotLabel = "A" + String.valueOf(pattern);
-                label.setText(slotLabel);
-                adapter.setClickedPosition(position,slot,false);
-                button.setImageDrawable(null);
-            }
-
-        }
-    }
 }
