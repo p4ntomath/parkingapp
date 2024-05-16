@@ -7,7 +7,7 @@
     android:background="@drawable/header_background"
     tools:context=".navigationDrawer"
     android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center|left">
 
 
 
@@ -15,6 +15,7 @@
         android:layout_marginRight="20dp"
         android:layout_gravity="center"
         android:id="@+id/cardView"
+        android:layout_marginLeft="50dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/primary"

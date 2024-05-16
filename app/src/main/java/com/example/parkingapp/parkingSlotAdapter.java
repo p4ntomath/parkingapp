@@ -56,15 +56,18 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
     public void onBindViewHolder(@NonNull parkingViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
 
-
+        //set image to null,selected will be added later
         holder.slot1.setImageResource(0);
         holder.slot2.setImageResource(0);
+
+        //set slot labels
         int pattern = (position + 1)*2;
         String slot1Label = "A" + String.valueOf(pattern-1);
         String slot2Label =  "A" + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
 
+        //set selected state,to avoid multiple click
         if (selectedPositions.get(position).first) {
             holder.slot1.setImageResource(item.getSlotImage1());
             holder.slot1Label.setText("");
@@ -74,54 +77,11 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
             holder.slot2Label.setText("");
         }
 
-        //check if position is odd
-
-        holder.slot1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (prevSelected!=null){
-
-                    if (prevSelected.first == position && prevSelected.second == 1){
-                        setClickedPosition(prevSelected.first, prevSelected.second, false);
-                        prevSelected = null;
-                        notifyDataSetChanged();
-                    }else{
-                        setClickedPosition(prevSelected.first, prevSelected.second, false);
-                        prevSelected = new Pair<>(position,1);
-                        notifyDataSetChanged();
-                    }
-
-                }
-                else if(prevSelected == null){
-                    prevSelected = new Pair<>(position,1);
-                }
-                listner.onItemClick(holder.slot1,holder.slot1Label,1,position);
-
-            }
-        });
-        holder.slot2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (prevSelected!=null){
-
-                    if (prevSelected.first == position && prevSelected.second == 2){
-                        setClickedPosition(prevSelected.first, prevSelected.second, false);
-                        prevSelected = null;
-                        notifyDataSetChanged();
-                    }else{
-                        setClickedPosition(prevSelected.first,prevSelected.second,false);
-                        prevSelected = new Pair<>(position,2);
-                        notifyDataSetChanged();
-                    }
-
-                }
-                else if(prevSelected == null){
-                    prevSelected = new Pair<>(position,2);
-                }
-                listner.onItemClick(holder.slot2,holder.slot2Label,2,position);
-            }
-        });
+        //set click listeners
+        holder.slot1Label.setOnClickListener(v -> leftParkingOnClick(position,holder));
+        holder.slot2Label.setOnClickListener(v -> rightParkingOnClick(position,holder));
+        holder.slot1.setOnClickListener(v -> leftParkingOnClick(position,holder));
+        holder.slot2.setOnClickListener(v -> rightParkingOnClick(position,holder));
     }
 
     @Override
@@ -135,6 +95,48 @@ public class parkingSlotAdapter extends RecyclerView.Adapter<parkingViewHolder> 
     }else{
         selectedPositions.set(position, new Pair<>(selectedPositions.get(position).first, state));
     }
+    }
+
+    public void rightParkingOnClick(int position,parkingViewHolder holder){
+        if (prevSelected!=null){
+
+            if (prevSelected.first == position && prevSelected.second == 2){
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = null;
+                notifyDataSetChanged();
+            }else{
+                setClickedPosition(prevSelected.first,prevSelected.second,false);
+                prevSelected = new Pair<>(position,2);
+                notifyDataSetChanged();
+            }
+
+        }
+        else if(prevSelected == null){
+            prevSelected = new Pair<>(position,2);
+        }
+        listner.onItemClick(holder.slot2,holder.slot2Label,2,position);
+
+    }
+    public void leftParkingOnClick(int position,parkingViewHolder holder){
+
+        if (prevSelected!=null){
+
+            if (prevSelected.first == position && prevSelected.second == 1){
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = null;
+                notifyDataSetChanged();
+            }else{
+                setClickedPosition(prevSelected.first, prevSelected.second, false);
+                prevSelected = new Pair<>(position,1);
+                notifyDataSetChanged();
+            }
+
+        }
+        else if(prevSelected == null){
+            prevSelected = new Pair<>(position,1);
+        }
+        listner.onItemClick(holder.slot1,holder.slot1Label,1,position);
+
     }
 
 
