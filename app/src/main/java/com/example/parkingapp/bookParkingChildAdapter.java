@@ -23,13 +23,15 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     int itemCount;
     char block;
     public List<Pair<Boolean, Boolean>> selectedPositions = new ArrayList<>();
+    int parentPosition;
     Pair<Integer,Integer> prevSelected = null;//<Position,Side>
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
         this.listner = listner;
+        this.parentPosition = parentPosition;
 
         this.block = block;
         for (int i = 0; i < itemCount; i++) {
@@ -62,8 +64,6 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
             holder.slot2.setImageResource(item.getSlotImage2());
             holder.slot2Label.setText("");
         }
-
-        //check if position is odd
 
         holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
         holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
