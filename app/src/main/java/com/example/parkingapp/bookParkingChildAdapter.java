@@ -22,21 +22,19 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     parkingSlotItem item;
     int itemCount;
     char block;
-    public List<Pair<Boolean, Boolean>> selectedPositions = new ArrayList<>();
     int parentPosition;
-    Pair<Integer,Integer> prevSelected = null;//<Position,Side>
+    public List<Pair<Boolean,Boolean>> selectedSlots = new ArrayList<>(); //slot1,slot2
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition,List<Pair<Boolean,Boolean>> selectedSlots) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
         this.listner = listner;
         this.parentPosition = parentPosition;
-
         this.block = block;
-        for (int i = 0; i < itemCount; i++) {
-            selectedPositions.add(new Pair<>(false, false));
-        }
+        this.selectedSlots = selectedSlots;
+
+
     }
     @NonNull
     @Override
@@ -56,14 +54,15 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
 
-        if (selectedPositions.get(position).first) {
+        if(selectedSlots.get(position).first){
             holder.slot1.setImageResource(item.getSlotImage1());
             holder.slot1Label.setText("");
         }
-        if (selectedPositions.get(position).second) {
+        if(selectedSlots.get(position).second){
             holder.slot2.setImageResource(item.getSlotImage2());
             holder.slot2Label.setText("");
         }
+
 
         holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
         holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
@@ -76,51 +75,13 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
         return itemCount;
     }
 
-    public void setClickedPosition(int position,int side,boolean state) {
-        if (side==1){
-            selectedPositions.set(position, new Pair<>(state, selectedPositions.get(position).second));
-        }else{
-            selectedPositions.set(position, new Pair<>(selectedPositions.get(position).first, state));
-        }
-    }
+
 
 
     public void rightSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        if (prevSelected!=null){
-
-            if (prevSelected.first == position && prevSelected.second == 2){
-                setClickedPosition(prevSelected.first, prevSelected.second, false);
-                prevSelected = null;
-                notifyDataSetChanged();
-            }else{
-                setClickedPosition(prevSelected.first,prevSelected.second,false);
-                prevSelected = new Pair<>(position,2);
-                notifyDataSetChanged();
-            }
-
-        }
-        else if(prevSelected == null){
-            prevSelected = new Pair<>(position,2);
-        }
         listner.onItemClick(holder.slot2,holder.slot2Label,2,position,block);
     }
     public void leftSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        if (prevSelected!=null){
-
-            if (prevSelected.first == position && prevSelected.second == 1){
-                setClickedPosition(prevSelected.first, prevSelected.second, false);
-                prevSelected = null;
-                notifyDataSetChanged();
-            }else{
-                setClickedPosition(prevSelected.first, prevSelected.second, false);
-                prevSelected = new Pair<>(position,1);
-                notifyDataSetChanged();
-            }
-
-        }
-        else if(prevSelected == null){
-            prevSelected = new Pair<>(position,1);
-        }
         listner.onItemClick(holder.slot1,holder.slot1Label,1,position,block);
     }
 
@@ -128,7 +89,15 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+
+
+
+
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageButton slot1;
         public ImageButton slot2;

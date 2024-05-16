@@ -2,6 +2,7 @@ package com.example.parkingapp;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +14,32 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingParentAdapter.ViewHolder> implements selectListner {
-
-    public bookParkingParentAdapter(Context context, List<horizontalParkingModel> item) {
-        this.context = context;
-        this.item = item;
-    }
-
     Context context;
     List<horizontalParkingModel> item;
     bookParkingChildAdapter adapter;
     char block;
+    List<List<Pair<Boolean, Boolean>>> markSelected = new ArrayList<List<Pair<Boolean, Boolean>>>();
+
+    List<Pair<Boolean, Boolean>> selectedSlots = new ArrayList<>();
+    public bookParkingParentAdapter(Context context, List<horizontalParkingModel> item,List<List<Pair<Boolean, Boolean>>> markSelected) {
+        this.context = context;
+        this.item = item;
+        this.markSelected = markSelected;
+        selectedSlots = new ArrayList<>();
+        for(int i = 0;i < item.size(); i++){
+            List<Pair<Boolean, Boolean>> temp = new ArrayList<>();
+            for(int j = 0; j < 10; j++) {
+                temp.add(new Pair<>(false, false));
+            }
+            markSelected.add(temp);
+        }
+    }
+
+
 
 
     @NonNull
@@ -43,14 +57,10 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         holder.availableSpots.setText(item.get(position).getAvailableSpots());
         String Block = item.get(position).getParkingBlock();
         block = Block.charAt(Block.length() - 1);
-        adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,block,this,position);
+        selectedSlots  = markSelected.get(position);
+        adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,block,this,position,selectedSlots);
         holder.chilRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         holder.chilRecyclerView.setAdapter(adapter);
-
-
-
-
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -65,29 +75,40 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         if(slot==1){
             if (button.getDrawable() == null) {
                 button.setImageResource(R.drawable.cartopviewleft);
+                setSlotSelected(position,slot,true);
                 label.setText("");
-                adapter.setClickedPosition(position,slot,true);
             }else{
                 button.setImageDrawable(null);
                 String slotLabel = blockParam + String.valueOf(pattern-1);
+                setSlotSelected(position,slot,false);
                 label.setText(slotLabel);
-                adapter.setClickedPosition(position,slot,false);
             }
         }
         else{
             if (button.getDrawable() == null) {
                 label.setText("");
-                adapter.setClickedPosition(position,slot,true);
                 button.setImageResource(R.drawable.cartopviewright);
+                setSlotSelected(position,slot,true);
             }else{
                 String slotLabel = blockParam + String.valueOf(pattern);
+                setSlotSelected(position,slot,false);
                 label.setText(slotLabel);
-                adapter.setClickedPosition(position,slot,false);
                 button.setImageDrawable(null);
             }
 
         }
     }
+    public void setSlotSelected(int position,int slot,Boolean state){
+        if(slot == 1){
+            selectedSlots.set(position,new Pair<>(state,selectedSlots.get(position).second));
+        }else{
+            selectedSlots.set(position,new Pair<>(selectedSlots.get(position).first,state));
+        }
+        notifyDataSetChanged();
+    }
+
+
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

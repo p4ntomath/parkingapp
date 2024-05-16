@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,8 @@ List<horizontalParkingModel> parent = new ArrayList<>();
         parent.add(new horizontalParkingModel("Hall29","Block C","22",item));
         parent.add(new horizontalParkingModel("Hall29","Block D","12",item));
         parent.add(new horizontalParkingModel("Hall29","Block E","10",item));
-        bookParkingParentAdapter parentAdapter = new bookParkingParentAdapter(getContext(),parent);
+        List<List<Pair<Boolean, Boolean>>> markSelected = new ArrayList<List<Pair<Boolean, Boolean>>>();
+        bookParkingParentAdapter parentAdapter = new bookParkingParentAdapter(getContext(),parent,markSelected);
         recyclerView1.setAdapter(parentAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView1);
