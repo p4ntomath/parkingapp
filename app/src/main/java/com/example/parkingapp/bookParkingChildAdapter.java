@@ -27,7 +27,7 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     char block;
     int parentPosition;
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,selectListner listner,int parentPosition,char block) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
@@ -54,7 +54,6 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
         String slot2Label =  block + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
-        Log.d("TAG", "onBindViewHolder: "+ slot.toString());
 
             if(slot.getFirst() == parentPosition && slot.getSecond() == position && slot.getThird() == 1){
                 holder.slot1.setImageResource(R.drawable.cartopviewleft);
@@ -64,9 +63,6 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
             holder.slot2.setImageResource(R.drawable.cartopviewright);
             holder.slot2Label.setText("");
         }
-
-
-
 
         holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
         holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
@@ -84,19 +80,10 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
 
     public void rightSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
         listner.onItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position,block);
-        notifyDataSetChanged();
     }
     public void leftSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
         listner.onItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position,block);
-        notifyDataSetChanged();
     }
-
-
-
-
-
-
-
 
 
 

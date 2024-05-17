@@ -2,9 +2,11 @@ package com.example.parkingapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -19,21 +21,23 @@ import java.util.List;
 
 import kotlin.Triple;
 
+
 public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingParentAdapter.ViewHolder> {
     Context context;
-    List<horizontalParkingModel> item;
-    bookParkingChildAdapter adapter;
-    char block;
-    selectListner listner;
-    int parentPosition;
 
-    String parkingName;
-  Triple <Integer,Integer,Integer> selectedSlot;
-    public bookParkingParentAdapter(Context context, List<horizontalParkingModel> item,selectListner listner,String parkingName) {
+ RecyclerView recyclerView;
+    bookParkingChildAdapter adapter;
+
+    selectListner listner;
+
+    parkingSlotItem item;
+    int itemCount;
+
+    public bookParkingParentAdapter(Context context,selectListner listner,int itemCount,parkingSlotItem item) {
         this.context = context;
-        this.item = item;
         this.listner = listner;
-        this.parkingName = parkingName;
+        this.itemCount = itemCount;
+        this.item = item;
     }
 
 
@@ -49,21 +53,32 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
 
     @Override
     public void onBindViewHolder(@NonNull bookParkingParentAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.parkingName.setText(parkingName);
-        holder.parkingBlock.setText(item.get(position).getParkingBlock());
-        holder.availableSpots.setText(item.get(position).getAvailableSpots());
-        String Block = item.get(position).getParkingBlock();
-        block = Block.charAt(Block.length() - 1);
-        adapter = new bookParkingChildAdapter(context,item.get(position).getChildItem(),10,block,listner,position);
-        holder.childRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        holder.childRecyclerView.setAdapter(adapter);
 
+        char capital = 'A';
+        int asciiValue = (int) capital;
+        asciiValue += position;
+        char newChar = (char) asciiValue;
+        adapter = new bookParkingChildAdapter(context,item,10,listner,position,newChar);
+        recyclerView = holder.childRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        holder.childRecyclerView.setAdapter(adapter);
     }
+
 
     @Override
     public int getItemCount() {
-        return item.size();
+        return itemCount;
     }
+
+
+
+
+
+    public void notifyChildDataChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
+
 
 
 
@@ -72,21 +87,14 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         RecyclerView childRecyclerView;
-        TextView parkingName;
-        TextView parkingBlock;
-        TextView availableSpots;
-        ImageButton rightArrow, leftArrow;
+
 
 
         public ViewHolder(@NonNull View itemView) {
 
             super(itemView);
             childRecyclerView = itemView.findViewById(R.id.parkingSlotVertical);
-            parkingName = itemView.findViewById(R.id.parkingNameBooking);
-            parkingBlock = itemView.findViewById(R.id.parkingBlock);
-            availableSpots = itemView.findViewById(R.id.availableSpots);
-            rightArrow = itemView.findViewById(R.id.rightButton);
-            leftArrow = itemView.findViewById(R.id.leftButton);
+
 
         }
     }
