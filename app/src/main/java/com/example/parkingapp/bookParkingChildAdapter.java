@@ -2,6 +2,7 @@ package com.example.parkingapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Triple;
+
 public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChildAdapter.ViewHolder> {
 
     Context context;
@@ -23,18 +26,14 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     int itemCount;
     char block;
     int parentPosition;
-    public List<Pair<Boolean,Boolean>> selectedSlots = new ArrayList<>(); //slot1,slot2
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition,List<Pair<Boolean,Boolean>> selectedSlots) {
+    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,char block,selectListner listner,int parentPosition) {
         this.context = context;
         this.item = item;
         this.itemCount = itemCount;
         this.listner = listner;
         this.parentPosition = parentPosition;
         this.block = block;
-        this.selectedSlots = selectedSlots;
-
-
     }
     @NonNull
     @Override
@@ -48,20 +47,25 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
     public void onBindViewHolder(@NonNull bookParkingChildAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.slot1.setImageResource(0);
         holder.slot2.setImageResource(0);
+
+        Triple<Integer,Integer,Integer> slot = listner.getChoice();
         int pattern = (position + 1)*2;
         String slot1Label = block + String.valueOf(pattern-1);
         String slot2Label =  block + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
+        Log.d("TAG", "onBindViewHolder: "+ slot.toString());
 
-        if(selectedSlots.get(position).first){
-            holder.slot1.setImageResource(item.getSlotImage1());
-            holder.slot1Label.setText("");
-        }
-        if(selectedSlots.get(position).second){
-            holder.slot2.setImageResource(item.getSlotImage2());
+            if(slot.getFirst() == parentPosition && slot.getSecond() == position && slot.getThird() == 1){
+                holder.slot1.setImageResource(R.drawable.cartopviewleft);
+                holder.slot1Label.setText("");
+            }
+            if(slot.getFirst() == parentPosition && slot.getSecond() == position && slot.getThird() == 2){
+            holder.slot2.setImageResource(R.drawable.cartopviewright);
             holder.slot2Label.setText("");
         }
+
+
 
 
         holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
@@ -79,10 +83,12 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
 
 
     public void rightSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        listner.onItemClick(holder.slot2,holder.slot2Label,2,position,block);
+        listner.onItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position,block);
+        notifyDataSetChanged();
     }
     public void leftSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        listner.onItemClick(holder.slot1,holder.slot1Label,1,position,block);
+        listner.onItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position,block);
+        notifyDataSetChanged();
     }
 
 

@@ -22,14 +22,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class booking_Fragment extends Fragment {
-
+import kotlin.Triple;
 
 
-RecyclerView recyclerView;
+public class booking_Fragment extends Fragment implements selectListner {
+
+    bookParkingParentAdapter parentAdapter;
+    RecyclerView recyclerView;
 List<horizontalParkingModel> parent = new ArrayList<>();
-
+Triple<Integer,Integer,Integer> selected = new Triple<>(0,0,0);
 
 
     @Override
@@ -42,23 +43,82 @@ List<horizontalParkingModel> parent = new ArrayList<>();
         parkingSlotItem item = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
         RecyclerView recyclerView1 = view.findViewById(R.id.parentRecyclerView);
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        parent.add(new horizontalParkingModel("Hall29","Block A","10",item));
-        parent.add(new horizontalParkingModel("Hall29","Block B","12",item));
-        parent.add(new horizontalParkingModel("Hall29","Block C","22",item));
-        parent.add(new horizontalParkingModel("Hall29","Block D","12",item));
-        parent.add(new horizontalParkingModel("Hall29","Block E","10",item));
-        List<List<Pair<Boolean, Boolean>>> markSelected = new ArrayList<List<Pair<Boolean, Boolean>>>();
-        bookParkingParentAdapter parentAdapter = new bookParkingParentAdapter(getContext(),parent,markSelected);
+        parent.add(new horizontalParkingModel("Block A","23",item));
+        parent.add(new horizontalParkingModel("Block B","12",item));
+        parent.add(new horizontalParkingModel("Block C","17",item));
+        parent.add(new horizontalParkingModel("Block D","9",item));
+        parent.add(new horizontalParkingModel("Block E","62",item));
+        parentAdapter = new bookParkingParentAdapter(getContext(),parent,this,"Hall 29");
         recyclerView1.setAdapter(parentAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView1);
+        recyclerView1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                parentAdapter.notifyDataSetChanged();
+            }
+        });
+
+
         parentAdapter.notifyDataSetChanged();
-
-
-
 
         return view;
     }
 
 
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onItemClick(ImageButton button, TextView label, int slot, int parentPosition, int position, char block) {
+        int pattern = (position + 1)*2;
+
+        if(slot==1){
+            if (button.getDrawable() == null) {
+                button.setImageResource(R.drawable.cartopviewleft);
+                label.setText("");
+                setChoice(parentPosition,position,slot);
+            }else{
+                button.setImageDrawable(null);
+                setChoice(0,0,0);
+                String slotLabel = block + String.valueOf(pattern-1);
+                label.setText(slotLabel);
+            }
+        }
+        else{
+            if (button.getDrawable() == null) {
+                button.setImageResource(R.drawable.cartopviewright);
+                label.setText("");
+                setChoice(parentPosition,position,slot);
+            }else{
+                setChoice(0,0,0);
+                String slotLabel = block + String.valueOf(pattern);
+                label.setText(slotLabel);
+                button.setImageDrawable(null);
+            }
+
+        }
+    }
+
+    @Override
+    public void setChoice(int parentPosition, int position, int slot) {
+        if(selected.equals(new Triple<>(parentPosition,position,slot))){
+            selected = new Triple<>(0,0,0);
+        }if(slot==0){
+            selected = new Triple<>(0,0,0);
+        }
+        selected = new Triple<>(parentPosition,position,slot);
+        parentAdapter.dataChangedChild();
+    }
+
+    @Override
+    public Triple<Integer, Integer, Integer> getChoice() {
+        return selected;
+    }
 }

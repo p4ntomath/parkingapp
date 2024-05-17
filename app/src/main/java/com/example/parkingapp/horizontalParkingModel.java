@@ -7,20 +7,18 @@ import java.util.List;
 
 public class horizontalParkingModel {
 
-    String parkingName;
+
     String parkingBlock;
     String availableSpots;
     parkingSlotItem childItem;
-    public horizontalParkingModel(String parkingName, String parkingBlock, String availableSpots,parkingSlotItem childItem) {
-        this.parkingName = parkingName;
+    public horizontalParkingModel(String parkingBlock, String availableSpots,parkingSlotItem childItem) {
+
         this.parkingBlock = parkingBlock;
         this.availableSpots = availableSpots;
         this.childItem = childItem;
     }
 
-    public String getParkingName() {
-        return parkingName;
-    }
+
 
     public String getParkingBlock() {
         return parkingBlock;
