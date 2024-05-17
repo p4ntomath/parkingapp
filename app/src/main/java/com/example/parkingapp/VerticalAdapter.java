@@ -40,7 +40,7 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         holder.slot1.setImageResource(0);
         holder.slot2.setImageResource(0);
 
-        Triple<Integer,Integer,Integer> selectedChoice = listner.getChoice();
+        Quartet<Integer,Integer,Integer,Integer> selectedChoice =  listner.getChoice();
 
         char capital = 'A';
         int asciiValue = (int) capital;
@@ -53,11 +53,11 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         holder.slot2Label.setText(slot2Label);
 
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1){
-            holder.slot1.setImageResource(R.drawable.cartopviewleft);
+            holder.slot1.setImageResource(selectedChoice.getFourth());
             holder.slot1Label.setText("");
         }
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2){
-            holder.slot2.setImageResource(R.drawable.cartopviewright);
+            holder.slot2.setImageResource(selectedChoice.getFourth());
             holder.slot2Label.setText("");
         }
 

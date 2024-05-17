@@ -96,29 +96,21 @@
 
    </RelativeLayout>
 
-   <androidx.recyclerview.widget.RecyclerView
-       xmlns:android="http://schemas.android.com/apk/res/android"
-       android:id="@+id/horizontalRecyclerView"
-       android:layout_width="match_parent"
-       android:layout_height="500dp" />
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:layout_gravity="bottom"
-       android:layout_marginBottom="40dp"
-       android:layout_marginTop="2dp"
-       android:background="@android:color/transparent"
-       >
+
 
       <RelativeLayout
           android:layout_width="match_parent"
-          android:layout_height="100dp"
+          android:layout_height="match_parent"
           android:layout_gravity="center"
-          android:gravity="center"
           android:layout_marginVertical="10dp"
           android:background="@android:color/transparent"
           >
+         <androidx.recyclerview.widget.RecyclerView
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/horizontalRecyclerView"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginBottom="120dp"/>
 
          <!-- Floating Action Button 1 -->
          <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -127,9 +119,11 @@
              android:layout_height="60dp"
              android:layout_marginLeft="40dp"
             app:iconTint="@color/primary"
-             android:layout_gravity="bottom"
+             android:layout_alignParentBottom="true"
              app:icon="@drawable/scheduleicon"
-             app:srcCompat="@drawable/scheduleicon"/>
+             app:rippleColor="@color/secondary"
+             app:srcCompat="@drawable/scheduleicon"
+             android:layout_marginBottom="40dp"/>
 
          <!-- Floating Action Button 2 -->
          <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -139,19 +133,15 @@
              android:layout_marginRight="15dp"
              android:layout_gravity="bottom"
              android:contentDescription="Book"
+             android:layout_alignParentBottom="true"
              android:text="Book Now"
+             android:textSize="20dp"
              android:textColor="@color/primary"
              android:textStyle="bold"
-             app:rippleColor="@color/black"
-             android:layout_alignParentEnd="true"/>
+             app:rippleColor="@color/secondary"
+             android:layout_alignParentEnd="true"
+             android:layout_marginBottom="40dp"/>
 
       </RelativeLayout>
 
    </LinearLayout>
-
-
-
-
-
-
-</LinearLayout>

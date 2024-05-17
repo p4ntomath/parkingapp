@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="leftCars">
+        <item>@drawable/car1left</item>
+        <item>@drawable/car2left</item>
+        <item>@drawable/car3left</item>
+        <item>@drawable/car4left</item>
+        <item>@drawable/car5left</item>
+        <item>@drawable/cartopviewleft</item>
+        <!-- Add more images here -->
+    </array>
+    <array name="rightCars">
+        <item>@drawable/car1right</item>
+        <item>@drawable/car2right</item>
+        <item>@drawable/car3right</item>
+        <item>@drawable/car4right</item>
+        <item>@drawable/car5right</item>
+        <item>@drawable/cartopviewright</item>
+    </array>
+</resources>

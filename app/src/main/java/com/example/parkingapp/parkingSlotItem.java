@@ -1,21 +1,25 @@
 package com.example.parkingapp;
 
+import android.content.Context;
+
+import java.util.ArrayList;
+
 public class parkingSlotItem {
 
-    private int slotImage1;
-    private int slotImage2;
-
-    public parkingSlotItem(int slotImage1, int slotImage2) {
-        this.slotImage1 = slotImage1;
-        this.slotImage2 = slotImage2;
+    ImageHelper imageHelper;
+    Context context;
+    public parkingSlotItem(Context context) {
+        this.context = context;
+        this.imageHelper = new ImageHelper(context);
     }
 
-    public int getSlotImage1() {
-        return slotImage1;
+    public int getImage1(){
+      return   imageHelper.getRandomLeftImage();
     }
-    public int getSlotImage2() {
-        return slotImage2;
+    public int getImage2(){
+       return imageHelper.getRandomRightImage();
     }
+
 
 }
 

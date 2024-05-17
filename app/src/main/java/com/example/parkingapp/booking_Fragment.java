@@ -26,10 +26,11 @@ public class booking_Fragment extends Fragment implements selectListener {
 
     private HorizontalAdapter horizontalAdapter;
     private RecyclerView horizontalRecyclerView;
-    Triple<Integer,Integer,Integer> selected = new Triple<>(0,0,0);
+    Quartet<Integer,Integer,Integer,Integer> selected = new Quartet<>(0,0,0,-1);
     TextView parkingName,parkingBlock, availableSpots;
     ImageButton leftArrow,rightArrow;
     int itemCount = 5;//how many blocks
+    parkingSlotItem images;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         horizontalRecyclerView = view.findViewById(R.id.horizontalRecyclerView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerView.setLayoutManager(horizontalLayoutManager);
-        parkingSlotItem images = new parkingSlotItem(R.drawable.cartopviewleft,R.drawable.cartopviewright);
+        images = new parkingSlotItem(getContext());
         horizontalAdapter = new HorizontalAdapter(itemCount,this,images);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
@@ -151,42 +152,38 @@ public class booking_Fragment extends Fragment implements selectListener {
 
         if(slot==1){
             if (button.getDrawable() == null) {
-                button.setImageResource(R.drawable.cartopviewleft);
+                button.setImageResource(images.getImage1());
                 label.setText("");
-                setChoice(parentPosition,position,slot);
+                setChoice(parentPosition,position,slot,images.getImage1());
             }else{
                 button.setImageDrawable(null);
-                setChoice(0,0,0);
+                setChoice(0,0,0,-1);
                 String slotLabel = block + String.valueOf(pattern-1);
                 label.setText(slotLabel);
             }
         }
         else{
             if (button.getDrawable() == null) {
-                button.setImageResource(R.drawable.cartopviewright);
+                button.setImageResource(images.getImage2());
                 label.setText("");
-                setChoice(parentPosition,position,slot);
+                setChoice(parentPosition,position,slot,images.getImage2());
             }else{
-                setChoice(0,0,0);
+                setChoice(0,0,0,-1);
                 String slotLabel = block + String.valueOf(pattern);
                 label.setText(slotLabel);
                 button.setImageDrawable(null);
             }
-        }   horizontalAdapter.childNoifityOnChange();
-    }
-
-    @Override
-    public void setChoice(int parentPosition, int position, int slot) {
-        if(selected.equals(new Triple<>(parentPosition,position,slot))){
-            selected = new Triple<>(0,0,0);
-        }if(slot==0){
-            selected = new Triple<>(0,0,0);
         }
-        selected = new Triple<>(parentPosition,position,slot);
     }
 
     @Override
-    public Triple<Integer, Integer, Integer> getChoice() {
+    public void setChoice(int parentPosition, int position, int slot,int image) {
+        selected = new Quartet<>(parentPosition,position,slot,image);
+        horizontalAdapter.childNoifityOnChange();
+    }
+
+    @Override
+    public Quartet<Integer,Integer,Integer,Integer> getChoice() {
         return selected;
     }
 }
