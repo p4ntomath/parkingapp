@@ -74,9 +74,11 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
     }
     public void rightSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
         listner.onVerticalItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position);
+        notifyDataSetChanged();
     }
     public void leftSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
         listner.onVerticalItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

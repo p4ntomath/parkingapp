@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -178,8 +179,10 @@ public class booking_Fragment extends Fragment implements selectListener {
 
     @Override
     public void setChoice(int parentPosition, int position, int slot,int image) {
+        Log.d("old selected",selected.toString());
         selected = new Quartet<>(parentPosition,position,slot,image);
         horizontalAdapter.childNoifityOnChange();
+        Log.d("selected",selected.toString());
     }
 
     @Override
