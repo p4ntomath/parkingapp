@@ -5,8 +5,8 @@ import android.widget.TextView;
 
 import kotlin.Triple;
 
-public interface selectListner {
-    void onItemClick(ImageButton button, TextView label , int slot,int parentPosition,int position,char block);
+public interface selectListener {
+    void onVerticalItemClick(ImageButton button, TextView label , int slot,int parentPosition,int position);
     void setChoice(int parentPosition,int position,int slot);
     Triple<Integer,Integer,Integer> getChoice();
 }

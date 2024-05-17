@@ -97,13 +97,10 @@
    </RelativeLayout>
 
    <androidx.recyclerview.widget.RecyclerView
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       android:id="@+id/horizontalRecyclerView"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/parentRecyclerView"
-       android:scrollbars="horizontal"
-       android:layout_weight="1"/>
-
-
+       android:layout_height="500dp" />
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -111,41 +108,47 @@
        android:layout_gravity="bottom"
        android:layout_marginBottom="40dp"
        android:layout_marginTop="2dp"
+       android:background="@android:color/transparent"
        >
 
       <RelativeLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="100dp"
           android:layout_gravity="center"
           android:gravity="center"
           android:layout_marginVertical="10dp"
+          android:background="@android:color/transparent"
           >
 
-         <ImageButton
+         <!-- Floating Action Button 1 -->
+         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+             android:id="@+id/schedule"
              android:layout_width="60dp"
              android:layout_height="60dp"
-             android:layout_marginRight="10dp"
-             android:layout_marginHorizontal="30dp"
-             app:backgroundTint = "@null"
-             android:background="@drawable/circle"
-             android:src="@drawable/scheduleicon"
-             android:layout_alignParentStart="true">
+             android:layout_marginLeft="40dp"
+            app:iconTint="@color/primary"
+             android:layout_gravity="bottom"
+             app:icon="@drawable/scheduleicon"
+             app:srcCompat="@drawable/scheduleicon"/>
 
-         </ImageButton>
-         <Button
-             android:layout_marginHorizontal="20dp"
+         <!-- Floating Action Button 2 -->
+         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+             android:id="@+id/bookNow"
              android:layout_width="200dp"
              android:layout_height="65dp"
+             android:layout_marginRight="15dp"
+             android:layout_gravity="bottom"
+             android:contentDescription="Book"
              android:text="Book Now"
-             app:backgroundTint = "@null"
-             android:layout_alignParentEnd="true"
-             android:background="@drawable/booknowbtn"
-             >
-         </Button>
+             android:textColor="@color/primary"
+             android:textStyle="bold"
+             app:rippleColor="@color/black"
+             android:layout_alignParentEnd="true"/>
 
       </RelativeLayout>
 
    </LinearLayout>
+
 
 
 

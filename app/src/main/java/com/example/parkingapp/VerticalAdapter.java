@@ -1,9 +1,6 @@
 package com.example.parkingapp;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,52 +11,52 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import kotlin.Triple;
 
-public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChildAdapter.ViewHolder> {
+public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHolder> {
 
-    Context context;
-    private selectListner listner;
-    parkingSlotItem item;
-    int itemCount;
-    char block;
+   int itemCount;
+    private selectListener listner;
+    parkingSlotItem images;
     int parentPosition;
 
-    public bookParkingChildAdapter(Context context, parkingSlotItem item, int itemCount,selectListner listner,int parentPosition,char block) {
-        this.context = context;
-        this.item = item;
+    public VerticalAdapter(int itemCount, selectListener itemClickListener, parkingSlotItem images, int parentPosition) {
         this.itemCount = itemCount;
-        this.listner = listner;
+        this.listner = itemClickListener;
+        this.images = images;
         this.parentPosition = parentPosition;
-        this.block = block;
     }
+
     @NonNull
     @Override
-    public bookParkingChildAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.parkinglotrecycleitem, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vertical_recyclerview_item, parent, false);
         return new ViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull bookParkingChildAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.slot1.setImageResource(0);
         holder.slot2.setImageResource(0);
 
-        Triple<Integer,Integer,Integer> slot = listner.getChoice();
+        Triple<Integer,Integer,Integer> selectedChoice = listner.getChoice();
+
+        char capital = 'A';
+        int asciiValue = (int) capital;
+        asciiValue += parentPosition;
+        char newChar = (char) asciiValue;
         int pattern = (position + 1)*2;
-        String slot1Label = block + String.valueOf(pattern-1);
-        String slot2Label =  block + String.valueOf(pattern);
+        String slot1Label = newChar + String.valueOf(pattern-1);
+        String slot2Label =  newChar + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
 
-            if(slot.getFirst() == parentPosition && slot.getSecond() == position && slot.getThird() == 1){
-                holder.slot1.setImageResource(R.drawable.cartopviewleft);
-                holder.slot1Label.setText("");
-            }
-            if(slot.getFirst() == parentPosition && slot.getSecond() == position && slot.getThird() == 2){
+        if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1){
+            holder.slot1.setImageResource(R.drawable.cartopviewleft);
+            holder.slot1Label.setText("");
+        }
+        if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2){
             holder.slot2.setImageResource(R.drawable.cartopviewright);
             holder.slot2Label.setText("");
         }
@@ -68,27 +65,19 @@ public class bookParkingChildAdapter extends RecyclerView.Adapter<bookParkingChi
         holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
         holder.slot1Label.setOnClickListener(v -> leftSlotOnClick(position,holder));
         holder.slot2Label.setOnClickListener(v -> rightSlotOnClick(position,holder));
+
     }
 
     @Override
     public int getItemCount() {
         return itemCount;
     }
-
-
-
-
-    public void rightSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        listner.onItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position,block);
+    public void rightSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
+        listner.onVerticalItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position);
     }
-    public void leftSlotOnClick(int position, bookParkingChildAdapter.ViewHolder holder){
-        listner.onItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position,block);
+    public void leftSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
+        listner.onVerticalItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position);
     }
-
-
-
-
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
