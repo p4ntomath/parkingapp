@@ -65,13 +65,6 @@ public class bookParkingParentAdapter extends RecyclerView.Adapter<bookParkingPa
         return item.size();
     }
 
-    public void dataChangedChild(){
-        adapter.notifyDataSetChanged();
-    }
-
-
-
-
 
 
 

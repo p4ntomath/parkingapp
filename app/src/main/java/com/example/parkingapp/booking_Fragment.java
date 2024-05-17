@@ -114,7 +114,6 @@ Triple<Integer,Integer,Integer> selected = new Triple<>(0,0,0);
             selected = new Triple<>(0,0,0);
         }
         selected = new Triple<>(parentPosition,position,slot);
-        parentAdapter.dataChangedChild();
     }
 
     @Override
