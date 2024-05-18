@@ -99,10 +99,14 @@ public class logInManager {
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-            @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                showToast("Failed to connect to server");
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("Failed to connect to server");
+                    }
+                });
             }
 
             @Override

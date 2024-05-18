@@ -1,63 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/header_background"
-    tools:context=".navigationDrawer">
+    tools:context=".navigationDrawer"
+    android:orientation="horizontal"
+    android:gravity="center|left">
+
+
 
     <androidx.cardview.widget.CardView
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
         android:id="@+id/cardView"
+        android:layout_marginLeft="50dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="84dp"
         android:backgroundTint="@color/primary"
-        app:cardCornerRadius="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="40dp">
 
         <ImageView
             android:id="@+id/profilePicture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
             android:src="@drawable/profileicon" />
+
     </androidx.cardview.widget.CardView>
 
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
     <TextView
         android:id="@+id/userIdDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginBottom="2dp"
         android:text="1234567"
         android:textSize="17dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:textStyle="bold">
 
     </TextView>
 
     <TextView
+        android:layout_marginTop="2dp"
         android:id="@+id/userTypeDisplay"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="Student"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.588">
+        android:text="Student">
 
     </TextView>
 
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
