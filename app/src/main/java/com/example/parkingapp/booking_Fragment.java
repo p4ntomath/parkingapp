@@ -14,9 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,8 @@ public class booking_Fragment extends Fragment implements selectListener {
     ImageButton leftArrow,rightArrow;
     int itemCount = 5;//how many blocks
     parkingSlotItem images;
+    BottomSheetDialog bottomSheetDialog;
+    Button bookNow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,11 +48,36 @@ public class booking_Fragment extends Fragment implements selectListener {
         variablesDeclaration(view);//This function is responsible for setting up the variables
         arrowOnClick();//This function is responsible for handling the arrows
         onScrollChangeRecycleView();//This function is responsible for handling the scroll change
-
-
+        declaringBookingBottomSheet(view);
+        bookNow = view.findViewById(R.id.bookNow);
+        bookNow.setOnClickListener(v -> {bottomSheetDialog.show();});
 
         return view;
     }
+
+    public void declaringBookingBottomSheet(View view){
+        bottomSheetDialog = new BottomSheetDialog(getContext());
+        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.booking_dialog,null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
