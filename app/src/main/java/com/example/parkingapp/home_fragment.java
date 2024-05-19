@@ -3,6 +3,7 @@ package com.example.parkingapp;
 import static okhttp3.internal.Util.filterList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +26,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class home_fragment extends Fragment implements OnMapReadyCallback {
+public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
 
     private GoogleMap mMap;
-
+    NavigationView navigationView;
+    navigationDrawerAcess accessNavigationDrawer;
+    public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
+        this.accessNavigationDrawer = accessNavigationDrawer;
+    }
     public home_fragment() {
-
     }
 
     List<item> items = new ArrayList<>();
@@ -41,6 +48,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
+    String parkingName,parkingSpace,parkingType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,8 +56,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-
-
+        navigationView = accessNavigationDrawer.getNavigationDrawer();
+        navigationView.setCheckedItem(R.id.nav_home);
 
 
         bottomSheetBehavior(view);
@@ -112,8 +120,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         // Initialize the RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
-
+        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items,this));
 
         noParking = view.findViewById(R.id.noParking);
         searchView = view.findViewById(R.id.searchView);
@@ -191,5 +198,25 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
 
 
+    @Override
+    public void onCardViewSelected(String Name, String Space, String Type) {
+        parkingName = Name;
+        parkingSpace = Space.split(":")[1].trim();
+        Log.d("Space",parkingSpace);
+        int space = Integer.parseInt(parkingSpace);
+        parkingType = Type;
+        navigationView.setCheckedItem(R.id.nav_booking);
+        Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+    public void checkFindParking(){
+        navigationView.setCheckedItem(R.id.nav_parking);
+    }public void checkBooking(){
+        navigationView.setCheckedItem(R.id.nav_booking);
+    }
 
 }

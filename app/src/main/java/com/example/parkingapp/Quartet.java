@@ -5,13 +5,24 @@ public class Quartet<A, B, C, D> {
     private final B second;
     private final C third;
     private final D fourth;
+    public boolean isBooked;
 
     public Quartet(A first, B second, C third, D fourth) {
         this.first = first;
         this.second = second;
         this.third = third;
         this.fourth = fourth;
+        isBooked = false;
     }
+
+    public void setIsBooked(boolean state) {
+        isBooked = state;
+    }
+
+    public boolean getIsBooked() {
+        return isBooked;
+    }
+
 
     public A getFirst() {
         return first;

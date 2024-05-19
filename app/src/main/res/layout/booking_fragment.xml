@@ -114,7 +114,7 @@
 
          <!-- Floating Action Button 1 -->
          <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-             android:id="@+id/schedule"
+             android:id="@+id/scheduleBtn"
              android:layout_width="60dp"
              android:layout_height="60dp"
              android:layout_marginLeft="40dp"

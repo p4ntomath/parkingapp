@@ -1,6 +1,10 @@
 package com.example.parkingapp;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -20,12 +25,14 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
     private selectListener listner;
     parkingSlotItem images;
     int parentPosition;
+    Context context;
 
-    public VerticalAdapter(int itemCount, selectListener itemClickListener, parkingSlotItem images, int parentPosition) {
+    public VerticalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images, int parentPosition) {
         this.itemCount = itemCount;
         this.listner = itemClickListener;
         this.images = images;
         this.parentPosition = parentPosition;
+        this.context = context;
     }
 
     @NonNull
@@ -51,6 +58,10 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         String slot2Label =  newChar + String.valueOf(pattern);
         holder.slot1Label.setText(slot1Label);
         holder.slot2Label.setText(slot2Label);
+        int initialColor = ContextCompat.getColor(context, R.color.tertiary); // Using the "green" color resource
+        holder.slot1.setBackgroundTintList(ColorStateList.valueOf(initialColor));
+        holder.slot2.setBackgroundTintList(ColorStateList.valueOf(initialColor));
+
 
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1){
             holder.slot1.setImageResource(selectedChoice.getFourth());
@@ -59,6 +70,9 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2){
             holder.slot2.setImageResource(selectedChoice.getFourth());
             holder.slot2Label.setText("");
+        }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 0 && selectedChoice.getIsBooked()){
+            int greenColor = ContextCompat.getColor(context, R.color.Green); // Using the "green" color resource
+            holder.slot1.setBackgroundTintList(ColorStateList.valueOf(greenColor));
         }
 
         holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));

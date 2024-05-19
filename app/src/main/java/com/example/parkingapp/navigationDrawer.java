@@ -25,7 +25,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class navigationDrawer extends AppCompatActivity {
+public class navigationDrawer extends AppCompatActivity implements navigationDrawerAcess {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -81,7 +81,7 @@ public class navigationDrawer extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         frameLayout = findViewById(R.id.fragmentLayout);
 
-        replaceFragment(new home_fragment());
+        replaceFragment(new home_fragment(navigationDrawer.this));
         navigationView.setCheckedItem(R.id.nav_home);
 
 
@@ -98,14 +98,14 @@ public class navigationDrawer extends AppCompatActivity {
                 menuItem.setChecked(true);
                 drawerLayout.close();
                 if (id == R.id.nav_home) {
-                    replaceFragment(new home_fragment());
+                    replaceFragment(new home_fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_parking) {
                     replaceFragment(new findparking_fragment());
                     return true;
                 }
                 else if (id == R.id.nav_booking) {
-                    replaceFragment(new booking_Fragment());
+                    replaceFragment(new booking_Fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_reserve) {
                     replaceFragment(new reserve_fragment());
@@ -160,5 +160,11 @@ public class navigationDrawer extends AppCompatActivity {
         startActivity(intent);
         finish();
         dialog.dismiss();
+    }
+
+
+    @Override
+    public NavigationView getNavigationDrawer() {
+        return navigationView;
     }
 }
