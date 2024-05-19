@@ -105,7 +105,7 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
                     return true;
                 }
                 else if (id == R.id.nav_booking) {
-                    replaceFragment(new booking_Fragment());
+                    replaceFragment(new booking_Fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_reserve) {
                     replaceFragment(new reserve_fragment());

@@ -39,6 +39,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
         this.accessNavigationDrawer = accessNavigationDrawer;
     }
+    public home_fragment() {
+    }
 
     List<item> items = new ArrayList<>();
     SearchView searchView;
@@ -204,11 +206,17 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         int space = Integer.parseInt(parkingSpace);
         parkingType = Type;
         navigationView.setCheckedItem(R.id.nav_booking);
-        Fragment newFragment = booking_Fragment.newInstance(parkingName,space,parkingType);
+        Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, newFragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
     }
+    public void checkFindParking(){
+        navigationView.setCheckedItem(R.id.nav_parking);
+    }public void checkBooking(){
+        navigationView.setCheckedItem(R.id.nav_booking);
+    }
+
 }

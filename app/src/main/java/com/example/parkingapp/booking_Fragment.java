@@ -8,11 +8,13 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
 
@@ -33,39 +37,35 @@ public class booking_Fragment extends Fragment implements selectListener {
     public static final String ARG_PARKING_NAME = "parking_name";
     public static final String ARG_PARKING_SPACE = "parking_space";
     public static final String ARG_PARKING_TYPE = "parking_type";
+    public static final String ARG_NAV_ACCESS = "nav_access";
     int totalSpace;
     private String parkingName;
     private int parkingSpace; // Changed to int
     private String parkingType;
+    private navigationDrawerAcess navigationDrawerAcess;
 
-    public static booking_Fragment newInstance(String parkingName, int parkingSpace, String parkingType) { // Changed parameter type to int
-        booking_Fragment fragment = new booking_Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARKING_NAME, parkingName);
-        args.putInt(ARG_PARKING_SPACE, parkingSpace);
-        args.putString(ARG_PARKING_TYPE, parkingType);
-        fragment.setArguments(args);
-        return fragment;
+    public booking_Fragment() {
+
+    }
+    public booking_Fragment(navigationDrawerAcess navigationDrawerAcess) {
+        this.navigationDrawerAcess = navigationDrawerAcess;
+    }
+    public booking_Fragment(navigationDrawerAcess navigationDrawerAcess,String parkingName, int parkingSpace, String parkingType) {
+        this.parkingName = parkingName;
+        this.parkingSpace = parkingSpace;
+        this.parkingType = parkingType;
+        this.navigationDrawerAcess = navigationDrawerAcess;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            parkingName = getArguments().getString(ARG_PARKING_NAME);
-            parkingSpace = getArguments().getInt(ARG_PARKING_SPACE); // Get int argument
-            parkingType = getArguments().getString(ARG_PARKING_TYPE);
-            totalSpace = parkingSpace;
-            Log.d("totalSpace",String.valueOf(totalSpace));
-        }
-    }
+
 
     private HorizontalAdapter horizontalAdapter;
     private RecyclerView horizontalRecyclerView;
     Quartet<Integer,Integer,Integer,Integer> selected = new Quartet<>(0,0,0,-1);
     TextView parkingNameTextView,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
-    TextView displayEntryTime,displayExitTime;
+    TextView displayEntryTime,displayExitTime,availableSpotsDisplay;
     ImageButton leftArrow,rightArrow;
+    NavigationView navigationView;
 
     int itemCount;
 
@@ -76,14 +76,24 @@ public class booking_Fragment extends Fragment implements selectListener {
     parkingSlotItem images;
     BottomSheetDialog bottomSheetDialog;
     Button bookNow,bookSubmit,scheduleBtn;
-    String parkingNameSelected = "Barnato Parking Lot";
+    String parkingNameSelected;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        parkingNameSelected =  parkingName;
+        navigationView =  navigationDrawerAcess.getNavigationDrawer();
+        navigationView.setCheckedItem(R.id.nav_parking);
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
+        View view2 = inflater.inflate(R.layout.unablebook,container,false);
+        if(parkingSpace == 0){
+            MaterialButton toFindParking = view2.findViewById(R.id.toFindParking);
+            toFindParking.setOnClickListener(v -> {toFindParking();});
+            return view2;
+        }
+
         setUpParentRecyclerView(view); //This function is responsible for setting up the recycler view
         variablesDeclaration(view);//This function is responsible for setting up the variables
         arrowOnClick();//This function is responsible for handling the arrows
@@ -91,6 +101,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         declaringBookingBottomSheet(view);
 
         parkingNameTextView.setText(parkingName);
+        availableSpots.setText(String.valueOf(parkingSpace));
 
         bookNow.setOnClickListener(v -> {
             if(selected.getFourth() == -1){Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();}
@@ -101,7 +112,6 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
 
-        Log.d("itemCount",String.valueOf(itemCount));
         return view;
     }
 
@@ -137,7 +147,17 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
 
+public void toFindParking(){
 
+
+        navigationView.setCheckedItem(R.id.nav_parking);
+    Fragment newFragment = new findparking_fragment();
+    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+    transaction.replace(R.id.fragmentLayout, newFragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
+
+}
 
 
 
@@ -154,6 +174,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         availableSpots = view.findViewById(R.id.availableSpots);
         leftArrow = view.findViewById(R.id.leftButton);
         rightArrow = view.findViewById(R.id.rightButton);
+        availableSpotsDisplay = view.findViewById(R.id.availableSpots);
 
     }
     public void setUpParentRecyclerView(View view){
@@ -161,7 +182,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerView.setLayoutManager(horizontalLayoutManager);
         images = new parkingSlotItem(getContext());
-        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images, totalSpace);
+        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images, parkingSpace);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(horizontalRecyclerView);

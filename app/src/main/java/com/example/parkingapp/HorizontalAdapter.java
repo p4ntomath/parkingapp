@@ -1,6 +1,7 @@
 package com.example.parkingapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
 
         spot = 10;
         if(totalSpace %20 != 0){
-            if(position == itemCount-1){
-                int remainingSpace = totalSpace%20;
-                spot = remainingSpace %2 == 0 ? remainingSpace/2 : (remainingSpace-1)/2;;
+            if(position == itemCount-1) {
+                int remainingSpace = totalSpace % 20;
+                spot = remainingSpace % 2 == 0 ? remainingSpace / 2 : (remainingSpace - 1) / 2;
+                ;
             }
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
