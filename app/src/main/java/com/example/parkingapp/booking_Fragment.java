@@ -83,7 +83,7 @@ public class booking_Fragment extends Fragment implements selectListener {
 
         parkingNameSelected =  parkingName;
         navigationView =  navigationDrawerAcess.getNavigationDrawer();
-        navigationView.setCheckedItem(R.id.nav_parking);
+        navigationView.setCheckedItem(R.id.nav_booking);
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
