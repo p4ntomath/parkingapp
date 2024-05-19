@@ -22,6 +22,7 @@
             android:background="@drawable/booknowbtn">
 
             <TextView
+                android:id="@+id/bookingNowParkingSpot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="A8"
@@ -50,6 +51,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/bookingNowParkingName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Barnato"
@@ -89,12 +91,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="Entry Time"
                 android:layout_marginRight="5dp"
                 android:textStyle="bold"
                 android:textSize="15dp"/>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/bookingNowEntryTime"
                 android:layout_width="130dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
@@ -102,9 +105,10 @@
                 app:cardCornerRadius="10dp">
 
                 <TextView
+                    android:id="@+id/bookNowDisplayEntryTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="19-May-2023"
+                    android:text="14:20"
                     android:textSize="15dp"
                     android:layout_gravity="center"
                     android:textStyle="bold">
@@ -134,13 +138,16 @@
                 android:textSize="15dp"/>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/bookingNowExitTime"
                 android:layout_width="130dp"
+                android:clickable="true"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="#D6D2D2"
                 app:cardCornerRadius="10dp">
 
                 <TextView
+                    android:id="@+id/bookNowDisplayExitTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Unknown"
@@ -161,6 +168,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/bookNowSubmit"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginRight="10dp"

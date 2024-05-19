@@ -1,5 +1,6 @@
 package com.example.parkingapp;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
     int itemCount;
     selectListener itemClickListener;
     VerticalAdapter verticalAdapter;
+    Context context;
 
-    public HorizontalAdapter(int itemCount, selectListener itemClickListener, parkingSlotItem images) {
+    public HorizontalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images) {
         this.itemCount = itemCount;
         this.itemClickListener = itemClickListener;
         this.images = images;
+        this.context = context;
     }
 
     @NonNull
@@ -36,7 +39,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.verticalRecyclerView.setLayoutManager(layoutManager);
 
-        verticalAdapter = new VerticalAdapter(10,itemClickListener,images,position);
+        verticalAdapter = new VerticalAdapter(context,10,itemClickListener,images,position);
         holder.verticalRecyclerView.setAdapter(verticalAdapter);
     }
 
