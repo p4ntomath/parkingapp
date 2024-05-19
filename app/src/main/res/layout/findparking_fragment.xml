@@ -3,12 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".findparking_fragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="60dp">
+
+    <SearchView
+        android:id="@+id/findParkingSearchView"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center|top"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_logout"
+        android:queryHint="Search Parking"
+        android:focusable="false"
+        app:searchHintIcon="@null"
+        android:iconifiedByDefault="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/findParkingRecyclerView"/>"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/findParkingRecyclerView"/>
+
+    <TextView
+        android:id="@+id/noParkingFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchView"
+        android:gravity="center"
+        android:text="No Parking Found"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:textSize="15dp" />
 
 </LinearLayout>
