@@ -3,6 +3,7 @@ package com.example.parkingapp;
 import static okhttp3.internal.Util.filterList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,10 @@ import java.util.List;
 public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
 
     private GoogleMap mMap;
-
-    public home_fragment() {
-
+    NavigationView navigationView;
+    navigationDrawerAcess accessNavigationDrawer;
+    public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
+        this.accessNavigationDrawer = accessNavigationDrawer;
     }
 
     List<item> items = new ArrayList<>();
@@ -51,8 +54,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-
-
+        navigationView = accessNavigationDrawer.getNavigationDrawer();
+        navigationView.setCheckedItem(R.id.nav_home);
 
 
         bottomSheetBehavior(view);
@@ -196,9 +199,12 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     @Override
     public void onCardViewSelected(String Name, String Space, String Type) {
         parkingName = Name;
-        parkingSpace = Space;
+        parkingSpace = Space.split(":")[1].trim();
+        Log.d("Space",parkingSpace);
+        int space = Integer.parseInt(parkingSpace);
         parkingType = Type;
-        Fragment newFragment = booking_Fragment.newInstance(parkingName, parkingSpace, parkingType);
+        navigationView.setCheckedItem(R.id.nav_booking);
+        Fragment newFragment = booking_Fragment.newInstance(parkingName,space,parkingType);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, newFragment);
         transaction.addToBackStack(null);

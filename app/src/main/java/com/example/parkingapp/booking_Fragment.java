@@ -33,16 +33,16 @@ public class booking_Fragment extends Fragment implements selectListener {
     public static final String ARG_PARKING_NAME = "parking_name";
     public static final String ARG_PARKING_SPACE = "parking_space";
     public static final String ARG_PARKING_TYPE = "parking_type";
-
+    int totalSpace;
     private String parkingName;
-    private String parkingSpace;
+    private int parkingSpace; // Changed to int
     private String parkingType;
 
-    public static booking_Fragment newInstance(String parkingName, String parkingSpace, String parkingType) {
+    public static booking_Fragment newInstance(String parkingName, int parkingSpace, String parkingType) { // Changed parameter type to int
         booking_Fragment fragment = new booking_Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARKING_NAME, parkingName);
-        args.putString(ARG_PARKING_SPACE, parkingSpace);
+        args.putInt(ARG_PARKING_SPACE, parkingSpace);
         args.putString(ARG_PARKING_TYPE, parkingType);
         fragment.setArguments(args);
         return fragment;
@@ -53,8 +53,10 @@ public class booking_Fragment extends Fragment implements selectListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             parkingName = getArguments().getString(ARG_PARKING_NAME);
-            parkingSpace = getArguments().getString(ARG_PARKING_SPACE);
+            parkingSpace = getArguments().getInt(ARG_PARKING_SPACE); // Get int argument
             parkingType = getArguments().getString(ARG_PARKING_TYPE);
+            totalSpace = parkingSpace;
+            Log.d("totalSpace",String.valueOf(totalSpace));
         }
     }
 
@@ -64,7 +66,12 @@ public class booking_Fragment extends Fragment implements selectListener {
     TextView parkingNameTextView,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
     TextView displayEntryTime,displayExitTime;
     ImageButton leftArrow,rightArrow;
-    int itemCount = 5;//how many blocks
+
+    int itemCount;
+
+
+
+
     CardView bookNowEntryTime,bookNowExitTime;
     parkingSlotItem images;
     BottomSheetDialog bottomSheetDialog;
@@ -74,7 +81,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        itemCount = (int) Math.ceil(parkingSpace / 20.0);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
         setUpParentRecyclerView(view); //This function is responsible for setting up the recycler view
@@ -92,48 +99,12 @@ public class booking_Fragment extends Fragment implements selectListener {
             if(selected.getFourth() == -1){Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();}
             else{scheduleHandler();}});
 
+
+
+        Log.d("itemCount",String.valueOf(itemCount));
         return view;
     }
 
-    private void bookNowHandler() {
-        bottomSheetDialog.show();
-        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
-        bookSubmit.setText("Book Now");
-        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
-        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
-        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
-        spotNumberDisplay.setText(bookingManager.getBookedSpot());
-        String firstWord = parkingNameSelected.split(" ")[0];
-        parkingNameDisplay.setText(firstWord);
-        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
-        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
-        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
-        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
-        displayEntryTime.setText(getCurrentTime());
-        displayExitTime.setText("Unknown");
-        bookNowExitTime.setOnClickListener(v -> {
-            setExitTime();});
-    }
-    private void scheduleHandler() {
-        bottomSheetDialog.show();
-        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
-        bookSubmit.setText("Schedule");
-        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
-        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
-        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
-        spotNumberDisplay.setText(bookingManager.getBookedSpot());
-        String firstWord = parkingNameSelected.split(" ")[0];
-        parkingNameDisplay.setText(firstWord);
-        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
-        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
-        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
-        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
-        displayEntryTime.setText(getCurrentTime());
-        bookNowEntryTime.setOnClickListener(v -> {
-            setEntryTime();});
-        bookNowExitTime.setOnClickListener(v -> {
-            setExitTime();});
-    }
 
 
 
@@ -190,7 +161,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerView.setLayoutManager(horizontalLayoutManager);
         images = new parkingSlotItem(getContext());
-        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images);
+        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images, totalSpace);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(horizontalRecyclerView);
@@ -224,6 +195,7 @@ public class booking_Fragment extends Fragment implements selectListener {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int pos = findScrollPosition();
+                Log.d("pos",String.valueOf(pos));
                 char capital = 'A';
                 int asciiValue = (int) capital;
                 asciiValue += pos;
@@ -231,8 +203,11 @@ public class booking_Fragment extends Fragment implements selectListener {
                 parkingBlock.setText("Block " + newChar);
                 if(pos == itemCount-1){
                     rightArrow.setVisibility(View.INVISIBLE);
-                }else if(pos == 0){
+                    leftArrow.setVisibility(View.VISIBLE);
+
+                }else if(pos == 0 && itemCount>1){
                     leftArrow.setVisibility(View.INVISIBLE);
+                    rightArrow.setVisibility(View.VISIBLE);
                 }else{
                     leftArrow.setVisibility(View.VISIBLE);
                     rightArrow.setVisibility(View.VISIBLE);
@@ -253,6 +228,47 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
 
+
+
+    private void bookNowHandler() {
+        bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Book Now");
+        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
+        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
+        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
+        spotNumberDisplay.setText(bookingManager.getBookedSpot());
+        String firstWord = parkingNameSelected.split(" ")[0];
+        parkingNameDisplay.setText(firstWord);
+        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
+        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
+        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
+        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
+        displayEntryTime.setText(getCurrentTime());
+        displayExitTime.setText("Unknown");
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
+    }
+    private void scheduleHandler() {
+        bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Schedule");
+        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
+        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
+        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
+        spotNumberDisplay.setText(bookingManager.getBookedSpot());
+        String firstWord = parkingNameSelected.split(" ")[0];
+        parkingNameDisplay.setText(firstWord);
+        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
+        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
+        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
+        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
+        displayEntryTime.setText(getCurrentTime());
+        bookNowEntryTime.setOnClickListener(v -> {
+            setEntryTime();});
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
+    }
 
 
 
