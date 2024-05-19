@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,17 +30,45 @@ import java.util.Calendar;
 
 public class booking_Fragment extends Fragment implements selectListener {
 
+    public static final String ARG_PARKING_NAME = "parking_name";
+    public static final String ARG_PARKING_SPACE = "parking_space";
+    public static final String ARG_PARKING_TYPE = "parking_type";
+
+    private String parkingName;
+    private String parkingSpace;
+    private String parkingType;
+
+    public static booking_Fragment newInstance(String parkingName, String parkingSpace, String parkingType) {
+        booking_Fragment fragment = new booking_Fragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARKING_NAME, parkingName);
+        args.putString(ARG_PARKING_SPACE, parkingSpace);
+        args.putString(ARG_PARKING_TYPE, parkingType);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            parkingName = getArguments().getString(ARG_PARKING_NAME);
+            parkingSpace = getArguments().getString(ARG_PARKING_SPACE);
+            parkingType = getArguments().getString(ARG_PARKING_TYPE);
+        }
+    }
+
     private HorizontalAdapter horizontalAdapter;
     private RecyclerView horizontalRecyclerView;
     Quartet<Integer,Integer,Integer,Integer> selected = new Quartet<>(0,0,0,-1);
-    TextView parkingName,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
+    TextView parkingNameTextView,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
     TextView displayEntryTime,displayExitTime;
     ImageButton leftArrow,rightArrow;
     int itemCount = 5;//how many blocks
     CardView bookNowEntryTime,bookNowExitTime;
     parkingSlotItem images;
     BottomSheetDialog bottomSheetDialog;
-    Button bookNow;
+    Button bookNow,bookSubmit,scheduleBtn;
     String parkingNameSelected = "Barnato Parking Lot";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,25 +82,26 @@ public class booking_Fragment extends Fragment implements selectListener {
         arrowOnClick();//This function is responsible for handling the arrows
         onScrollChangeRecycleView();//This function is responsible for handling the scroll change
         declaringBookingBottomSheet(view);
-        bookNow = view.findViewById(R.id.bookNow);
+
+        parkingNameTextView.setText(parkingName);
+
         bookNow.setOnClickListener(v -> {
-
-            if(selected.getFourth() == -1){
-                Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();
-            }else{
-                bookNowHandler();
-            }
-
-        });
+            if(selected.getFourth() == -1){Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();}
+            else{bookNowHandler();}});
+        scheduleBtn.setOnClickListener(v -> {
+            if(selected.getFourth() == -1){Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();}
+            else{scheduleHandler();}});
 
         return view;
     }
 
     private void bookNowHandler() {
         bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Book Now");
         spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
         parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
-        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);
+        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
         spotNumberDisplay.setText(bookingManager.getBookedSpot());
         String firstWord = parkingNameSelected.split(" ")[0];
         parkingNameDisplay.setText(firstWord);
@@ -83,41 +111,37 @@ public class booking_Fragment extends Fragment implements selectListener {
         displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
         displayEntryTime.setText(getCurrentTime());
         displayExitTime.setText("Unknown");
-        bookNowExitTime.setOnClickListener(v -> {setTime();});
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
     }
-    public String getCurrentTime(){
-        int hour = getInstance().get(Calendar.HOUR_OF_DAY);
-        int minute = getInstance().get(Calendar.MINUTE);
-        String sHour = String.valueOf(hour);
-        String sMin = String.valueOf(minute);
-        if (sHour.length() == 1) {sHour = "0" + sHour;}
-        if (sMin.length() == 1) {sMin = "0" + sMin;}
-        return sHour + ":" + sMin;
+    private void scheduleHandler() {
+        bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Schedule");
+        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
+        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
+        bookingManager bookingManager = new bookingManager(selected,parkingNameSelected);//This class is responsible for handling the bookin
+        spotNumberDisplay.setText(bookingManager.getBookedSpot());
+        String firstWord = parkingNameSelected.split(" ")[0];
+        parkingNameDisplay.setText(firstWord);
+        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
+        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
+        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
+        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
+        displayEntryTime.setText(getCurrentTime());
+        bookNowEntryTime.setOnClickListener(v -> {
+            setEntryTime();});
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
     }
-    public void setTime(){
 
-        int hourNow = getInstance().get(Calendar.HOUR_OF_DAY);
-        int minuteNow = getInstance().get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                int hourToSet = Math.max(hourOfDay, hourNow);
-                int minToSet = hourToSet == hourNow ? minuteNow : minute;
-                String sHourToSet = String.valueOf(hourToSet);
-                if (sHourToSet.length() == 1) {sHourToSet = "0" + sHourToSet;}
-                String sMinToSet = String.valueOf(minToSet);
-                if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}
-                displayExitTime.setText(sHourToSet + ":" + sMinToSet);
 
-            }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
 
-                timePickerDialog.show();
 
-    }
+
+
 
 
 
@@ -152,12 +176,14 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
     public void variablesDeclaration(View view){
-        parkingName = view.findViewById(R.id.parkingNameBooking);
+        bookNow = view.findViewById(R.id.bookNow);
+        scheduleBtn = view.findViewById(R.id.scheduleBtn);
+        parkingNameTextView = view.findViewById(R.id.parkingNameBooking);
         parkingBlock = view.findViewById(R.id.parkingBlock);
         availableSpots = view.findViewById(R.id.availableSpots);
         leftArrow = view.findViewById(R.id.leftButton);
         rightArrow = view.findViewById(R.id.rightButton);
-        parkingName.setText(parkingNameSelected);
+
     }
     public void setUpParentRecyclerView(View view){
         horizontalRecyclerView = view.findViewById(R.id.horizontalRecyclerView);
@@ -288,6 +314,82 @@ public class booking_Fragment extends Fragment implements selectListener {
     public Quartet<Integer,Integer,Integer,Integer> getChoice() {
         return selected;
     }
+
+
+
+
+
+
+    ///Time Manages ///
+
+//Returns the current time in HH:MM format
+    public String getCurrentTime(){
+        int hour = getInstance().get(Calendar.HOUR_OF_DAY);
+        int minute = getInstance().get(Calendar.MINUTE);
+        String sHour = String.valueOf(hour);
+        String sMin = String.valueOf(minute);
+        if (sHour.length() == 1) {sHour = "0" + sHour;}
+        if (sMin.length() == 1) {sMin = "0" + sMin;}
+        return sHour + ":" + sMin;
+    }
+
+    //Sets the exit time of the booking
+    public void setExitTime(){
+
+        int hourNow = getInstance().get(Calendar.HOUR_OF_DAY);
+        int minuteNow = getInstance().get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                //Avoiing the time conflict,users booking time behind the current time
+                int hourToSet = Math.max(hourOfDay, hourNow);
+                int minToSet = hourToSet == hourNow ? minuteNow : minute;
+                String sHourToSet = String.valueOf(hourToSet);
+                if (sHourToSet.length() == 1) {sHourToSet = "0" + sHourToSet;} //add 0 if the hour is less than 10
+                String sMinToSet = String.valueOf(minToSet);
+                if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}//add 0 if the minute is less than 10
+                displayExitTime.setText(sHourToSet + ":" + sMinToSet);//display the exit time
+
+            }
+        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+
+        timePickerDialog.show();
+
+    }
+    //Sets the entry time of the booking
+    public void setEntryTime(){
+
+        int hourNow = getInstance().get(Calendar.HOUR_OF_DAY);
+        int minuteNow = getInstance().get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                //Avoiing the time conflict,users booking time behind the current time
+                int hourToSet = Math.max(hourOfDay, hourNow);
+                int minToSet = hourToSet == hourNow ? minuteNow : minute;
+                String sHourToSet = String.valueOf(hourToSet);
+                if (sHourToSet.length() == 1) {sHourToSet = "0" + sHourToSet;}//add 0 if the hour is less than 10
+                String sMinToSet = String.valueOf(minToSet);
+                if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}//add 0 if the minute is less than 10
+                displayEntryTime.setText(sHourToSet + ":" + sMinToSet);//display the entry time
+            }
+        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+
+        timePickerDialog.show();
+
+    }
+
+
+
+
+
+
 }
 
 

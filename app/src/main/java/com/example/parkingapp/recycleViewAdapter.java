@@ -2,6 +2,7 @@ package com.example.parkingapp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -14,11 +15,13 @@ public class recycleViewAdapter extends RecyclerView.Adapter<viewHolder> {
 
     Context context;
     List<item> items;
+    onCardViewSelected listener;
     LayoutInflater layoutInflater; // Declare layoutInflater
 
-    public recycleViewAdapter(Context context, List<item> list) {
+    public recycleViewAdapter(Context context, List<item> list,onCardViewSelected listener) {
         this.context = context;
         this.items = list;
+        this.listener = listener;
         layoutInflater = LayoutInflater.from(context); // Initialize layoutInflater
     }
 
@@ -40,7 +43,11 @@ public class recycleViewAdapter extends RecyclerView.Adapter<viewHolder> {
         holder.parkingSpace.setText(items.get(position).getParkingSpace());
         holder.parkingImage.setImageResource(items.get(position).getParkingImage());
         holder.parkingType.setText(items.get(position).getParkingType());
+        holder.cardView.setOnClickListener(v -> {onCardViewSelected(items.get(position).getParkingName(),items.get(position).getParkingSpace(),items.get(position).getParkingType());});
     }
+    public void onCardViewSelected(String parkingName, String parkingSpace,String parkingType){
+        listener.onCardViewSelected(parkingName,parkingSpace,parkingType);
+    };
 
     @Override
     public int getItemCount() {

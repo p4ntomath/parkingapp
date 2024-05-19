@@ -12,6 +12,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +29,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.util.ArrayList;
 import java.util.List;
 
-public class home_fragment extends Fragment implements OnMapReadyCallback {
+public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
 
     private GoogleMap mMap;
 
@@ -41,6 +43,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
+    String parkingName,parkingSpace,parkingType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,8 +115,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
         // Initialize the RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items));
-
+        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items,this));
 
         noParking = view.findViewById(R.id.noParking);
         searchView = view.findViewById(R.id.searchView);
@@ -191,5 +193,16 @@ public class home_fragment extends Fragment implements OnMapReadyCallback {
 
 
 
+    @Override
+    public void onCardViewSelected(String Name, String Space, String Type) {
+        parkingName = Name;
+        parkingSpace = Space;
+        parkingType = Type;
+        Fragment newFragment = booking_Fragment.newInstance(parkingName, parkingSpace, parkingType);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+    }
 }

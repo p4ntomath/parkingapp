@@ -168,7 +168,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/bookNowSubmit"
+        android:id="@+id/bookSubmit"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginRight="10dp"
