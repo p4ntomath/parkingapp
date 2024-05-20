@@ -1,5 +1,6 @@
-package com.example.parkingapp;
+package com.example.parkingapp.FragmentsOfNavDrawer;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.parkingapp.About.Privacy;
+import com.example.parkingapp.R;
+import com.example.parkingapp.About.TermsAndConditions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +65,21 @@ public class about_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.about_fragment, container, false);
+        View view = inflater.inflate(R.layout.about_fragment, container, false);
+
+        // Set up click listeners for the TextViews
+        TextView navTerms = view.findViewById(R.id.nav_terms);
+        navTerms.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), TermsAndConditions.class);
+            startActivity(intent);
+        });
+
+        TextView navPrivacy = view.findViewById(R.id.nav_privacy);
+        navPrivacy.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Privacy.class);
+            startActivity(intent);
+        });
+
+        return view;
     }
 }
