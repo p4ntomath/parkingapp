@@ -85,9 +85,8 @@ public class booking_Fragment extends Fragment implements selectListener {
         navigationView =  navigationDrawerAcess.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_booking);
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.booking_fragment, container, false);
-        View view2 = inflater.inflate(R.layout.unablebook,container,false);
+        View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
+        View view2 = inflater.inflate(R.layout.unablebook,container,false); //Inflating the layout
         if(parkingSpace == 0){
             MaterialButton toFindParking = view2.findViewById(R.id.toFindParking);
             toFindParking.setOnClickListener(v -> {toFindParking();});
@@ -166,6 +165,8 @@ public void toFindParking(){
 
 
 
+//This function is responsible for setting up the variables
+
     public void variablesDeclaration(View view){
         bookNow = view.findViewById(R.id.bookNow);
         scheduleBtn = view.findViewById(R.id.scheduleBtn);
@@ -177,6 +178,7 @@ public void toFindParking(){
         availableSpotsDisplay = view.findViewById(R.id.availableSpots);
 
     }
+    //This function is responsible for setting up the recycler view
     public void setUpParentRecyclerView(View view){
         horizontalRecyclerView = view.findViewById(R.id.horizontalRecyclerView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -269,6 +271,15 @@ public void toFindParking(){
         displayExitTime.setText("Unknown");
         bookNowExitTime.setOnClickListener(v -> {
             setExitTime();});
+        bookSubmit.setOnClickListener(v -> {
+
+            if(bookingManager.insertToDatabase()){
+                Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getContext(), "Booking Failed", Toast.LENGTH_SHORT).show();
+            };
+            bottomSheetDialog.dismiss();
+            });
     }
     private void scheduleHandler() {
         bottomSheetDialog.show();

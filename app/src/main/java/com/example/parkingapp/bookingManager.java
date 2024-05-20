@@ -23,8 +23,10 @@ public class bookingManager {
        }
        return spot;}
 
-    public void insertToDatabase(Quartet<Integer,Integer,Integer,Integer> bookedspot){
+    public boolean insertToDatabase(){
+
         //insert to database
+        return false;
     }
     public String getBookedSpot(){
         return conversion(bookedspot);
