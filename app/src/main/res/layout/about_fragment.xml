@@ -85,7 +85,7 @@
             android:id="@+id/versionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.0"
+            android:text="1.0.0 alpha"
             android:layout_marginRight="40dp"
             android:textColor="#808080"
             android:textSize="20dp"
