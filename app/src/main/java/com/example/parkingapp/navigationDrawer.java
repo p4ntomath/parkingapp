@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -50,7 +49,7 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
         });
 
         dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setContentView(R.layout.logout_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_bg));
         dialog.setCancelable(false);

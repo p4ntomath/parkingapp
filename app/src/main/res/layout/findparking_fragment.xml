@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".findparking_fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".findparking_fragment"
+    android:orientation="vertical"
+    android:paddingTop="60dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="40dp"
-        android:textColor="#000000"
-        android:layout_gravity="center"
-        android:text="Find Parking">
-    </TextView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/primary"
-        android:layout_gravity="center"
+    <SearchView
+        android:id="@+id/findParkingSearchView"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center|top"
+        android:layout_height="50dp"
         android:layout_marginTop="40dp"
-        android:text="Not Yet Implemented">
+        android:background="@drawable/btn_logout"
+        android:queryHint="Search Parking"
+        android:focusable="false"
+        app:searchHintIcon="@null"
+        android:iconifiedByDefault="false"/>
 
-    </TextView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/findParkingRecyclerView"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/noParkingFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchView"
+        android:gravity="center"
+        android:text="No Parking Found"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:textSize="15dp" />
+
+</LinearLayout>

@@ -3,62 +3,114 @@ package com.example.parkingapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link findparking_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
 public class findparking_fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public findparking_fragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment findparking_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static findparking_fragment newInstance(String param1, String param2) {
-        findparking_fragment fragment = new findparking_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    List<parkingModel> parkings = new ArrayList<>();
+    RecyclerView recyclerView;
+    SearchView searchView;
+    TextView noParkingFound;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.findparking_fragment, container, false);
+        View view = inflater.inflate(R.layout.findparking_fragment, container, false);
+
+
+        addParkings();
+        noParkingFound = view.findViewById(R.id.noParkingFound);
+        searchView = view.findViewById(R.id.findParkingSearchView);
+        recyclerView = view.findViewById(R.id.findParkingRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new findParkingAdapter(parkings,getContext()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+
+
+
+
+        return view;
     }
+    public void addParkings(){
+
+        parkings.add(new parkingModel("Student","Barnato","East Campus",35,3,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","Men'Res","West Campus",30,23,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","Wits Plus","East Campus",90,89,1,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Student","Biology Parking","West Campus",47,32,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","FNB Parking","East Campus",89,56,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","NorthWest ","West Campus",21,8,1,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Student","Hall 29 ","East Campus",98,87,0,R.drawable.parkinglot));
+    }
+
+
+
+
+
+
+
+
+
+    private void filterList(String newText) {
+        // Initialize the filteredList
+        List<parkingModel> filteredList = new ArrayList<>();
+        // Loop through the items list
+        for (parkingModel item : parkings) {
+            // Check if the item's name contains the newText
+            if (item.getParkingName().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        // Set the filteredList to the adapter
+        if (filteredList.isEmpty()) {
+            // If the filteredList is empty, show a message
+            recyclerView.setVisibility(View.GONE);
+            noParkingFound.setVisibility(View.VISIBLE);
+        } else {
+            // If the filteredList is not empty, update the adapter
+            findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
+            adapter.setFilteredList(filteredList);
+            recyclerView.setVisibility(View.VISIBLE);
+            noParkingFound.setVisibility(View.GONE);
+        }
+    }
+
+
+
+
+
+
 }

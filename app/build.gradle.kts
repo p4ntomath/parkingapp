@@ -29,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.airbnb.android:lottie:3.4.0")
     implementation ("com.google.android.material:material:1.4.0")
     implementation ("com.google.android.material:material:1.3.0-alpha02")
     implementation ("com.google.android.material:material:1.3.0-alpha01")
