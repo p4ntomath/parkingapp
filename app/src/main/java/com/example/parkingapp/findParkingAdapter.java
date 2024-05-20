@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -13,10 +14,13 @@ public class findParkingAdapter extends RecyclerView.Adapter<findParkingAdapter.
 
     private List<parkingModel> dataList;
     private Context context;
+    private onCardViewSelected listener;
 
-    public findParkingAdapter(List<parkingModel> dataList, Context context) {
+    public findParkingAdapter(List<parkingModel> dataList, Context context,onCardViewSelected listener) {
         this.dataList = dataList;
         this.context = context;
+        this.listener = listener;
+
     }
     public void setFilteredList(List<parkingModel> filteredList) {
         this.dataList = filteredList;
@@ -40,6 +44,9 @@ public class findParkingAdapter extends RecyclerView.Adapter<findParkingAdapter.
         holder.parkingSpaceTotal.setText(String.valueOf(parkingModel.getTotalSpaces()));
         holder.bookedSpots.setText(String.valueOf(parkingModel.getBookedSpaces()));
         holder.favouriteSpots.setText(String.valueOf(parkingModel.getFavoriteSpaces()));
+        holder.cardView.setOnClickListener(v -> {
+            listener.onCardViewSelected(parkingModel.getParkingName(),String.valueOf(parkingModel.getTotalSpaces()),parkingModel.getParkingType());
+        });
     }
 
     @Override
@@ -49,6 +56,7 @@ public class findParkingAdapter extends RecyclerView.Adapter<findParkingAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
         public ImageView roundedImageView;
         public TextView typeParking;
         public TextView findParkingName;
@@ -60,6 +68,7 @@ public class findParkingAdapter extends RecyclerView.Adapter<findParkingAdapter.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.findParkingCard);
             roundedImageView = itemView.findViewById(R.id.roundedImageView);
             typeParking = itemView.findViewById(R.id.typeParking);
             findParkingName = itemView.findViewById(R.id.findParkingName);

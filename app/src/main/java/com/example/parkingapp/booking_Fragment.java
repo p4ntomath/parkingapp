@@ -42,7 +42,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     private String parkingName;
     private int parkingSpace; // Changed to int
     private String parkingType;
-    private navigationDrawerAcess navigationDrawerAcess;
+    navigationDrawerAcess navigationDrawerAcess;
 
     public booking_Fragment() {
 
@@ -65,7 +65,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     TextView parkingNameTextView,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
     TextView displayEntryTime,displayExitTime,availableSpotsDisplay;
     ImageButton leftArrow,rightArrow;
-    NavigationView navigationView;
+    public NavigationView navigationView;
 
     int itemCount;
 

@@ -3,9 +3,11 @@ package com.example.parkingapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +23,26 @@ import java.util.List;
 
 
 
-public class findparking_fragment extends Fragment {
+public class findparking_fragment extends Fragment implements onCardViewSelected {
+
+    public navigationDrawer accessNavigationDrawer;
 
 
     public findparking_fragment() {
 
     }
+    public findparking_fragment(navigationDrawer accessNavigationDrawer){
+
+    }
+
 
 
     List<parkingModel> parkings = new ArrayList<>();
     RecyclerView recyclerView;
     SearchView searchView;
     TextView noParkingFound;
+    NavigationView navigationView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +55,8 @@ public class findparking_fragment extends Fragment {
         searchView = view.findViewById(R.id.findParkingSearchView);
         recyclerView = view.findViewById(R.id.findParkingRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new findParkingAdapter(parkings,getContext()));
-
+        recyclerView.setAdapter(new findParkingAdapter(parkings,getContext(),this));
+        navigationView = accessNavigationDrawer.getNavigationDrawer();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -64,6 +75,8 @@ public class findparking_fragment extends Fragment {
 
         return view;
     }
+
+
     public void addParkings(){
 
         parkings.add(new parkingModel("Student","Barnato","East Campus",35,3,0,R.drawable.parkinglot));
@@ -94,7 +107,7 @@ public class findparking_fragment extends Fragment {
             }
         }
 
-        // Set the filteredList to the adapter
+        // Set the filteredList to the adapter]
         if (filteredList.isEmpty()) {
             // If the filteredList is empty, show a message
             recyclerView.setVisibility(View.GONE);
@@ -109,8 +122,19 @@ public class findparking_fragment extends Fragment {
     }
 
 
+    @Override
+    public void onCardViewSelected(String parkingName, String parkingSpace, String parkingType) {
 
 
+        parkingSpace = parkingSpace.split(":")[1].trim();
+        Log.d("Space",parkingSpace);
+        int space = Integer.parseInt(parkingSpace);
+        navigationView.setCheckedItem(R.id.nav_booking);
+        Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
-
+    }
 }
