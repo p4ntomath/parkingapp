@@ -1,65 +1,33 @@
-package com.example.parkingapp.FragmentsOfNavDrawer;
+package com.example.parkingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.parkingapp.About.Privacy;
-import com.example.parkingapp.R;
-import com.example.parkingapp.About.TermsAndConditions;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link about_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class about_fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView rateUs,privacy,terms;
+    View viewParam;
 
     public about_fragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment about_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static about_fragment newInstance(String param1, String param2) {
-        about_fragment fragment = new about_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public about_fragment(View view) {
+        this.viewParam = view;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,19 +35,37 @@ public class about_fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.about_fragment, container, false);
 
-        // Set up click listeners for the TextViews
+
         TextView navTerms = view.findViewById(R.id.nav_terms);
         navTerms.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), TermsAndConditions.class);
-            startActivity(intent);
+            View view1 = inflater.inflate(R.layout.activity_terms_and_conditions, container, false);
+            TextView textView = view1.findViewById(R.id.termsTextView);
+            textView.setText(Html.fromHtml(getString(R.string.terms_and_conditions), Html.FROM_HTML_MODE_COMPACT));
+            Fragment about = new about_fragment(view1);
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentLayout,about);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
+
 
         TextView navPrivacy = view.findViewById(R.id.nav_privacy);
         navPrivacy.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Privacy.class);
-            startActivity(intent);
+            View view1 = inflater.inflate(R.layout.activity_privacy, container, false);
+            TextView textView = view1.findViewById(R.id.privacyTextView);
+            textView.setText(Html.fromHtml(getString(R.string.privacy_policy), Html.FROM_HTML_MODE_COMPACT));
+            Fragment about = new about_fragment(view1);
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentLayout,about);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
+
+
+        if(viewParam != null){
+            return viewParam;
+        }
         return view;
     }
 }
