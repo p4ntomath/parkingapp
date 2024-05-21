@@ -212,10 +212,5 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.commit();
 
     }
-    public void checkFindParking(){
-        navigationView.setCheckedItem(R.id.nav_parking);
-    }public void checkBooking(){
-        navigationView.setCheckedItem(R.id.nav_booking);
-    }
 
 }

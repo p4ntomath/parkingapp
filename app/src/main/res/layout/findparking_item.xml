@@ -10,8 +10,7 @@
     android:id="@+id/findParkingCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="10dp"
-    android:backgroundTint="#E4DEDE"
+    android:backgroundTint="#B0DDE8"
     app:cardCornerRadius="8dp"
     android:layout_margin="10dp">
 
