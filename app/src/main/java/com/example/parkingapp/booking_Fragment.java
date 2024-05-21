@@ -42,7 +42,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     private String parkingName;
     private int parkingSpace; // Changed to int
     private String parkingType;
-    private navigationDrawerAcess navigationDrawerAcess;
+    navigationDrawerAcess navigationDrawerAcess;
 
     public booking_Fragment() {
 
@@ -65,7 +65,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     TextView parkingNameTextView,parkingBlock, availableSpots,spotNumberDisplay,parkingNameDisplay;
     TextView displayEntryTime,displayExitTime,availableSpotsDisplay;
     ImageButton leftArrow,rightArrow;
-    NavigationView navigationView;
+    public NavigationView navigationView;
 
     int itemCount;
 
@@ -84,6 +84,9 @@ public class booking_Fragment extends Fragment implements selectListener {
         parkingNameSelected =  parkingName;
         navigationView =  navigationDrawerAcess.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_booking);
+        if ((parkingSpace-1) % 20 == 0){
+            parkingSpace = parkingSpace-1;
+        }
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
         View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
         View view2 = inflater.inflate(R.layout.unablebook,container,false); //Inflating the layout
@@ -150,7 +153,7 @@ public void toFindParking(){
 
 
         navigationView.setCheckedItem(R.id.nav_parking);
-    Fragment newFragment = new findparking_fragment();
+    Fragment newFragment = new findparking_fragment(navigationDrawerAcess);
     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
     transaction.replace(R.id.fragmentLayout, newFragment);
     transaction.addToBackStack(null);
@@ -224,7 +227,11 @@ public void toFindParking(){
                 asciiValue += pos;
                 char newChar = (char) asciiValue;
                 parkingBlock.setText("Block " + newChar);
-                if(pos == itemCount-1){
+                if(parkingSpace == 20){
+                    rightArrow.setVisibility(View.INVISIBLE);
+                    leftArrow.setVisibility(View.INVISIBLE);
+                }
+                else if(pos == itemCount-1){
                     rightArrow.setVisibility(View.INVISIBLE);
                     leftArrow.setVisibility(View.VISIBLE);
 

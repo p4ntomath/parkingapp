@@ -7,9 +7,10 @@
     android:orientation="vertical">
 
 <androidx.cardview.widget.CardView
+    android:id="@+id/findParkingCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="10dp"
+    android:backgroundTint="#B0DDE8"
     app:cardCornerRadius="8dp"
     android:layout_margin="10dp">
 
@@ -60,7 +61,8 @@
                     android:id="@+id/typeParking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Student Parking"
+                    android:text="Student"
+                    android:textColor="@color/white"
                     android:textSize="8dp"
                     android:textStyle="bold"
                     android:layout_gravity="center">

@@ -202,7 +202,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     public void onCardViewSelected(String Name, String Space, String Type) {
         parkingName = Name;
         parkingSpace = Space.split(":")[1].trim();
-        Log.d("Space",parkingSpace);
         int space = Integer.parseInt(parkingSpace);
         parkingType = Type;
         navigationView.setCheckedItem(R.id.nav_booking);
@@ -212,11 +211,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.addToBackStack(null);
         transaction.commit();
 
-    }
-    public void checkFindParking(){
-        navigationView.setCheckedItem(R.id.nav_parking);
-    }public void checkBooking(){
-        navigationView.setCheckedItem(R.id.nav_booking);
     }
 
 }
