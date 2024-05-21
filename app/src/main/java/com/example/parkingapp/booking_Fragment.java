@@ -84,6 +84,9 @@ public class booking_Fragment extends Fragment implements selectListener {
         parkingNameSelected =  parkingName;
         navigationView =  navigationDrawerAcess.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_booking);
+        if ((parkingSpace-1) % 20 == 0){
+            parkingSpace = parkingSpace-1;
+        }
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.booking_fragment, container, false);
@@ -151,7 +154,7 @@ public void toFindParking(){
 
 
         navigationView.setCheckedItem(R.id.nav_parking);
-    Fragment newFragment = new findparking_fragment();
+    Fragment newFragment = new findparking_fragment(navigationDrawerAcess);
     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
     transaction.replace(R.id.fragmentLayout, newFragment);
     transaction.addToBackStack(null);
@@ -222,7 +225,11 @@ public void toFindParking(){
                 asciiValue += pos;
                 char newChar = (char) asciiValue;
                 parkingBlock.setText("Block " + newChar);
-                if(pos == itemCount-1){
+                if(parkingSpace == 20){
+                    rightArrow.setVisibility(View.INVISIBLE);
+                    leftArrow.setVisibility(View.INVISIBLE);
+                }
+                else if(pos == itemCount-1){
                     rightArrow.setVisibility(View.INVISIBLE);
                     leftArrow.setVisibility(View.VISIBLE);
 

@@ -25,13 +25,14 @@ import java.util.List;
 
 public class findparking_fragment extends Fragment implements onCardViewSelected {
 
-    public navigationDrawer accessNavigationDrawer;
+    public navigationDrawerAcess accessNavigationDrawer;
 
 
     public findparking_fragment() {
 
     }
-    public findparking_fragment(navigationDrawer accessNavigationDrawer){
+    public findparking_fragment(navigationDrawerAcess accessNavigationDrawer){
+        this.accessNavigationDrawer = accessNavigationDrawer;
 
     }
 
@@ -125,9 +126,6 @@ public class findparking_fragment extends Fragment implements onCardViewSelected
     @Override
     public void onCardViewSelected(String parkingName, String parkingSpace, String parkingType) {
 
-
-        parkingSpace = parkingSpace.split(":")[1].trim();
-        Log.d("Space",parkingSpace);
         int space = Integer.parseInt(parkingSpace);
         navigationView.setCheckedItem(R.id.nav_booking);
         Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
