@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,8 +124,10 @@ TextView signUpText;
 
             sendOtp.setOnClickListener(v -> {
                 if(forgotPasswordManager.validateEmail()){ //if the email is valid
+                    Toast.makeText(this, "OTP Sent", Toast.LENGTH_SHORT).show();
                     sendOtp.setText("Cormfirm"); //change the text to confirm on the button
                     otpInput.setVisibility(View.VISIBLE);
+
                     sendOtp.setOnClickListener(a -> {
                         if(forgotPasswordManager.validateOtp()){
                             //this class will validate the otp
@@ -155,6 +158,7 @@ public void setNewPasswordSheet(){
         forgotPasswordManager resetPasswordManager = new forgotPasswordManager(newPassword,confirmPassword,this);
         resetPassword.setOnClickListener(v -> {
             if(resetPasswordManager.resetPassword()){
+                Toast.makeText(this, "Password Reset Successfully", Toast.LENGTH_SHORT).show();
                 newPasswordbottomSheetDialog.dismiss();//close the bottom sheet if the password is reset successfully
                 openSignInPage();//open the sign in page
             }

@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class forgotPasswordManager {
 
@@ -35,6 +36,7 @@ public class forgotPasswordManager {
             this.email.setError("Invalid Email");
             return false;
         }
+
         return true;
         // you can also perform requests to database to check if email exists or not
         //if not then set error that email does not exists
