@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/logInBottomSheet"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:elevation="10dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/menu_background">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="479dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <EditText
+
+            android:id="@+id/forgotPasswordEmail"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="5dp"
+            android:layout_height="54dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/input"
+            android:ems="10"
+            android:hint="Email Adress"
+            android:inputType="textEmailAddress"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+        <EditText
+
+            android:id="@+id/otpInput"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="5dp"
+            android:layout_height="54dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/input"
+            android:ems="10"
+            android:hint="OTP"
+            android:inputType="number"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/sendOtpButton"
+            android:layout_width="251dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btnradius"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white"
+            android:text="Send OTP"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:backgroundTint="@null">
+
+
+
+        </Button>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/signUpText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Sign Up"
+                android:clickable="true"
+                android:onClick="openSignUpPage"
+                android:textColor="@color/primary"
+                android:textStyle="bold">
+
+            </TextView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

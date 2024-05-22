@@ -399,9 +399,12 @@ public void toFindParking(){
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                //Avoiing the time conflict,users booking time behind the current time
+                //Avoiding the time conflict,users booking time behind the current time
                 int hourToSet = Math.max(hourOfDay, hourNow);
                 int minToSet = hourToSet == hourNow ? minuteNow : minute;
+                if(hourToSet == hourOfDay){
+                    minToSet = Math.max(minute, minuteNow);
+                }
                 String sHourToSet = String.valueOf(hourToSet);
                 if (sHourToSet.length() == 1) {sHourToSet = "0" + sHourToSet;} //add 0 if the hour is less than 10
                 String sMinToSet = String.valueOf(minToSet);
