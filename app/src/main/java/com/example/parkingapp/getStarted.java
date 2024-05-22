@@ -21,19 +21,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 public class getStarted extends AppCompatActivity {
     TextView logInPage;
     Button signUpPage;
-
+    BottomSheetDialog signUpbottomSheetDialog;
+    BottomSheetDialog signInbottomSheetDialog;
 TextView signUpText;
     EditText logInUserId;
     EditText logInPassword;
     logInManager loginManager;
     Button logInButton;
-    Button signUpBtn;
+    Button signUpBtn,sendOtp;
     EditText signUpuserId;
-    EditText signUpEmail;
+    EditText signUpEmail,forgotPasswordEmail;
     EditText signUpPassword;
     RadioGroup userType;
     TextView errorMessage;
-    TextView signInText;
+
+    TextView signInText,forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ TextView signUpText;
         });
 
         logInPage = findViewById(R.id.SignInPage);
-        logInPage.setOnClickListener(v -> openSignInPage(v));
+        logInPage.setOnClickListener(v -> openSignInPage());
         signUpPage = findViewById(R.id.signUpPage);
         signUpPage.setOnClickListener(v -> openSignUpPage(v));
 
@@ -65,8 +67,8 @@ TextView signUpText;
 
 
     }
-    public void openSignInPage(View view) {
-        BottomSheetDialog signInbottomSheetDialog = new BottomSheetDialog(getStarted.this);
+    public void openSignInPage() {
+         signInbottomSheetDialog = new BottomSheetDialog(getStarted.this);
         View newLogInView = LayoutInflater.from(this).inflate(R.layout.login_sheet, null);
         signInbottomSheetDialog.setContentView(newLogInView);
         signInbottomSheetDialog.show();
@@ -75,24 +77,24 @@ TextView signUpText;
         logInButton = newLogInView.findViewById(R.id.logInBtn);
         signUpText = newLogInView.findViewById(R.id.signUpText);
         loginManager = new logInManager(this,logInUserId,logInPassword);
+        forgotPassword = newLogInView.findViewById(R.id.forgotPassword);
 
+        forgotPassword.setOnClickListener(v -> {
+            signInbottomSheetDialog.dismiss();
+            openForgotPassword();});
 
-        logInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginManager.logIn();
-            }
+        logInButton.setOnClickListener(v -> {
+            loginManager.logIn();
         });
-        signUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signInbottomSheetDialog.dismiss();
-                openSignUpPage(v);
-            }});
-
+        signUpText.setOnClickListener(v -> {
+            signInbottomSheetDialog.dismiss();
+            openSignUpPage(v);
+        });
     }
+
+
     public  void openSignUpPage(View view){
-        BottomSheetDialog signUpbottomSheetDialog = new BottomSheetDialog(getStarted.this);
+        signUpbottomSheetDialog = new BottomSheetDialog(getStarted.this);
         View newSignUpView = LayoutInflater.from(this).inflate(R.layout.signup_sheet, null);
         signUpbottomSheetDialog.setContentView(newSignUpView);
         signUpbottomSheetDialog.show();
@@ -104,18 +106,64 @@ TextView signUpText;
         errorMessage = newSignUpView.findViewById(R.id.errorMessage);
         signInText = newSignUpView.findViewById(R.id.signInText);
         signUpManager signUpManager = new signUpManager(this,signUpuserId,signUpEmail,signUpPassword,userType,errorMessage);
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signUpManager.signUp();
-            }});
-
-        signInText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signUpbottomSheetDialog.dismiss();
-                openSignInPage(v);}});
+        signUpBtn.setOnClickListener(v -> {signUpManager.signUp();});
+        signInText.setOnClickListener(v -> {signUpbottomSheetDialog.dismiss();
+            openSignInPage();});
     }
+
+    public void openForgotPassword(){
+        BottomSheetDialog forgotPasswordbottomSheetDialog = new BottomSheetDialog(getStarted.this);
+        View newForgotPasswordView = LayoutInflater.from(this).inflate(R.layout.sendotp_sheeet, null);
+        forgotPasswordbottomSheetDialog.setContentView(newForgotPasswordView);
+        forgotPasswordbottomSheetDialog.show();
+        sendOtp = newForgotPasswordView.findViewById(R.id.sendOtpButton);
+        EditText otpInput = newForgotPasswordView.findViewById(R.id.otpInput);
+        forgotPasswordEmail = newForgotPasswordView.findViewById(R.id.forgotPasswordEmail);
+        forgotPasswordManager forgotPasswordManager = new forgotPasswordManager(this,forgotPasswordEmail,otpInput);//this class will validate the email and send otp
+
+            sendOtp.setOnClickListener(v -> {
+                if(forgotPasswordManager.validateEmail()){ //if the email is valid
+                    sendOtp.setText("Cormfirm"); //change the text to confirm on the button
+                    otpInput.setVisibility(View.VISIBLE);
+                    sendOtp.setOnClickListener(a -> {
+                        if(forgotPasswordManager.validateOtp()){
+                            //this class will validate the otp
+                            forgotPasswordbottomSheetDialog.dismiss(); //close the bottom sheet if the otp is valid
+                            setNewPasswordSheet(); //open the new password bottom sheet
+                        }
+                    }); //this is where you take input on the otp and do stuf
+                };//write the code to send otp in the class
+                // this class will validate the email and send otp
+                //manages everything to avoid code duplication
+            });
+
+        signUpText = newForgotPasswordView.findViewById(R.id.signUpText);
+        signUpText.setOnClickListener(v -> {
+            forgotPasswordbottomSheetDialog.dismiss();
+            openSignUpPage(v);}); //when user presses sign up the sign up bottom sheet will close
+    }
+
+
+public void setNewPasswordSheet(){
+        BottomSheetDialog newPasswordbottomSheetDialog = new BottomSheetDialog(getStarted.this);
+        View newPasswordView = LayoutInflater.from(this).inflate(R.layout.newpassword_sheet, null);
+        newPasswordbottomSheetDialog.setContentView(newPasswordView);
+        newPasswordbottomSheetDialog.show();
+        EditText newPassword = newPasswordView.findViewById(R.id.newPasswordInput);
+        EditText confirmPassword = newPasswordView.findViewById(R.id.confirmPasswordInput);
+        Button resetPassword = newPasswordView.findViewById(R.id.resetPasswordBtn);
+        forgotPasswordManager resetPasswordManager = new forgotPasswordManager(newPassword,confirmPassword,this);
+        resetPassword.setOnClickListener(v -> {
+            if(resetPasswordManager.resetPassword()){
+                newPasswordbottomSheetDialog.dismiss();//close the bottom sheet if the password is reset successfully
+                openSignInPage();//open the sign in page
+            }
+        });
+
+}
+
+
+
 
     public void openNavigationDrawer() {
         Intent intent = new Intent(this, navigationDrawer.class);
