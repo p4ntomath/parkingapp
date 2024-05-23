@@ -11,7 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,11 +26,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
@@ -36,9 +48,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     private GoogleMap mMap;
     NavigationView navigationView;
     navigationDrawerAcess accessNavigationDrawer;
+
     public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
         this.accessNavigationDrawer = accessNavigationDrawer;
     }
+
     public home_fragment() {
     }
 
@@ -48,7 +62,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    String parkingName,parkingSpace,parkingType;
+    String parkingName, parkingSpace, parkingType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,8 +84,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
 
 
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -82,19 +94,59 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
         // Create a LatLngBounds object that contains the specified boundaries
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-
-        // Set max zoom level
-        mMap.setMaxZoomPreference(17);
-
-        // Set camera bounds to prevent camera from leaving the specified boundaries
         mMap.setLatLngBoundsForCameraTarget(bounds);
+        mMap.setMaxZoomPreference(18);
 
-        // Add marker to the middle of Wits Uni
-        LatLng johannesburg = new LatLng(-26.1887, 28.0267);
-        mMap.addMarker(new MarkerOptions().position(johannesburg).title("Middle Of Wits Uni"));
-
-        // Move camera to Johannesburg and zoom closer
+        LatLng johannesburg = new LatLng(-26.188399656538014, 28.027207973873512);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
+
+        // Read JSON file from raw directory
+        String json = readJSONFromRaw(R.raw.parking_coordinates);
+
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            // Define bounds for camera target
+            LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+
+            // Get iterator over keys
+            Iterator<String> keys = jsonObject.keys();
+
+            // Add markers for each place
+            while (keys.hasNext()) {
+                String place = keys.next();
+                JSONObject coordinates = jsonObject.getJSONObject(place);
+                double latitude = coordinates.getDouble("latitude");
+                double longitude = coordinates.getDouble("longitude");
+                LatLng location = new LatLng(latitude, longitude);
+
+                // Add marker
+                mMap.addMarker(new MarkerOptions().position(location).title(place));
+
+                // Extend bounds
+                boundsBuilder.include(location);
+            }
+
+            // Set camera bounds to prevent camera from leaving the specified boundaries
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Read JSON file from raw directory
+    private String readJSONFromRaw(int rawResourceId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try (InputStream inputStream = getResources().openRawResource(rawResourceId);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
     }
 
 
