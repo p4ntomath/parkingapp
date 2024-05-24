@@ -57,7 +57,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     public home_fragment() {
     }
 
-    List<item> items = new ArrayList<>();
+    List<parkingModel> parkings = new ArrayList<>();
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
@@ -76,7 +76,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
 
         bottomSheetBehavior(view);
-        addItems();//adding items to the list
+        addParkings();
         initRecyclerView(view);//initializing the recyclerview
         supportMapFragment(); //support map fragment
 
@@ -176,10 +176,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
     public void initRecyclerView(View view){
         // Initialize the RecyclerView
-        recyclerView = view.findViewById(R.id.recyclerView);
+        searchView = view.findViewById(R.id.searchView);
+        recyclerView = view.findViewById(R.id.findParkingRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items,this));
-
+        recyclerView.setAdapter(new findParkingAdapter(parkings,getContext(),this));
         noParking = view.findViewById(R.id.noParking);
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -204,7 +204,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
     }
     public void bottomSheetBehavior(View view){
-
         // Initialize the BottomSheetBehavior
         bottomSheet = view.findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -213,40 +212,35 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
     }
 
-    public void addItems() {
-        // Add items to the list
-        items.add(new item("Barnato Parking", "Space : 35","Students", R.drawable.applogo));
-        items.add(new item("Wits Plus Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
-        items.add(new item("Zesti Lemonz Parking Lot", "Space : 79","Staff" ,R.drawable.findparkingicon));
-        items.add(new item("Hall 29 Parking Lot", "Space : 100","Students", R.drawable.homeicon));
-        items.add(new item("FNB Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
-        items.add(new item("John Moffat Parking Lot", "Space : 35","Students", R.drawable.applogo));
-        items.add(new item("Biology Building Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
-        items.add(new item("David Webster Parking Lot", "Space : 79","Students" ,R.drawable.findparkingicon));
-        items.add(new item("Northwest Engineering Parking Lot", "Space : 100","Staff", R.drawable.homeicon));
-        items.add(new item("Men's Res Roadside Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
+    public void addParkings(){
 
+        parkings.add(new parkingModel("Student","Barnato","East Campus",35,3,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","Men'Res","West Campus",30,23,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","Wits Plus","East Campus",90,89,1,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Student","Biology Parking","West Campus",47,32,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","FNB Parking","East Campus",89,56,0,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Staff","NorthWest ","West Campus",21,8,1,R.drawable.parkinglot));
+        parkings.add(new parkingModel("Student","Hall 29 ","East Campus",98,87,0,R.drawable.parkinglot));
     }
     private void filterList(String newText) {
         // Initialize the filteredList
-        List<item> filteredList = new ArrayList<>();
+        List<parkingModel> filteredList = new ArrayList<>();
         // Loop through the items list
-        for (item item : items) {
+        for (parkingModel item : parkings) {
             // Check if the item's name contains the newText
             if (item.getParkingName().toLowerCase().contains(newText.toLowerCase())) {
-                // Add the item to the filteredList
                 filteredList.add(item);
             }
         }
 
-        // Set the filteredList to the adapter
+        // Set the filteredList to the adapter]
         if (filteredList.isEmpty()) {
             // If the filteredList is empty, show a message
             recyclerView.setVisibility(View.GONE);
             noParking.setVisibility(View.VISIBLE);
         } else {
             // If the filteredList is not empty, update the adapter
-            recycleViewAdapter adapter = (recycleViewAdapter) recyclerView.getAdapter();
+            findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
             adapter.setFilteredList(filteredList);
             recyclerView.setVisibility(View.VISIBLE);
             noParking.setVisibility(View.GONE);
@@ -254,13 +248,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
 
 
-
     @Override
-    public void onCardViewSelected(String Name, String Space, String Type) {
-        parkingName = Name;
-        parkingSpace = Space.split(":")[1].trim();
+    public void onCardViewSelected(String parkingName, String parkingSpace, String parkingType) {
+
         int space = Integer.parseInt(parkingSpace);
-        parkingType = Type;
         navigationView.setCheckedItem(R.id.nav_booking);
         Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

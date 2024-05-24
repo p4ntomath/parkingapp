@@ -50,9 +50,11 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/searchView"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="50dp"
                 android:scrollbars="vertical"
-                android:id="@+id/recyclerView"/>
+                android:id="@+id/findParkingRecyclerView"/>
+
+
 
             <TextView
                 android:id="@+id/noParking"

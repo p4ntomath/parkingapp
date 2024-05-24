@@ -152,8 +152,8 @@ public class booking_Fragment extends Fragment implements selectListener {
 public void toFindParking(){
 
 
-        navigationView.setCheckedItem(R.id.nav_parking);
-    Fragment newFragment = new findparking_fragment(navigationDrawerAcess);
+        navigationView.setCheckedItem(R.id.nav_home);
+    Fragment newFragment = new home_fragment(navigationDrawerAcess);
     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
     transaction.replace(R.id.fragmentLayout, newFragment);
     transaction.addToBackStack(null);
