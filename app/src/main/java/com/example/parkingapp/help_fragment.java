@@ -4,12 +4,17 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class help_fragment extends Fragment {
@@ -26,7 +31,7 @@ public class help_fragment extends Fragment {
     RelativeLayout howToUse,faq,support;
     TextView howToUseText,faqText,supportText;
 
-View supportDevsView;
+
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +46,15 @@ View supportDevsView;
         supportText = view.findViewById(R.id.supportDevsText);
 
         support.setOnClickListener(v->{
-            supportDevsView = inflater.inflate(R.layout.supportdevelopers, container, false);
-            Fragment about = new help_fragment(supportDevsView);
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragmentLayout,about);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            View supportDevsView = inflater.inflate(R.layout.supportdevelopers, container, false);
+            ViewPager2 viewPager = supportDevsView.findViewById(R.id.viewPager);
+            List<Integer> layouts = new ArrayList<>();
+            layouts.add(R.layout.mahlatse_card);
+            layouts.add(R.layout.mahlatse_card);
+            CardPagerAdapter adapter = new CardPagerAdapter(getContext(), layouts);
+            replaceView(supportDevsView);
+            viewPager.setAdapter(adapter);
+
         });
         if(viewParam!=null){
             view = viewParam;
@@ -54,6 +62,14 @@ View supportDevsView;
         }
 
         return view;
+    }
+
+    public void replaceView(View view){
+        Fragment about = new help_fragment(view);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout,about);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
