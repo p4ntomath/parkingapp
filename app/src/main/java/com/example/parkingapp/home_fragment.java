@@ -13,6 +13,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -76,10 +77,22 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
         bottomSheetBehavior(view);
         addItems();//adding items to the list
-
         initRecyclerView(view);//initializing the recyclerview
-
         supportMapFragment(); //support map fragment
+
+        // Override onBackPressed
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else {
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
+
+
         return view;
     }
 
@@ -97,10 +110,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         mMap.setLatLngBoundsForCameraTarget(bounds);
         mMap.setMaxZoomPreference(18);
 
-        LatLng johannesburg = new LatLng(-26.188399656538014, 28.027207973873512);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
 
-        // Read JSON file from raw directory
+        LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));
+
         String json = readJSONFromRaw(R.raw.parking_coordinates);
 
         try {
@@ -109,7 +122,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
             // Define bounds for camera target
             LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
-            // Get iterator over keys
             Iterator<String> keys = jsonObject.keys();
 
             // Add markers for each place
@@ -121,7 +133,15 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
                 LatLng location = new LatLng(latitude, longitude);
 
                 // Add marker
-                mMap.addMarker(new MarkerOptions().position(location).title(place));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(place));
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        // Handle marker click events here
+                        searchView.setQuery(marker.getTitle(), false);
+                        return false;
+                    }
+                });
 
                 // Extend bounds
                 boundsBuilder.include(location);
@@ -131,23 +151,9 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
-    // Read JSON file from raw directory
-    private String readJSONFromRaw(int rawResourceId) {
-        StringBuilder stringBuilder = new StringBuilder();
-        try (InputStream inputStream = getResources().openRawResource(rawResourceId);
-             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stringBuilder.toString();
-    }
 
 
 
@@ -204,7 +210,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(600);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
 
     }
 
@@ -264,5 +269,21 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.commit();
 
     }
+    // Read JSON file from raw directory
+    private String readJSONFromRaw(int rawResourceId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try (InputStream inputStream = getResources().openRawResource(rawResourceId);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
 
 }
