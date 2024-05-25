@@ -8,7 +8,7 @@ public class userSessionManager {
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_USER_TYPE= "userType";
     public static final String KEY_USER_EMAIL = "userEmail";
-    public static final String KEY_USER_PASSWORD = "userPassword";
+    public static final String KEY_TOKEN = "Token";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
 
 
@@ -19,12 +19,12 @@ public class userSessionManager {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
-    public void createSession(String userId, String userType, String userEmail, String userPassword){
+    public void createSession(String userId, String userType, String userEmail, String Token){
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putString(KEY_USER_ID, userId);
         editor.putString(KEY_USER_TYPE, userType);
         editor.putString(KEY_USER_EMAIL, userEmail);
-        editor.putString(KEY_USER_PASSWORD, userPassword);
+        editor.putString(KEY_TOKEN, Token);
         editor.commit();
     }
     public String getUserId(){
@@ -33,12 +33,8 @@ public class userSessionManager {
     public String getUserType(){
         return sharedPreferences.getString(KEY_USER_TYPE, null);
     }
-    public String getUserEmail(){
-        return sharedPreferences.getString(KEY_USER_EMAIL, null);
-        }
-    public String getUserPassword(){
-        return sharedPreferences.getString(KEY_USER_PASSWORD, null);
-    }
+    public String getUserEmail(){ return sharedPreferences.getString(KEY_USER_EMAIL, null); }
+    public String getToken() { return sharedPreferences.getString(KEY_TOKEN, null); }
     public boolean isLoggedIn(){
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }

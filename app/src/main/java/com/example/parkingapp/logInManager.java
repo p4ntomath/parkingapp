@@ -35,7 +35,6 @@ public class logInManager {
         String userIdString = logInUserId.getText().toString();
         String password = logInPassword.getText().toString();
 
-
         if (validateForm(userIdString, password)) {
             SQLReq(userIdString, password);
             logInUserId.setText("");
@@ -72,17 +71,19 @@ public class logInManager {
     private void showToast(String message) {
         Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
     private void showToastOnUiThread(String message) {
-        ((Activity) context).runOnUiThread(new Runnable() {@Override
+        ((Activity) context).runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 showToast(message);
             }
         });
     }
 
-    private void storeToSharedPreferences(String userIdString, String email, String password, String uType) {
+    private void storeToSharedPreferences(String userIdString, String email, String token, String uType) {
         userSessionManager sessionManager = new userSessionManager(context);
-        sessionManager.createSession(userIdString, uType, email, password);
+        sessionManager.createSession(userIdString, uType, email, token);
     }
 
     private void SQLReq(String userIdString, String password) {
@@ -125,9 +126,9 @@ public class logInManager {
                         String email = jsonObject.getString("EMAIL");
                         String uType = jsonObject.getString("USER_TYPE");
                         String userId = jsonObject.getString("USER_ID");
-                        String password = jsonObject.getString("PASSWORD");
+                        String token = jsonObject.getString("TOKEN");
 
-                        storeToSharedPreferences(userId, email, password, uType);
+                        storeToSharedPreferences(userId, email, token, uType);
                         openNavigationDrawer();
                     } else {
                         showToastOnUiThread("User does not exist");
@@ -140,10 +141,9 @@ public class logInManager {
         });
     }
 
-    public void openNavigationDrawer(){
+    public void openNavigationDrawer() {
         Intent intent = new Intent(context, navigationDrawer.class);
         context.startActivity(intent);
         ((Activity) context).finish();
     }
-
 }
