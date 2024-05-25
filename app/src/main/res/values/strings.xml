@@ -104,6 +104,22 @@
     ]]>
 </string>
 
+    <string name="howToUseApp">
+    <![CDATA[
+    Welcome to our Parking Management App!\n\n
+    1. Ad hoc parking spaces:\n
+    - Each parking spot will have a parking lot and parking spot number attached to it.\n
+    - Staff cannot park in student lots and students cannot park in staff lots.\n
+    - Park: Select a spot and mark it as in use.\n
+    - Leave: Indicate when you have left a spot to make it available again.\n\n
+    2. Ideal Parking Spot:\n
+    - Search for available parking spots based on the parking lot.\n\n
+    3. Parking Reservation System:\n
+       - Reserve parking spaces in advance based on destination, time, and duration of stay.\n
+    ]]>
+</string>
+
+
 
 
 </resources>

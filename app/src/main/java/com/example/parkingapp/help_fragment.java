@@ -6,10 +6,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Pair;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.relex.circleindicator.CircleIndicator;
-import me.relex.circleindicator.CircleIndicator2;
 import me.relex.circleindicator.CircleIndicator3;
 
 
@@ -54,29 +50,20 @@ public class help_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.help_fragment, container, false);
-        howToUse = view.findViewById(R.id.howToUse);
-        faq = view.findViewById(R.id.faqs);
-        support = view.findViewById(R.id.supportDevs);
-        howToUseText = view.findViewById(R.id.howToUseText);
-        faqText = view.findViewById(R.id.faqsText);
-        supportText = view.findViewById(R.id.supportDevsText);
+        initVariables(view);
 
-        support.setOnClickListener(v->{
-            View supportDevsView = inflater.inflate(R.layout.supportdevelopers, container, false);
-            ViewPager2 viewPager = supportDevsView.findViewById(R.id.viewPager);
-            addCard();
-            addSocials();
-            addSocialLinks();
-            CardPagerAdapter adapter = new CardPagerAdapter(getContext(), cards,socials,socialLinks);
-            replaceView(supportDevsView);
-            CircleIndicator3 indicator = supportDevsView.findViewById(R.id.indicator);
-            viewPager.setAdapter(adapter);
-            indicator.setViewPager(viewPager);
+        support.setOnClickListener(v->{openSupportDevs(inflater,container);});
+        howToUse.setOnClickListener(v->{openHowToUse(inflater,container);});
+        faq.setOnClickListener(v->{openFaqs(inflater,container);});
+        howToUseText.setOnClickListener(v->{openHowToUse(inflater,container);});
+        faqText.setOnClickListener(v->{openFaqs(inflater,container);});
+        supportText.setOnClickListener(v->{openSupportDevs(inflater,container);});
 
 
-        });
+
+
         if(viewParam!=null){
             view = viewParam;
 
@@ -91,7 +78,61 @@ public class help_fragment extends Fragment {
         transaction.replace(R.id.fragmentLayout,about);
         transaction.addToBackStack(null);
         transaction.commit();
-    }public void addCard(){
+    }public  void initVariables(View view){
+        howToUse = view.findViewById(R.id.howToUse);
+        faq = view.findViewById(R.id.faqs);
+        support = view.findViewById(R.id.supportDevs);
+        howToUseText = view.findViewById(R.id.howToUseText);
+        faqText = view.findViewById(R.id.faqsText);
+        supportText = view.findViewById(R.id.supportDevsText);
+    }
+
+
+
+    public void openSupportDevs(LayoutInflater inflater, ViewGroup container){
+        View supportDevsView = inflater.inflate(R.layout.supportdevelopers, container, false);
+        ViewPager2 viewPager = supportDevsView.findViewById(R.id.viewPager);
+        addCard();
+        addSocials();
+        addSocialLinks();
+        CardPagerAdapter adapter = new CardPagerAdapter(getContext(), cards,socials,socialLinks);
+        CircleIndicator3 indicator = supportDevsView.findViewById(R.id.indicator);
+        viewPager.setAdapter(adapter);
+        indicator.setViewPager(viewPager);
+        replaceView(supportDevsView);
+
+    }public void openHowToUse(LayoutInflater inflater, ViewGroup container){
+        View howToUseView = inflater.inflate(R.layout.help_howtouse, container, false);
+        replaceView(howToUseView);
+    }
+    public void openFaqs(LayoutInflater inflater, ViewGroup container){
+        View faqView = inflater.inflate(R.layout.help_faqs, container, false);
+        replaceView(faqView);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void addCard(){
 
 
         cards.getFirst().put("Mahlatse Rabothata", Arrays.asList("Facebook","Github","Instagram","Linkedin","Youtube"));
