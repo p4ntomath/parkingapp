@@ -1,7 +1,7 @@
 package com.example.parkingapp;
 
 public class Quartet<A, B, C, D> {
-    private final A first;
+    public A first;
     private final B second;
     private final C third;
     private final D fourth;

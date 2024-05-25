@@ -13,6 +13,7 @@
         android:backgroundTint="@color/primary"
         android:layout_height="500dp">
         <RelativeLayout
+            android:id="@+id/profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -24,8 +25,9 @@
                 android:layout_marginTop="80dp"
                 app:strokeWidth="1dp"
                 android:layout_centerHorizontal="true"
-                app:strokeColor="@color/black">
+                app:strokeColor="@color/white">
                 <ImageView
+                    android:id="@+id/profilePicImage"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:src="@drawable/mahlatse"/>
@@ -64,34 +66,24 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/facebookicon"
                     android:layout_margin="5dp"
-                    android:src="@drawable/facebookicon"/>
+                    android:id="@+id/facebook"/>
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/instagramicon"/>
-                <ImageView
-                    android:layout_width="wrap_content"
+                    android:src="@drawable/instagramicon"
                     android:layout_margin="5dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/linkedinicon"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/youtubeicon"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/githubicon"/>
+                    android:id="@+id/instagram"/>
+
+
 
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+
                 app:rippleColor="@color/black"
-                android:id="@+id/material_icon_button"
+                android:id="@+id/contact"
                 android:layout_below="@id/social"
                 android:layout_margin="10dp"
                 android:layout_centerHorizontal="true"
@@ -102,7 +94,7 @@
                 app:backgroundTint="@color/tertiary"
                 android:backgroundTint="@color/tertiary"
                 android:textColor="@color/tertiary"
-                app:icon="@drawable/whatsappicon"/>
+                app:icon="@drawable/instagramicon"/>
 
 
         </RelativeLayout>
