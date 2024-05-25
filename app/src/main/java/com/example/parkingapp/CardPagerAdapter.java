@@ -67,11 +67,12 @@ public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.View
             holder.contact.setIconResource(icon);
         }
         holder.contact.setOnClickListener(v->{
+            if(socialLinks.get(names.get(position)).get(contactType) != null){
             if(contactType.equals("Whatsapp")){
                 openWhatsApp(socialLinks.get(names.get(position)).get(contactType));
             }else{
                 openUrl(socialLinks.get(names.get(position)).get(contactType));
-            }
+            }}
         });
 
 
