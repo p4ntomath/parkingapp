@@ -2,13 +2,9 @@ package com.example.parkingapp;
 
 
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -30,12 +24,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.ViewHolder> {
     Quartet<Map<String, List<String>>, List<String>, List<Integer>, List<String>> cards;
     private Context context;
     Map<String, Integer> socialsIcons = new HashMap<>();
     List<String> names ;
+
     Map<String, Map<String, String>> socialLinks = new HashMap<>();
 
     public CardPagerAdapter(Context context, Quartet<Map<String, List<String>>, List<String>, List<Integer>, List<String>> cards,
@@ -51,7 +47,7 @@ public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.mahlatse_card, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.developer_card, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -67,12 +63,13 @@ public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.View
             holder.contact.setIconResource(icon);
         }
         holder.contact.setOnClickListener(v->{
-            if(socialLinks.get(names.get(position)).get(contactType) != null){
-            if(contactType.equals("Whatsapp")){
-                openWhatsApp(socialLinks.get(names.get(position)).get(contactType));
-            }else{
-                openUrl(socialLinks.get(names.get(position)).get(contactType));
-            }}
+            if(socialLinks.containsKey(names.get(position))) {
+                if (contactType.equals("Whatsapp")) {
+                    openWhatsApp(socialLinks.get(names.get(position)).get(contactType));
+                } else {
+                    openUrl(socialLinks.get(names.get(position)).get(contactType));
+                }
+            }
         });
 
 
@@ -106,7 +103,11 @@ public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.View
 
             int finalI = i;
             imageView.setOnClickListener(v->{
+
+
                 if(socialLinks.get(names.get(position)) != null){
+
+
                     String url = socialLinks.get(names.get(position)).get(keys.get(finalI));
                     Log.d("type",keys.get(finalI));
                     if(keys.get(finalI).equals("WhatsApp")){
@@ -144,6 +145,8 @@ public class CardPagerAdapter extends RecyclerView.Adapter<CardPagerAdapter.View
     public int getItemViewType(int position) {
         return position;
     }
+
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

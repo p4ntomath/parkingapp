@@ -23,6 +23,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.relex.circleindicator.CircleIndicator;
+import me.relex.circleindicator.CircleIndicator2;
+import me.relex.circleindicator.CircleIndicator3;
+
 
 public class help_fragment extends Fragment {
 
@@ -67,7 +71,10 @@ public class help_fragment extends Fragment {
             addSocialLinks();
             CardPagerAdapter adapter = new CardPagerAdapter(getContext(), cards,socials,socialLinks);
             replaceView(supportDevsView);
+            CircleIndicator3 indicator = supportDevsView.findViewById(R.id.indicator);
             viewPager.setAdapter(adapter);
+            indicator.setViewPager(viewPager);
+
 
         });
         if(viewParam!=null){
@@ -87,16 +94,27 @@ public class help_fragment extends Fragment {
     }public void addCard(){
 
 
-        cards.getFirst().put("Mahlatse Rabothata", Arrays.asList("Facebook","Instagram","Linkedin","Youtube"));
-        cards.getSecond().add("Senior Software Engineer");
+        cards.getFirst().put("Mahlatse Rabothata", Arrays.asList("Facebook","Github","Instagram","Linkedin","Youtube"));
+        cards.getSecond().add("Front-End Engineer");
         cards.getThird().add(R.drawable.mahlatse);
         cards.getFourth().add("Whatsapp Me");
 
-
-        cards.getFirst().put("Mr Sahbabii", Arrays.asList("Youtube", "Instagram", "Github"));
-        cards.getSecond().add("Front-End Engineer");
+        cards.getFirst().put("Mbalenhle Baloyi", Arrays.asList("Facebook","Github","Linkedin"));
+        cards.getSecond().add("Database Manager");
         cards.getThird().add(R.drawable.blankprofile);
         cards.getFourth().add("Whatsapp Me");
+
+        cards.getFirst().put("Nhlakanipho Mavefua", Arrays.asList("Facebook","Github","Linkedin"));
+        cards.getSecond().add("Back-End Engineer \n Front-End Engineer");
+        cards.getThird().add(R.drawable.blankprofile);
+        cards.getFourth().add("Whatsapp Me");
+
+        cards.getFirst().put("Thato Khoza", Arrays.asList("Facebook","Github","Instagram","Linkedin"));
+        cards.getSecond().add("Database Manager \n Data Processor");
+        cards.getThird().add(R.drawable.blankprofile);
+        cards.getFourth().add("Whatsapp Me");
+
+
     }
     public void addSocials(){
         socials.put("Instagram",R.drawable.instagramicon);
@@ -113,6 +131,8 @@ public class help_fragment extends Fragment {
         socialLinks.get("Mahlatse Rabothata").put("Instagram","https://www.instagram.com/hlatse_p4ntomath/");
         socialLinks.get("Mahlatse Rabothata").put("Linkedin","https://www.linkedin.com/in/mahlatse-rabothata-14641a287/");
         socialLinks.get("Mahlatse Rabothata").put("Youtube","https://www.youtube.com/channel/UCe_PvjJ2p1joYRH5NfoxJgA");
+        socialLinks.get("Mahlatse Rabothata").put("Github","https://github.com/HlatseP4ntomath");
+
         socialLinks.get("Mahlatse Rabothata").put("Whatsapp","27630311427");
 
 
