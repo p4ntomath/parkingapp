@@ -28,15 +28,19 @@ public class signUpManager {
     private EditText signUpPassword;
     private RadioGroup userType;
     private TextView errorMessage;
+    private getStarted getStartedActivity;
+
 
     public signUpManager(Context context, EditText signUpuserId, EditText signUpEmail,
-                         EditText signUpPassword, RadioGroup userType, TextView errorMessage) {
+                         EditText signUpPassword, RadioGroup userType, TextView errorMessage,
+                         getStarted getStartedActivity) {
         this.context = context;
         this.signUpuserId = signUpuserId;
         this.signUpEmail = signUpEmail;
         this.signUpPassword = signUpPassword;
         this.userType = userType;
         this.errorMessage = errorMessage;
+        this.getStartedActivity = getStartedActivity;
     }
 
     public void signUp() {
@@ -105,17 +109,6 @@ public class signUpManager {
         });
     }
 
-    private void storeToSharedPreferences(String userIdString, String email, String password, String uType) {
-        userSessionManager sessionManager = new userSessionManager(context);
-        sessionManager.createSession(userIdString, uType, email, password);
-    }
-
-    private void openNavigationDrawer() {
-        Intent intent = new Intent(context, navigationDrawer.class);
-        context.startActivity(intent);
-        ((Activity) context).finish();
-    }
-
     private void SQLReq(String userIdString, String email, String password, String uType) {
         String url = "https://lamp.ms.wits.ac.za/home/s2691450/signup.php";
 
@@ -141,8 +134,9 @@ public class signUpManager {
                     String responseBody = response.body().string();
                     if (responseBody.equals("success")) {
                         showToastOnUiThread("Account created successfully");
-                        storeToSharedPreferences(userIdString, email, password, uType);
-                        openNavigationDrawer();
+                        ((Activity) context).runOnUiThread(() -> {
+                            getStartedActivity.openSignInPage();
+                        });
                     } else if (responseBody.equals("failed")) {
                         showToastOnUiThread("Failed to create an account");
                     } else if (responseBody.equals("exists")) {
@@ -152,6 +146,7 @@ public class signUpManager {
                     showToastOnUiThread("Failed to create an account");
                 }
             } catch (IOException e) {
+                showToastOnUiThread("No response from server");
                 e.printStackTrace();
             }
         });
