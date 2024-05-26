@@ -11,7 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,11 +27,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
@@ -36,19 +50,22 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     private GoogleMap mMap;
     NavigationView navigationView;
     navigationDrawerAcess accessNavigationDrawer;
+    HashMap<String, String> nameToLotIDMap;
+
     public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
         this.accessNavigationDrawer = accessNavigationDrawer;
     }
+
     public home_fragment() {
     }
 
-    List<item> items = new ArrayList<>();
+    List<parkingModel> parkings = new ArrayList<>();
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
-    String parkingName,parkingSpace,parkingType;
+    String parkingName, parkingSpace, parkingType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,15 +78,29 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
 
         bottomSheetBehavior(view);
-        addItems();//adding items to the list
-
+        try {
+            addParkings();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         initRecyclerView(view);//initializing the recyclerview
-
         supportMapFragment(); //support map fragment
+
+        // Override onBackPressed
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else {
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
+
+
         return view;
     }
-
-
 
 
     @Override
@@ -80,22 +111,44 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
 
-        // Create a LatLngBounds object that contains the specified boundaries
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-
-        // Set max zoom level
-        mMap.setMaxZoomPreference(17);
-
-        // Set camera bounds to prevent camera from leaving the specified boundaries
         mMap.setLatLngBoundsForCameraTarget(bounds);
+        mMap.setMaxZoomPreference(18);
 
-        // Add marker to the middle of Wits Uni
-        LatLng johannesburg = new LatLng(-26.1887, 28.0267);
-        mMap.addMarker(new MarkerOptions().position(johannesburg).title("Middle Of Wits Uni"));
+        LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));
 
-        // Move camera to Johannesburg and zoom closer
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(johannesburg, 18));
+        String json = readJSONFromRaw(R.raw.parkings);
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
+
+
+            for (int i = 0; i < parkingsArray.length(); i++) {
+                JSONObject parking = parkingsArray.getJSONObject(i);
+                String name = parking.getString("Name");
+                double latitude = parking.getDouble("Latitude");
+                double longitude = parking.getDouble("Longitude");
+                LatLng location = new LatLng(latitude, longitude);
+
+                Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(name));
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        searchView.setQuery(marker.getTitle(), false);
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                        return false;
+                    }
+                });
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 
 
@@ -118,10 +171,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
     public void initRecyclerView(View view){
         // Initialize the RecyclerView
-        recyclerView = view.findViewById(R.id.recyclerView);
+        searchView = view.findViewById(R.id.searchView);
+        recyclerView = view.findViewById(R.id.findParkingRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new recycleViewAdapter(getContext(),items,this));
-
+        recyclerView.setAdapter(new findParkingAdapter(parkings,getContext(),this));
         noParking = view.findViewById(R.id.noParking);
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -146,50 +199,57 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
     }
     public void bottomSheetBehavior(View view){
-
         // Initialize the BottomSheetBehavior
         bottomSheet = view.findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(600);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-
     }
 
-    public void addItems() {
-        // Add items to the list
-        items.add(new item("Barnato Parking", "Space : 35","Students", R.drawable.applogo));
-        items.add(new item("Wits Plus Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
-        items.add(new item("Zesti Lemonz Parking Lot", "Space : 79","Staff" ,R.drawable.findparkingicon));
-        items.add(new item("Hall 29 Parking Lot", "Space : 100","Students", R.drawable.homeicon));
-        items.add(new item("FNB Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
-        items.add(new item("John Moffat Parking Lot", "Space : 35","Students", R.drawable.applogo));
-        items.add(new item("Biology Building Parking Lot", "Space : 60","Staff" ,R.drawable.eye));
-        items.add(new item("David Webster Parking Lot", "Space : 79","Students" ,R.drawable.findparkingicon));
-        items.add(new item("Northwest Engineering Parking Lot", "Space : 100","Staff", R.drawable.homeicon));
-        items.add(new item("Men's Res Roadside Parking Lot", "Space : 90", "Students", R.drawable.bookingicon));
+    public void addParkings() throws JSONException {
+
+        String json = readJSONFromRaw(R.raw.parkings);
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
+        nameToLotIDMap = new HashMap<>();
+
+        for (int i = 0; i < parkingsArray.length(); i++) {
+            JSONObject parking = parkingsArray.getJSONObject(i);
+            String name = parking.getString("Name");
+            String parkingType = parking.getString("Type");
+            int parkingCapacity = parking.getInt("Capacity");
+            String Location = parking.getString("Location");
+            String lotID = parking.getString("Lot_ID");
+
+
+            nameToLotIDMap.put(name, lotID); // Store the name and lotID in the map
+            parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
+        }
+
+        GlobalData globalData = GlobalData.getInstance();
+        globalData.addToGlobalMap(nameToLotIDMap);
 
     }
     private void filterList(String newText) {
         // Initialize the filteredList
-        List<item> filteredList = new ArrayList<>();
+        List<parkingModel> filteredList = new ArrayList<>();
         // Loop through the items list
-        for (item item : items) {
+        for (parkingModel item : parkings) {
             // Check if the item's name contains the newText
             if (item.getParkingName().toLowerCase().contains(newText.toLowerCase())) {
-                // Add the item to the filteredList
                 filteredList.add(item);
             }
         }
 
-        // Set the filteredList to the adapter
+        // Set the filteredList to the adapter]
         if (filteredList.isEmpty()) {
             // If the filteredList is empty, show a message
             recyclerView.setVisibility(View.GONE);
             noParking.setVisibility(View.VISIBLE);
         } else {
             // If the filteredList is not empty, update the adapter
-            recycleViewAdapter adapter = (recycleViewAdapter) recyclerView.getAdapter();
+            findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
             adapter.setFilteredList(filteredList);
             recyclerView.setVisibility(View.VISIBLE);
             noParking.setVisibility(View.GONE);
@@ -197,13 +257,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
 
 
-
     @Override
-    public void onCardViewSelected(String Name, String Space, String Type) {
-        parkingName = Name;
-        parkingSpace = Space.split(":")[1].trim();
+    public void onCardViewSelected(String parkingName, String parkingSpace, String parkingType) {
+
         int space = Integer.parseInt(parkingSpace);
-        parkingType = Type;
         navigationView.setCheckedItem(R.id.nav_booking);
         Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -212,5 +269,21 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.commit();
 
     }
+    // Read JSON file from raw directory
+    private String readJSONFromRaw(int rawResourceId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try (InputStream inputStream = getResources().openRawResource(rawResourceId);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
 
 }
