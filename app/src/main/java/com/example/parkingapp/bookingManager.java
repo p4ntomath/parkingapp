@@ -162,8 +162,57 @@ public class bookingManager {
     public void updateBooking(){
         //update booking
     }
+
+
     public void deleteFromDatabase(){
-        //delete from database
+        userSessionManager userSessionManager = new userSessionManager(context);
+
+        String userId = userSessionManager.getUserId();
+
+        OkHttpClient client = new OkHttpClient();
+
+        String parseUrl = "https://lamp.ms.wits.ac.za/home/s2691450/booking.php";
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(parseUrl).newBuilder();
+        urlBuilder.addQueryParameter("userId", userId);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("Failed to connect to server");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    showToast("Failed to connect to server");
+                    return;
+                }
+
+                try {
+                    String responseBody = response.body().string();
+
+                    if (responseBody.equals("success")) {
+                        //
+                    } else {
+                        //
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        });
+
     }
 
 
