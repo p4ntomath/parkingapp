@@ -23,7 +23,6 @@ public class logInManager {
     private Context context;
     private EditText logInUserId;
     private EditText logInPassword;
-    public boolean openNav = false;
 
     public logInManager(Context context, EditText logInUserId, EditText logInPassword) {
         this.context = context;
@@ -81,9 +80,9 @@ public class logInManager {
         });
     }
 
-    private void storeToSharedPreferences(String userIdString, String email, String token, String uType) {
+    private void storeToSharedPreferences(String userIdString,String uType) {
         userSessionManager sessionManager = new userSessionManager(context);
-        sessionManager.createSession(userIdString, uType, email, token);
+        sessionManager.createSession(userIdString, uType);
     }
 
     private void SQLReq(String userIdString, String password) {
@@ -123,12 +122,10 @@ public class logInManager {
 
                     if (outcome.equals("exists")) {
                         showToastOnUiThread("Login Successful");
-                        String email = jsonObject.getString("EMAIL");
                         String uType = jsonObject.getString("USER_TYPE");
                         String userId = jsonObject.getString("USER_ID");
-                        String token = jsonObject.getString("TOKEN");
 
-                        storeToSharedPreferences(userId, email, token, uType);
+                        storeToSharedPreferences(userId, uType);
                         openNavigationDrawer();
                     } else {
                         showToastOnUiThread("User does not exist");
