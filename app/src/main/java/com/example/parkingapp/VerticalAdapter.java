@@ -72,19 +72,26 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2){
             holder.slot2.setImageResource(selectedChoice.getFourth());
             holder.slot2Label.setText("");
-        }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 0 && selectedChoice.getIsBooked()){
+        }
+
+        if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1 && selectedChoice.getIsBooked()){
             int greenColor = ContextCompat.getColor(context, R.color.Green);
             holder.slot1.setBackgroundTintList(ColorStateList.valueOf(greenColor));
+        }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2 && selectedChoice.getIsBooked()){
+            int greenColor = ContextCompat.getColor(context, R.color.Green);
+            holder.slot2.setBackgroundTintList(ColorStateList.valueOf(greenColor));
         }
 
         if(bookedSpots != null){
             handleBookedSpots(holder,position);//fills cars on booked spots
         }
 
-        holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
-        holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
-        holder.slot1Label.setOnClickListener(v -> leftSlotOnClick(position,holder));
-        holder.slot2Label.setOnClickListener(v -> rightSlotOnClick(position,holder));
+            holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
+            holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
+            holder.slot1Label.setOnClickListener(v -> leftSlotOnClick(position,holder));
+            holder.slot2Label.setOnClickListener(v -> rightSlotOnClick(position,holder));
+
+
 
     }
     public Pair<Character,Integer> label(int position){

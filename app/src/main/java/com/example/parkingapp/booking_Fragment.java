@@ -50,6 +50,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     private String parkingName;
     private int parkingSpace; // Changed to int
     private String parkingType;
+
     navigationDrawerAcess navigationDrawerAcess;
 
     public booking_Fragment() {
@@ -93,8 +94,15 @@ public class booking_Fragment extends Fragment implements selectListener {
                              Bundle savedInstanceState) {
 
 
-        bookedSpots = Arrays.asList("A1","A5");
-        Bookedset  = new HashSet<>(bookedSpots);
+        bookedSpots = null;
+        if(bookedSpots == null){
+            Bookedset  = new HashSet<>(Arrays.asList(""));
+        }
+        else{
+            Bookedset = new HashSet<>(bookedSpots);
+        }
+
+
         images = new parkingSlotItem(getContext());
         blockToSpots = convertToMap(bookedSpots);
         parkingNameSelected =  parkingName;
@@ -130,7 +138,9 @@ public class booking_Fragment extends Fragment implements selectListener {
                 bookNowHandler();}});
         scheduleBtn.setOnClickListener(v -> {
             if(selected.getFourth() == -1){Toast.makeText(getContext(), "Please select parking slot", Toast.LENGTH_SHORT).show();}
-            else{scheduleHandler();}});
+            else{
+                scheduleBottomSheet();
+                scheduleHandler();}});
 
 
 
@@ -196,33 +206,6 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
 
-
-
-
-
-
-
-
-
-public void toFindParking(){
-
-
-        navigationView.setCheckedItem(R.id.nav_home);
-    Fragment newFragment = new home_fragment(navigationDrawerAcess);
-    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-    transaction.replace(R.id.fragmentLayout, newFragment);
-    transaction.addToBackStack(null);
-    transaction.commit();
-
-}
-
-
-
-
-
-
-
-
 //This function is responsible for setting up the variables
 
     public void variablesDeclaration(View view){
@@ -248,82 +231,10 @@ public void toFindParking(){
     }
 
 
-    public void arrowOnClick(){
-        leftArrow.setOnClickListener(v ->{
-            int pos = findScrollPosition();
-            if(pos>0){
-                horizontalRecyclerView.smoothScrollToPosition(pos-1);
-            }
 
-        } );
-        rightArrow.setOnClickListener(v ->{
-            int pos = findScrollPosition();
-            if(pos<itemCount-1) {
-                horizontalRecyclerView.smoothScrollToPosition(pos+1);
-            }});
-    }
-    //This function is responsible for updating the UI based on the scroll position
-    public void onScrollChangeRecycleView(){
-        horizontalRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                horizontalAdapter.notifyDataSetChanged();
-            }
-        });
-        horizontalRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int pos = findScrollPosition();
-                char capital = 'A';
-                int asciiValue = (int) capital;
-                asciiValue += pos;
-                char newChar = (char) asciiValue;
-                parkingBlock.setText("Block " + newChar);
-                if(parkingSpace == 20){
-                    rightArrow.setVisibility(View.INVISIBLE);
-                    leftArrow.setVisibility(View.INVISIBLE);
-                }
-                else if(pos == itemCount-1){
-                    rightArrow.setVisibility(View.INVISIBLE);
-                    leftArrow.setVisibility(View.VISIBLE);
-
-                }else if(pos == 0 && itemCount>1){
-                    leftArrow.setVisibility(View.INVISIBLE);
-                    rightArrow.setVisibility(View.VISIBLE);
-                }else{
-                    leftArrow.setVisibility(View.VISIBLE);
-                    rightArrow.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
 
     //return the last visible item position,or Block/Parent
-    private int findScrollPosition() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) horizontalRecyclerView.getLayoutManager();
-        return layoutManager.findLastVisibleItemPosition();
-    }
 
-
-public void bookNowBottomSheet(){
-    bottomSheetDialog.show();
-    bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
-    bookSubmit.setText("Book Now");
-    spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
-    parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
-    spotNumberDisplay.setText(conversion(selected));
-    String firstWord = parkingNameSelected.split(" ")[0];
-    parkingNameDisplay.setText(firstWord);
-    bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
-    bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
-    displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
-    displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
-    displayEntryTime.setText(getCurrentTime());
-    displayExitTime.setText("Unknown");
-    bookNowExitTime.setOnClickListener(v -> {
-        setExitTime();});
-}
 
 
 
@@ -333,11 +244,15 @@ public void bookNowBottomSheet(){
     private void bookNowHandler() {
 
 
-        bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected);//This class is responsible for handling the bookin
+
         bookSubmit.setOnClickListener(v -> {
 
+            String entryTime = displayEntryTime.getText().toString();
+            String exitTime = displayExitTime.getText().toString();
+            bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected,entryTime,exitTime);//This class is responsible for handling the booking
             if(bookingManager.insertToDatabase()){
                 Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
+                BookingSession bookingSession = new BookingSession(getContext());
             }else{
                 Toast.makeText(getContext(), "Booking Failed", Toast.LENGTH_SHORT).show();
             };
@@ -348,25 +263,23 @@ public void bookNowBottomSheet(){
 
 
 
+
+
     private void scheduleHandler() {
-        bottomSheetDialog.show();
-        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
-        bookSubmit.setText("Schedule");
-        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
-        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
-        bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected);//This class is responsible for handling the bookin
-        spotNumberDisplay.setText(bookingManager.getBookedSpot());
-        String firstWord = parkingNameSelected.split(" ")[0];
-        parkingNameDisplay.setText(firstWord);
-        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
-        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
-        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
-        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
-        displayEntryTime.setText(getCurrentTime());
-        bookNowEntryTime.setOnClickListener(v -> {
-            setEntryTime();});
-        bookNowExitTime.setOnClickListener(v -> {
-            setExitTime();});
+
+          bookSubmit.setOnClickListener(v -> {
+              String entryTime = displayEntryTime.getText().toString();
+              String exitTime = displayExitTime.getText().toString();
+              bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected,entryTime,exitTime);//This class is responsible for handling the booking
+              if (bookingManager.insertToDatabase()) {
+                Toast.makeText(getContext(), "Schedule Successful", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Schedule Failed", Toast.LENGTH_SHORT).show();
+            }
+            ;
+            bottomSheetDialog.dismiss();
+        });
+
     }
 
 
@@ -428,10 +341,8 @@ public void bookNowBottomSheet(){
 
     @Override
     public void setChoice(int parentPosition, int position, int slot,int image) {
-        Log.d("old selected",selected.toString());
         selected = new Quartet<>(parentPosition,position,slot,image);
         horizontalAdapter.childNoifityOnChange();
-        Log.d("selected",selected.toString());
     }
 
     @Override
@@ -525,10 +436,111 @@ public void bookNowBottomSheet(){
         }
         return spot;}
 
+    public void bookNowBottomSheet(){
+        bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Book Now");
+        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
+        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
+        spotNumberDisplay.setText(conversion(selected));
+        String firstWord = parkingNameSelected.split(" ")[0];
+        parkingNameDisplay.setText(firstWord);
+        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
+        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
+        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
+        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
+        displayEntryTime.setText(getCurrentTime());
+        displayExitTime.setText("Unknown");
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
+    }
+
+    public void scheduleBottomSheet(){
+        bottomSheetDialog.show();
+        bookSubmit = bottomSheetDialog.findViewById(R.id.bookSubmit);
+        bookSubmit.setText("Schedule");
+        spotNumberDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingSpot);
+        parkingNameDisplay = bottomSheetDialog.findViewById(R.id.bookingNowParkingName);
+        spotNumberDisplay.setText(conversion(selected));
+        String firstWord = parkingNameSelected.split(" ")[0];
+        parkingNameDisplay.setText(firstWord);
+        bookNowEntryTime = bottomSheetDialog.findViewById(R.id.bookingNowEntryTime);
+        bookNowExitTime = bottomSheetDialog.findViewById(R.id.bookingNowExitTime);
+        displayEntryTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayEntryTime);
+        displayExitTime = bottomSheetDialog.findViewById(R.id.bookNowDisplayExitTime);
+        displayEntryTime.setText(getCurrentTime());
+        bookNowEntryTime.setOnClickListener(v -> {
+            setEntryTime();});
+        bookNowExitTime.setOnClickListener(v -> {
+            setExitTime();});
+    }
+
+    public void toFindParking(){
 
 
+        navigationView.setCheckedItem(R.id.nav_home);
+        Fragment newFragment = new home_fragment(navigationDrawerAcess);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
+    }
+    private int findScrollPosition() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) horizontalRecyclerView.getLayoutManager();
+        return layoutManager.findLastVisibleItemPosition();
+    }
 
+    public void arrowOnClick(){
+        leftArrow.setOnClickListener(v ->{
+            int pos = findScrollPosition();
+            if(pos>0){
+                horizontalRecyclerView.smoothScrollToPosition(pos-1);
+            }
+
+        } );
+        rightArrow.setOnClickListener(v ->{
+            int pos = findScrollPosition();
+            if(pos<itemCount-1) {
+                horizontalRecyclerView.smoothScrollToPosition(pos+1);
+            }});
+    }
+    //This function is responsible for updating the UI based on the scroll position
+    public void onScrollChangeRecycleView(){
+        horizontalRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                horizontalAdapter.notifyDataSetChanged();
+            }
+        });
+        horizontalRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int pos = findScrollPosition();
+                char capital = 'A';
+                int asciiValue = (int) capital;
+                asciiValue += pos;
+                char newChar = (char) asciiValue;
+                parkingBlock.setText("Block " + newChar);
+                if(parkingSpace == 20){
+                    rightArrow.setVisibility(View.INVISIBLE);
+                    leftArrow.setVisibility(View.INVISIBLE);
+                }
+                else if(pos == itemCount-1){
+                    rightArrow.setVisibility(View.INVISIBLE);
+                    leftArrow.setVisibility(View.VISIBLE);
+
+                }else if(pos == 0 && itemCount>1){
+                    leftArrow.setVisibility(View.INVISIBLE);
+                    rightArrow.setVisibility(View.VISIBLE);
+                }else{
+                    leftArrow.setVisibility(View.VISIBLE);
+                    rightArrow.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
 
 }
 

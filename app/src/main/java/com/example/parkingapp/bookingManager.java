@@ -3,6 +3,7 @@ package com.example.parkingapp;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class bookingManager {
@@ -11,10 +12,13 @@ public class bookingManager {
     Quartet<Integer,Integer,Integer,Integer> bookedspot;
     String parkingName;
     Context context;
-    public bookingManager(Context context,Quartet<Integer, Integer, Integer, Integer> bookedspot, String parkingName) {
+    String entryTime, exitTime;
+    public bookingManager(Context context,Quartet<Integer, Integer, Integer, Integer> bookedspot, String parkingName, String entryTime, String exitTime) {
         this.bookedspot = bookedspot;
         this.parkingName = parkingName;
         this.context = context;
+        this.entryTime = entryTime;
+        this.exitTime = exitTime;
     }
 
    public String conversion(Quartet<Integer,Integer,Integer,Integer> bookedspot){
@@ -38,21 +42,32 @@ public class bookingManager {
         String lotID = map.get(parkingName);
 
        return lotID;
+    }public void addToSharedPreferences(String parkingName, String lotID, String spot){
+        BookingSession bookingSession = new BookingSession(context);
+        bookingSession.bookParkingSpot(spot, parkingName, lotID,entryTime);
+        if(!entryTime.equals("Unknown")){
+            bookingSession.setLeavingTime(exitTime);
+        }
     }
 
 
     public boolean insertToDatabase(){
+        userSessionManager userSessionManager = new userSessionManager(context);
 
+        String userId = userSessionManager.getUserId();
         String LotID = getlotID(parkingName);
         String Spot = conversion(bookedspot);
+        String entryTime = this.entryTime;
+        String exitTime = this.exitTime;
+        if(exitTime.equals("Unknown")){
+            //insert null for unknown exit time
+        }
+        //insert into database
 
 
 
-
-
-
-        //insert to database
-        return false;
+        //if successful return true
+        return true;
     }
     public String getBookedSpot(){
         return conversion(bookedspot);
