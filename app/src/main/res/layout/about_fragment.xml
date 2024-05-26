@@ -87,9 +87,10 @@
             android:layout_height="wrap_content"
             android:text="1.0.0 alpha"
             android:layout_marginRight="40dp"
-            android:textColor="#808080"
-            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textSize="15dp"
             android:textStyle="bold"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>

@@ -11,10 +11,6 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/homeicon"
             android:title="Home"/>
-        <item
-            android:id="@+id/nav_parking"
-            android:icon="@drawable/findparkingicon"
-            android:title="Find Parking"/>
 
         <item
             android:id="@+id/nav_booking"

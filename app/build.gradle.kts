@@ -39,6 +39,8 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
     implementation ("org.json:json:20210307")
     implementation ("com.airbnb.android:lottie:3.4.0")
+    implementation ("me.relex:circleindicator:2.1.6")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
     implementation ("com.google.android.material:material:1.4.0")
     implementation ("com.google.android.material:material:1.3.0-alpha02")
     implementation ("com.google.android.material:material:1.3.0-alpha01")

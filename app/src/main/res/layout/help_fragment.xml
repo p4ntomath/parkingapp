@@ -1,27 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".help_fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".help_fragment"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="50dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Help"
+        android:textSize="30dp"
+        android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:textSize="40dp"
-        android:textColor="#000000"
-        android:layout_gravity="center"
-        android:text="Help">
-    </TextView>
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_margin="20dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/howToUse"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/primary"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:text="Not Yet Implemented">
+        android:orientation="horizontal">
 
-    </TextView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/tertiary"
+            app:cardCornerRadius="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mobileicon"/>
+        </androidx.cardview.widget.CardView>
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/howToUseText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cardView1"
+            android:layout_centerVertical="true"
+            android:text="How to use the app"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/nexticon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp" />
+        <View
+            android:layout_below="@id/cardView1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC6C6"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/faqs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/tertiary"
+            app:cardCornerRadius="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/questionicon"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/faqsText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cardView2"
+            android:layout_centerVertical="true"
+            android:text="FAQs"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/nexticon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp" />
+        <View
+            android:layout_below="@id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC6C6"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/supportDevs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/tertiary"
+            app:cardCornerRadius="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp">
+            <ImageView
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/developericon"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/supportDevsText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cardView3"
+            android:layout_centerVertical="true"
+            android:text="Support Developers"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/nexticon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp" />
+        <View
+            android:layout_below="@id/cardView3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC6C6"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.parkingapp;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.ViewHolder> {
 
@@ -19,16 +22,19 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
 
     selectListener itemClickListener;
     VerticalAdapter verticalAdapter;
+    Map<Integer, List<Pair<Integer, Integer>>> blockToSpots;
+    List<android.util.Pair<Integer, Integer>> bookedSpots;
     Context context;
     int spot;
     int totalSpace;
 
-    public HorizontalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images,int totalSpace) {
+    public HorizontalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images,int totalSpace,Map<Integer, List<Pair<Integer, Integer>>> blockToSpots) {
         this.itemCount = itemCount;
         this.itemClickListener = itemClickListener;
         this.images = images;
         this.context = context;
         this.totalSpace = totalSpace;
+        this.blockToSpots = blockToSpots;
     }
 
     @NonNull
@@ -49,9 +55,16 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
                 ;
             }
         }
+        if(blockToSpots != null) {
+            bookedSpots = blockToSpots.get(position);;
+        }
+        else{
+             bookedSpots = null;
+        }
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.verticalRecyclerView.setLayoutManager(layoutManager);
-        verticalAdapter = new VerticalAdapter(context,spot,itemClickListener,images,position);
+        verticalAdapter = new VerticalAdapter(context,spot,itemClickListener,images,position,bookedSpots);
         holder.verticalRecyclerView.setAdapter(verticalAdapter);
     }
 
