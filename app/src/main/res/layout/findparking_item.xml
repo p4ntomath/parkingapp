@@ -52,7 +52,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="70dp"
-                android:layout_height="17dp"
+                android:layout_height="20dp"
                 android:layout_gravity="left"
                 android:backgroundTint="@color/primary"
                 app:cardCornerRadius="10dp"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:text="Student"
                     android:textColor="@color/white"
-                    android:textSize="8dp"
+                    android:textSize="10dp"
                     android:textStyle="bold"
                     android:layout_gravity="center">
 

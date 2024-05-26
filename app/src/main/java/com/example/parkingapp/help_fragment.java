@@ -114,24 +114,6 @@ public class help_fragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void addCard(){
 
 
@@ -150,7 +132,7 @@ public class help_fragment extends Fragment {
         cards.getThird().add(R.drawable.blankprofile);
         cards.getFourth().add("Whatsapp Me");
 
-        cards.getFirst().put("Thato Khoza", Arrays.asList("Facebook","Github","Instagram","Linkedin"));
+        cards.getFirst().put("Thato Khoza", Arrays.asList("Facebook","Github","Instagram"));
         cards.getSecond().add("Database Manager \n Data Processor");
         cards.getThird().add(R.drawable.blankprofile);
         cards.getFourth().add("Whatsapp Me");
@@ -173,9 +155,14 @@ public class help_fragment extends Fragment {
         socialLinks.get("Mahlatse Rabothata").put("Linkedin","https://www.linkedin.com/in/mahlatse-rabothata-14641a287/");
         socialLinks.get("Mahlatse Rabothata").put("Youtube","https://www.youtube.com/channel/UCe_PvjJ2p1joYRH5NfoxJgA");
         socialLinks.get("Mahlatse Rabothata").put("Github","https://github.com/HlatseP4ntomath");
-
         socialLinks.get("Mahlatse Rabothata").put("Whatsapp","27630311427");
 
+
+        socialLinks.put("Thato Khoza",new HashMap<>());
+        socialLinks.get("Thato Khoza").put("Facebook","https://www.facebook.com/thato.tk.790?mibextid=LQQJ4d");
+        socialLinks.get("Thato Khoza").put("Instagram","https://www.instagram.com/its_drizzy_tk?igsh=MXdvM2s4YnhhNWhuZg%3D%3D&utm_source=qr");
+        socialLinks.get("Thato Khoza").put("Github","https://github.com/Thato-21");
+        socialLinks.get("Thato Khoza").put("Whatsapp","27793706919");
 
     }
 

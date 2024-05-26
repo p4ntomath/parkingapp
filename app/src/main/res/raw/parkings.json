@@ -1,0 +1,130 @@
+{
+    "Parkings": [
+        {
+            "Name": "DAVID WEBSTER",
+            "Lot_ID": "ST1",
+            "Type": "Student",
+            "Latitude": -26.187534671289264,
+            "Longitude": 28.026479057456957,
+            "Capacity": 60,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "EC TUNNEL NORTH",
+            "Lot_ID": "ST2",
+            "Type": "Student",
+            "Latitude": -26.187313009137196,
+            "Longitude": 28.027118214402748,
+            "Capacity": 200,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "EC TUNNEL SOUTH",
+            "Lot_ID": "ST3",
+            "Type": "Student",
+            "Latitude": -26.18775869304074,
+            "Longitude": 28.027090533973787,
+            "Capacity": 100,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "EAST LAW LAWNS",
+            "Lot_ID": "ST4",
+            "Type": "Student",
+            "Latitude": -26.18792267706863,
+            "Longitude": 28.026065897910577,
+            "Capacity": 140,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "ENOCH SONTONGA EAST",
+            "Lot_ID": "ST5",
+            "Type": "Student",
+            "Latitude": -26.192623191498985,
+            "Longitude": 28.027048851684885,
+            "Capacity": 400,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "ENOCH SONTONGA WEST",
+            "Lot_ID": "ST6",
+            "Type": "Student",
+            "Latitude": -26.192622139933935,
+            "Longitude": 28.026264816636008,
+            "Capacity": 400,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "FNB PARKING",
+            "Lot_ID": "ST7",
+            "Type": "Student",
+            "Latitude": -26.188398928248663,
+            "Longitude": 28.02720926715984,
+            "Capacity": 150,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "HALL 29 PARKING",
+            "Lot_ID": "FF1",
+            "Type": "Staff",
+            "Latitude": -26.18577000185653,
+            "Longitude": 28.02684505954421,
+            "Capacity": 200,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "HULMAN BUILDING",
+            "Lot_ID": "FF2",
+            "Type": "Staff",
+            "Latitude": -26.19225514405073,
+            "Longitude": 28.029384685993968,
+            "Capacity": 50,
+            "Location": "West Campus"
+        },
+        {
+            "Name": "ORIGIN CENTER",
+            "Lot_ID": "FF3",
+            "Type": "Staff",
+            "Latitude": -26.192273505020285,
+            "Longitude": 28.028190337874754,
+            "Capacity": 130,
+            "Location": "West Campus"
+        },
+        {
+            "Name": "SIBANYE BRIDGE",
+            "Lot_ID": "FF4",
+            "Type": "Staff",
+            "Latitude": -26.19058859355427,
+            "Longitude": 28.027664711573053,
+            "Capacity": 130,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "THE POST GRAD CLUB",
+            "Lot_ID": "ST8",
+            "Type": "Student",
+            "Latitude": -26.192379696738953,
+            "Longitude": 28.028938742721135,
+            "Capacity": 30,
+            "Location": "West Campus"
+        },
+        {
+            "Name": "WITS MSB PARKING",
+            "Lot_ID": "FF5",
+            "Type": "Staff",
+            "Latitude": -26.190306801982388,
+            "Longitude": 28.027166699698817,
+            "Capacity": 50,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "WOLFRAM BUILDING",
+            "Lot_ID": "FF6",
+            "Type": "Staff",
+            "Latitude": -26.192357,
+            "Longitude": 28.0290822,
+            "Capacity": 55,
+            "Location": "West Campus"
+        }
+    ]
+}

@@ -1,12 +1,20 @@
 package com.example.parkingapp;
 
+import android.content.Context;
+import android.util.Log;
+
+import java.util.HashMap;
+
 public class bookingManager {
+
 
     Quartet<Integer,Integer,Integer,Integer> bookedspot;
     String parkingName;
-    public bookingManager(Quartet<Integer, Integer, Integer, Integer> bookedspot, String parkingName) {
+    Context context;
+    public bookingManager(Context context,Quartet<Integer, Integer, Integer, Integer> bookedspot, String parkingName) {
         this.bookedspot = bookedspot;
         this.parkingName = parkingName;
+        this.context = context;
     }
 
    public String conversion(Quartet<Integer,Integer,Integer,Integer> bookedspot){
@@ -23,7 +31,25 @@ public class bookingManager {
        }
        return spot;}
 
+
+    public String getlotID(String parkingName){
+        GlobalData globalData = GlobalData.getInstance();
+        HashMap<String, String> map = globalData.getNameToLotIDMap();
+        String lotID = map.get(parkingName);
+
+       return lotID;
+    }
+
+
     public boolean insertToDatabase(){
+
+        String LotID = getlotID(parkingName);
+        String Spot = conversion(bookedspot);
+
+
+
+
+
 
         //insert to database
         return false;
@@ -31,6 +57,8 @@ public class bookingManager {
     public String getBookedSpot(){
         return conversion(bookedspot);
     }
+
+
     public void cancelBooking(){
         //cancel booking
     }

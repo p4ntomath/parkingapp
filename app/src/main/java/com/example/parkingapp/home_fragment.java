@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     private GoogleMap mMap;
     NavigationView navigationView;
     navigationDrawerAcess accessNavigationDrawer;
+    HashMap<String, String> nameToLotIDMap;
 
     public home_fragment(navigationDrawerAcess accessNavigationDrawer) {
         this.accessNavigationDrawer = accessNavigationDrawer;
@@ -76,7 +78,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
 
         bottomSheetBehavior(view);
-        addParkings();
+        try {
+            addParkings();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         initRecyclerView(view);//initializing the recyclerview
         supportMapFragment(); //support map fragment
 
@@ -105,54 +111,43 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
 
-        // Create a LatLngBounds object that contains the specified boundaries
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         mMap.setLatLngBoundsForCameraTarget(bounds);
         mMap.setMaxZoomPreference(18);
 
-
         LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));
 
-        String json = readJSONFromRaw(R.raw.parking_coordinates);
-
+        String json = readJSONFromRaw(R.raw.parkings);
         try {
             JSONObject jsonObject = new JSONObject(json);
+            JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
 
-            // Define bounds for camera target
-            LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
 
-            Iterator<String> keys = jsonObject.keys();
-
-            // Add markers for each place
-            while (keys.hasNext()) {
-                String place = keys.next();
-                JSONObject coordinates = jsonObject.getJSONObject(place);
-                double latitude = coordinates.getDouble("latitude");
-                double longitude = coordinates.getDouble("longitude");
+            for (int i = 0; i < parkingsArray.length(); i++) {
+                JSONObject parking = parkingsArray.getJSONObject(i);
+                String name = parking.getString("Name");
+                double latitude = parking.getDouble("Latitude");
+                double longitude = parking.getDouble("Longitude");
                 LatLng location = new LatLng(latitude, longitude);
 
-                // Add marker
-                Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(place));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(name));
+
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        // Handle marker click events here
                         searchView.setQuery(marker.getTitle(), false);
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
                         return false;
                     }
                 });
-
-                // Extend bounds
-                boundsBuilder.include(location);
             }
 
-            // Set camera bounds to prevent camera from leaving the specified boundaries
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
+
 
 
 
@@ -212,15 +207,29 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
     }
 
-    public void addParkings(){
+    public void addParkings() throws JSONException {
 
-        parkings.add(new parkingModel("Student","Barnato","East Campus",35,3,0,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Staff","Men'Res","West Campus",30,23,0,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Staff","Wits Plus","East Campus",90,89,1,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Student","Biology Parking","West Campus",47,32,0,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Staff","FNB Parking","East Campus",89,56,0,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Staff","NorthWest ","West Campus",21,8,1,R.drawable.parkinglot));
-        parkings.add(new parkingModel("Student","Hall 29 ","East Campus",98,87,0,R.drawable.parkinglot));
+        String json = readJSONFromRaw(R.raw.parkings);
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
+        nameToLotIDMap = new HashMap<>();
+
+        for (int i = 0; i < parkingsArray.length(); i++) {
+            JSONObject parking = parkingsArray.getJSONObject(i);
+            String name = parking.getString("Name");
+            String parkingType = parking.getString("Type");
+            int parkingCapacity = parking.getInt("Capacity");
+            String Location = parking.getString("Location");
+            String lotID = parking.getString("Lot_ID");
+
+
+            nameToLotIDMap.put(name, lotID); // Store the name and lotID in the map
+            parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
+        }
+
+        GlobalData globalData = GlobalData.getInstance();
+        globalData.addToGlobalMap(nameToLotIDMap);
+
     }
     private void filterList(String newText) {
         // Initialize the filteredList
