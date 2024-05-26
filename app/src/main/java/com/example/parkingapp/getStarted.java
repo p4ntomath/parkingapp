@@ -127,21 +127,38 @@ TextView signUpText;
 
             @Override
             public void onClick(View v) {
-                if (!isOtpSent) {
                     // First click: Validate email and send OTP
-                    if (forgotPasswordManager.validateEmail()) {
-                        sendOtp.setText("Confirm");
-                        otpInput.setVisibility(View.VISIBLE);
-                        isOtpSent = true;
-                    }
-                } else {
-                    // Second click: Validate OTP
-                    if (forgotPasswordManager.validateOtp()) {
-                        forgotPasswordbottomSheetDialog.dismiss();
-                        setNewPasswordSheet(forgotPasswordEmail);
-                    }
-                }
+                forgotPasswordManager.validateEmail()
+                        .thenAccept(isValid -> {
+                            if (isValid) {
+                                // Email is valid
+                                runOnUiThread(() -> {
+                                    sendOtp.setText("Confirm");
+                                    otpInput.setVisibility(View.VISIBLE);
+                                    // Second click: Validate OTP
+                                    sendOtp.setOnClickListener(v1 -> {
+                                        if (forgotPasswordManager.validateOtp()) {
+                                            forgotPasswordbottomSheetDialog.dismiss();
+                                            setNewPasswordSheet(forgotPasswordEmail);
+                                        }
+                                    });
+                                });
+                            } else {
+                                // Email validation failed
+                                // You can handle this case if needed
+                            }
+                        })
+                        .exceptionally(ex -> {
+                            // Handle exceptions here
+                            ex.printStackTrace();
+                            return null;
+                        });
+
             }
+
+
+
+
         });
 
 

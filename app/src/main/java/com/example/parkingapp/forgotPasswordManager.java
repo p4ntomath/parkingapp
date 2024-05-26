@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,23 +48,32 @@ public class forgotPasswordManager {
         this.setPasswordEmail = setPasswordEmail;
     }
 
-    public boolean validateEmail() {
+    public CompletableFuture<Boolean> validateEmail() {
         String emailInput = email.getText().toString();
         if (emailInput.isEmpty()) {
             email.setError("Email is required");
-            return false;
+            return CompletableFuture.completedFuture(false);
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
             email.setError("Invalid Email");
-            return false;
+            return CompletableFuture.completedFuture(false);
         }
 
-        checkEmailExistsAndSend(emailInput);
-        if(account_exists){
-            return true;
-        }else{
-            return false;
-        }
+        return checkEmailExistsAndSend(emailInput)
+                .thenApply(accountExists -> {
+                    if (accountExists) {
+                        // Account exists
+                    } else {
+                        // Account does not exist
+                    }
+                    return accountExists;
+                })
+                .exceptionally(ex -> {
+                    // Handle exceptions here
+                    ex.printStackTrace();
+                    return false;
+                });
     }
+
 
     public boolean validateOtp() {
         String otpInput = otp.getText().toString();
@@ -151,8 +161,10 @@ public class forgotPasswordManager {
         });
     }
 
-    private void checkEmailExistsAndSend(String email) {
+
+    private CompletableFuture<Boolean> checkEmailExistsAndSend(String email) {
         OkHttpClient client = new OkHttpClient();
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         String parseUrl = "https://lamp.ms.wits.ac.za/home/s2691450/generateOTP.php";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(parseUrl).newBuilder();
@@ -167,13 +179,13 @@ public class forgotPasswordManager {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                showToastOnUiThread("Failed to connect to server");
+                future.completeExceptionally(e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    showToastOnUiThread("Failed to connect to server");
+                    future.complete(false);
                     return;
                 }
 
@@ -183,19 +195,24 @@ public class forgotPasswordManager {
 
                     if (outcome.equals("success")) {
                         currentOTP = jsonObject.getString("OTP");
-                        account_exists = true;
                         sendEmail sendEmail = new sendEmail();
                         sendEmail.send(email, currentOTP);
                         showToastOnUiThread("OTP sent");
+                        future.complete(true);
                     } else {
                         showToastOnUiThread("Account does not exist");
+                        future.complete(false);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    future.completeExceptionally(e);
                 }
             }
         });
+
+        return future;
     }
+
 
     private void showToast(String message) {
         Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
