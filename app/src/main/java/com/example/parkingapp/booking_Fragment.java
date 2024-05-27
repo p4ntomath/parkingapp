@@ -84,7 +84,7 @@ public class booking_Fragment extends Fragment implements selectListener {
     CardView bookNowEntryTime,bookNowExitTime;
     parkingSlotItem images;
     BottomSheetDialog bottomSheetDialog;
-    Button bookNow,bookSubmit,scheduleBtn;
+    Button bookNow,bookSubmit,scheduleBtn,toReservation;
     String parkingNameSelected;
     List<String> bookedSpots;
     Map<Integer, List<Pair<Integer, Integer>>> blockToSpots;
@@ -92,9 +92,21 @@ public class booking_Fragment extends Fragment implements selectListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
 
         bookedSpots = null;
-
+        BookingSession bookingSession = new BookingSession(getContext());
+        if(bookingSession.isBooked()){
+            toReservation = view.findViewById(R.id.toReservations);
+            scheduleBtn = view.findViewById(R.id.scheduleBtn);
+            bookNow = view.findViewById(R.id.bookNow);
+            bookNow.setVisibility(View.GONE);
+            scheduleBtn.setVisibility(View.GONE);
+            toReservation.setVisibility(View.VISIBLE);
+            toReservation.setOnClickListener(v -> {
+                toReservation();
+            });
+        }
 
 
         images = new parkingSlotItem(getContext());
@@ -106,8 +118,14 @@ public class booking_Fragment extends Fragment implements selectListener {
             parkingSpace = parkingSpace-1;
         }
         itemCount = (int) Math.ceil(parkingSpace / 20.0);
-        View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
+
         View view2 = inflater.inflate(R.layout.unablebook,container,false); //Inflating the layout
+        View view3 = inflater.inflate(R.layout.alreadybooked,container,false); //Inflating the layout
+        if(parkingSpace == 0 && bookingSession.isBooked()){
+            MaterialButton toFindParking = view3.findViewById(R.id.toReserve);
+            toFindParking.setOnClickListener(v -> {toReservation();});
+            return view3;
+        }
         if(parkingSpace == 0){
             MaterialButton toFindParking = view2.findViewById(R.id.toFindParking);
             toFindParking.setOnClickListener(v -> {toFindParking();});
@@ -139,6 +157,15 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
         return view;
+    }
+
+    private void toReservation() {
+        navigationView.setCheckedItem(R.id.nav_reserve);
+        Fragment reservationFragment = new reserve_fragment(navigationDrawerAcess);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, reservationFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public  Map<Integer, List<Pair<Integer, Integer>>> convertToMap(List<String> combinations) {
