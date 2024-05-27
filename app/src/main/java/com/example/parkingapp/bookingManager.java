@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,7 +27,6 @@ public class bookingManager {
     String parkingName;
     Context context;
     String entryTime, exitTime;
-    Boolean insert_success = false;
 
     public bookingManager(Context context,Quartet<Integer, Integer, Integer, Integer> bookedspot, String parkingName, String entryTime, String exitTime) {
         this.bookedspot = bookedspot;
@@ -68,16 +68,21 @@ public class bookingManager {
         String lotID = map.get(parkingName);
 
        return lotID;
-    }public void addToSharedPreferences(String parkingName, String lotID, String spot){
+    }
+    public void addToSharedPreferences(){
         BookingSession bookingSession = new BookingSession(context);
-        bookingSession.bookParkingSpot(spot, parkingName, lotID,entryTime);
-        if(!entryTime.equals("Unknown")){
-            bookingSession.setLeavingTime(exitTime);
-        }
+        String spot = conversion(bookedspot);
+        String lotID = getlotID(parkingName);
+        int image = bookedspot.getFourth();
+        bookingSession.bookParkingSpot(spot, parkingName, lotID,entryTime,image);
+        bookingSession.setLeavingTime(exitTime);
     }
 
 
-    public boolean insertToDatabase(){
+
+
+    public CompletableFuture<Boolean> insertToDatabase() {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
         userSessionManager userSessionManager = new userSessionManager(context);
 
         String userId = userSessionManager.getUserId();
@@ -85,11 +90,6 @@ public class bookingManager {
         String Spot = conversion(bookedspot);
         String entryTime = this.entryTime;
         String exitTime = this.exitTime;
-        if(exitTime.equals("Unknown")){
-            //insert null for unknown exit time
-        }
-
-        //insert into database
 
         OkHttpClient client = new OkHttpClient();
 
@@ -107,20 +107,22 @@ public class bookingManager {
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
+            @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast("Failed to connect to server");
-                    }
+                ((Activity) context).runOnUiThread(() -> {
+                    showToast("Failed to connect to server");
+                    future.complete(false);
                 });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    showToast("Failed to connect to server");
+                    ((Activity) context).runOnUiThread(() -> {
+                        showToast("Failed to connect to server");
+                        future.complete(false);
+                    });
                     return;
                 }
 
@@ -128,24 +130,19 @@ public class bookingManager {
                     String responseBody = response.body().string();
 
                     if (responseBody.equals("success")) {
-                        insert_success = true;
+                        future.complete(true);
                     } else {
-                        insert_success = false;
+                        future.complete(false);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-
         });
 
-        if(insert_success){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return future;
     }
+
 
 
 
@@ -154,6 +151,8 @@ public class bookingManager {
     public String getBookedSpot(){
         return conversion(bookedspot);
     }
+
+
 
 
     public void cancelBooking(){

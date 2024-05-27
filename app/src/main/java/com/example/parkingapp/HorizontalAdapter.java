@@ -26,15 +26,20 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
     List<android.util.Pair<Integer, Integer>> bookedSpots;
     Context context;
     int spot;
+    Boolean isBooked;
     int totalSpace;
+    String ChoosenParkingName;
 
-    public HorizontalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images,int totalSpace,Map<Integer, List<Pair<Integer, Integer>>> blockToSpots) {
+    public HorizontalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images,
+                             int totalSpace,Map<Integer, List<Pair<Integer, Integer>>> blockToSpots,String ChoosenParkingName) {
         this.itemCount = itemCount;
         this.itemClickListener = itemClickListener;
         this.images = images;
         this.context = context;
         this.totalSpace = totalSpace;
         this.blockToSpots = blockToSpots;
+        this.ChoosenParkingName = ChoosenParkingName;
+
     }
 
     @NonNull
@@ -62,9 +67,12 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
              bookedSpots = null;
         }
 
+        BookingSession bookingSession = new BookingSession(context);
+        isBooked = bookingSession.isBooked();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.verticalRecyclerView.setLayoutManager(layoutManager);
-        verticalAdapter = new VerticalAdapter(context,spot,itemClickListener,images,position,bookedSpots);
+        verticalAdapter = new VerticalAdapter(context,spot,itemClickListener,images,position,bookedSpots,isBooked,ChoosenParkingName);
         holder.verticalRecyclerView.setAdapter(verticalAdapter);
     }
 

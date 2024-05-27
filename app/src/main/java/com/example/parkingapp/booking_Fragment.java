@@ -88,19 +88,13 @@ public class booking_Fragment extends Fragment implements selectListener {
     String parkingNameSelected;
     List<String> bookedSpots;
     Map<Integer, List<Pair<Integer, Integer>>> blockToSpots;
-    Set<String> Bookedset ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
         bookedSpots = null;
-        if(bookedSpots == null){
-            Bookedset  = new HashSet<>(Arrays.asList(""));
-        }
-        else{
-            Bookedset = new HashSet<>(bookedSpots);
-        }
+
 
 
         images = new parkingSlotItem(getContext());
@@ -224,7 +218,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         horizontalRecyclerView = view.findViewById(R.id.horizontalRecyclerView);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontalRecyclerView.setLayoutManager(horizontalLayoutManager);
-        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images, parkingSpace,blockToSpots);
+        horizontalAdapter = new HorizontalAdapter(getContext(),itemCount,this,images, parkingSpace,blockToSpots,parkingName);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(horizontalRecyclerView);
@@ -249,13 +243,31 @@ public class booking_Fragment extends Fragment implements selectListener {
 
             String entryTime = displayEntryTime.getText().toString();
             String exitTime = displayExitTime.getText().toString();
+            if(exitTime.equals("Unknown")){
+                Toast.makeText(getContext(), "Please Select Exit Time", Toast.LENGTH_SHORT).show();
+                return;
+            }
             bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected,entryTime,exitTime);//This class is responsible for handling the booking
-            if(bookingManager.insertToDatabase()){
-                Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
-                BookingSession bookingSession = new BookingSession(getContext());
-            }else{
-                Toast.makeText(getContext(), "Booking Failed", Toast.LENGTH_SHORT).show();
-            };
+            bookingManager.insertToDatabase().thenAccept(insertSuccess -> {
+                getActivity().runOnUiThread(() -> {
+                    if (insertSuccess) {
+                        bookingManager.addToSharedPreferences();
+                        Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
+                        horizontalAdapter.notifyDataSetChanged();
+                        BookingSession bookingSession = new BookingSession(getContext());
+                        Boolean isBook = bookingSession.isBooked();
+                        Log.d("Booking",isBook.toString());
+
+                    } else {
+                        Toast.makeText(getContext(), "Booking Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).exceptionally(ex -> {
+                // Handle exceptions here
+                ex.printStackTrace();
+                return null;
+            });
+
             bottomSheetDialog.dismiss();
             });
 
@@ -270,13 +282,27 @@ public class booking_Fragment extends Fragment implements selectListener {
           bookSubmit.setOnClickListener(v -> {
               String entryTime = displayEntryTime.getText().toString();
               String exitTime = displayExitTime.getText().toString();
+              if(exitTime.equals("Unknown")){
+                  Toast.makeText(getContext(), "Please Select Exit Time", Toast.LENGTH_SHORT).show();
+                  return;
+              }
               bookingManager bookingManager = new bookingManager(getContext(),selected,parkingNameSelected,entryTime,exitTime);//This class is responsible for handling the booking
-              if (bookingManager.insertToDatabase()) {
-                Toast.makeText(getContext(), "Schedule Successful", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Schedule Failed", Toast.LENGTH_SHORT).show();
-            }
-            ;
+              bookingManager.insertToDatabase().thenAccept(insertSuccess -> {
+                  getActivity().runOnUiThread(() -> {
+                      if (insertSuccess) {
+                          Toast.makeText(getContext(), "Schedule Successful", Toast.LENGTH_SHORT).show();
+                          horizontalAdapter.notifyDataSetChanged();
+                      } else {
+                          Toast.makeText(getContext(), "Schedule Failed", Toast.LENGTH_SHORT).show();
+                      }
+                  });
+              }).exceptionally(ex -> {
+                  // Handle exceptions here
+                  ex.printStackTrace();
+                  return null;
+              });
+
+              ;
             bottomSheetDialog.dismiss();
         });
 
@@ -312,9 +338,11 @@ public class booking_Fragment extends Fragment implements selectListener {
                 setChoice(parentPosition,position,slot,images.getImage1());
             }else{
                 String slotLabel = block + String.valueOf(pattern-1);
-                if(bookedSpots.contains(slotLabel)){
-                    Toast.makeText(getContext(), "Spot Is Booked", Toast.LENGTH_SHORT).show();
-                    return;
+                if(bookedSpots != null){
+                    if(bookedSpots.contains(slotLabel)){
+                        Toast.makeText(getContext(), "Spot Is Booked", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 button.setImageDrawable(null);
                 setChoice(0,0,0,-1);
@@ -328,9 +356,11 @@ public class booking_Fragment extends Fragment implements selectListener {
                 setChoice(parentPosition,position,slot,images.getImage2());
             }else{
                 String slotLabel = block + String.valueOf(pattern);
-                if(bookedSpots.contains(slotLabel)){
-                    Toast.makeText(getContext(), "Spot Is Booked", Toast.LENGTH_SHORT).show();
-                    return;
+                if(bookedSpots != null){
+                    if(bookedSpots.contains(slotLabel)){
+                        Toast.makeText(getContext(), "Spot Is Booked", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 setChoice(0,0,0,-1);
                 label.setText(slotLabel);
@@ -341,6 +371,11 @@ public class booking_Fragment extends Fragment implements selectListener {
 
     @Override
     public void setChoice(int parentPosition, int position, int slot,int image) {
+        BookingSession bookingSession = new BookingSession(getContext());
+        if(bookingSession.isBooked()){
+            Toast.makeText(getContext(), "Please Unbook First", Toast.LENGTH_SHORT).show();
+            return;
+        }
         selected = new Quartet<>(parentPosition,position,slot,image);
         horizontalAdapter.childNoifityOnChange();
     }
