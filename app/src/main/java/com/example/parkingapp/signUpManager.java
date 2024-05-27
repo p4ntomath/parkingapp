@@ -105,9 +105,9 @@ public class signUpManager {
         });
     }
 
-    private void storeToSharedPreferences(String userIdString, String email, String password, String uType) {
+    private void storeToSharedPreferences(String userIdString, String uType) {
         userSessionManager sessionManager = new userSessionManager(context);
-        sessionManager.createSession(userIdString, uType, email, password);
+        sessionManager.createSession(userIdString, uType);
     }
 
     private void openNavigationDrawer() {
@@ -141,16 +141,26 @@ public class signUpManager {
                     String responseBody = response.body().string();
                     if (responseBody.equals("success")) {
                         showToastOnUiThread("Account created successfully");
-                        storeToSharedPreferences(userIdString, email, password, uType);
+                        storeToSharedPreferences(userIdString, uType);
                         openNavigationDrawer();
-                    } else if (responseBody.equals("failed")) {
+                    }else if(responseBody.equals("could not connect")){
+                        showToastOnUiThread("Failed to connect to server");
+                    }
+                    else if (responseBody.equals("failed")) {
                         showToastOnUiThread("Failed to create an account");
                     } else if (responseBody.equals("exists")) {
                         showToastOnUiThread("Account already exists. Sign in");
                     }
+                    else if(responseBody.equals("userid exists")) {
+                        showToastOnUiThread("Account with this UserID already exists. Sign in");
+                    }
+                    else if(responseBody.equals("email exists")) {
+                        showToastOnUiThread("Account with this email already exists. Sign in");
+                    }
                 } else {
-                    showToastOnUiThread("Failed to create an account");
+                    showToastOnUiThread("Server couldn't respond");
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
