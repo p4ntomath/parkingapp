@@ -28,15 +28,19 @@ public class signUpManager {
     private EditText signUpPassword;
     private RadioGroup userType;
     private TextView errorMessage;
+    private getStarted getStartedActivity;
+
 
     public signUpManager(Context context, EditText signUpuserId, EditText signUpEmail,
-                         EditText signUpPassword, RadioGroup userType, TextView errorMessage) {
+                         EditText signUpPassword, RadioGroup userType, TextView errorMessage,
+                         getStarted getStartedActivity) {
         this.context = context;
         this.signUpuserId = signUpuserId;
         this.signUpEmail = signUpEmail;
         this.signUpPassword = signUpPassword;
         this.userType = userType;
         this.errorMessage = errorMessage;
+        this.getStartedActivity = getStartedActivity;
     }
 
     public void signUp() {
@@ -162,6 +166,7 @@ public class signUpManager {
                 }
 
             } catch (IOException e) {
+                showToastOnUiThread("No response from server");
                 e.printStackTrace();
             }
         });

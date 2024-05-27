@@ -23,7 +23,6 @@ public class logInManager {
     private Context context;
     private EditText logInUserId;
     private EditText logInPassword;
-    public boolean openNav = false;
 
     public logInManager(Context context, EditText logInUserId, EditText logInPassword) {
         this.context = context;
@@ -34,7 +33,6 @@ public class logInManager {
     public void logIn() {
         String userIdString = logInUserId.getText().toString();
         String password = logInPassword.getText().toString();
-
 
         if (validateForm(userIdString, password)) {
             SQLReq(userIdString, password);
@@ -72,13 +70,16 @@ public class logInManager {
     private void showToast(String message) {
         Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
     private void showToastOnUiThread(String message) {
-        ((Activity) context).runOnUiThread(new Runnable() {@Override
+        ((Activity) context).runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 showToast(message);
             }
         });
     }
+
 
     private void storeToSharedPreferences(String userIdString, String uType) {
         userSessionManager sessionManager = new userSessionManager(context);
@@ -145,10 +146,9 @@ public class logInManager {
         });
     }
 
-    public void openNavigationDrawer(){
+    public void openNavigationDrawer() {
         Intent intent = new Intent(context, navigationDrawer.class);
         context.startActivity(intent);
         ((Activity) context).finish();
     }
-
 }

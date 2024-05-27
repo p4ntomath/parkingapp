@@ -106,7 +106,7 @@ TextView signUpText;
         userType = newSignUpView.findViewById(R.id.userTypeSelection);
         errorMessage = newSignUpView.findViewById(R.id.errorMessage);
         signInText = newSignUpView.findViewById(R.id.signInText);
-        signUpManager signUpManager = new signUpManager(this,signUpuserId,signUpEmail,signUpPassword,userType,errorMessage);
+        signUpManager signUpManager = new signUpManager(this,signUpuserId,signUpEmail,signUpPassword,userType,errorMessage,this);
         signUpBtn.setOnClickListener(v -> {signUpManager.signUp();});
         signInText.setOnClickListener(v -> {signUpbottomSheetDialog.dismiss();
             openSignInPage();});
@@ -122,23 +122,45 @@ TextView signUpText;
         forgotPasswordEmail = newForgotPasswordView.findViewById(R.id.forgotPasswordEmail);
         forgotPasswordManager forgotPasswordManager = new forgotPasswordManager(this,forgotPasswordEmail,otpInput);//this class will validate the email and send otp
 
-            sendOtp.setOnClickListener(v -> {
-                if(forgotPasswordManager.validateEmail()){ //if the email is valid
-                    Toast.makeText(this, "OTP Sent", Toast.LENGTH_SHORT).show();
-                    sendOtp.setText("Cormfirm"); //change the text to confirm on the button
-                    otpInput.setVisibility(View.VISIBLE);
+        sendOtp.setOnClickListener(new View.OnClickListener() {
+            boolean isOtpSent = false;
 
-                    sendOtp.setOnClickListener(a -> {
-                        if(forgotPasswordManager.validateOtp()){
-                            //this class will validate the otp
-                            forgotPasswordbottomSheetDialog.dismiss(); //close the bottom sheet if the otp is valid
-                            setNewPasswordSheet(); //open the new password bottom sheet
-                        }
-                    }); //this is where you take input on the otp and do stuf
-                };//write the code to send otp in the class
-                // this class will validate the email and send otp
-                //manages everything to avoid code duplication
-            });
+            @Override
+            public void onClick(View v) {
+                    // First click: Validate email and send OTP
+                forgotPasswordManager.validateEmail()
+                        .thenAccept(isValid -> {
+                            if (isValid) {
+                                // Email is valid
+                                runOnUiThread(() -> {
+                                    sendOtp.setText("Confirm");
+                                    otpInput.setVisibility(View.VISIBLE);
+                                    // Second click: Validate OTP
+                                    sendOtp.setOnClickListener(v1 -> {
+                                        if (forgotPasswordManager.validateOtp()) {
+                                            forgotPasswordbottomSheetDialog.dismiss();
+                                            setNewPasswordSheet(forgotPasswordEmail);
+                                        }
+                                    });
+                                });
+                            } else {
+                                // Email validation failed
+                                // You can handle this case if needed
+                            }
+                        })
+                        .exceptionally(ex -> {
+                            // Handle exceptions here
+                            ex.printStackTrace();
+                            return null;
+                        });
+
+            }
+
+
+
+
+        });
+
 
         signUpText = newForgotPasswordView.findViewById(R.id.signUpText);
         signUpText.setOnClickListener(v -> {
@@ -147,24 +169,20 @@ TextView signUpText;
     }
 
 
-public void setNewPasswordSheet(){
-        BottomSheetDialog newPasswordbottomSheetDialog = new BottomSheetDialog(getStarted.this);
-        View newPasswordView = LayoutInflater.from(this).inflate(R.layout.newpassword_sheet, null);
-        newPasswordbottomSheetDialog.setContentView(newPasswordView);
-        newPasswordbottomSheetDialog.show();
-        EditText newPassword = newPasswordView.findViewById(R.id.newPasswordInput);
-        EditText confirmPassword = newPasswordView.findViewById(R.id.confirmPasswordInput);
-        Button resetPassword = newPasswordView.findViewById(R.id.resetPasswordBtn);
-        forgotPasswordManager resetPasswordManager = new forgotPasswordManager(newPassword,confirmPassword,this);
-        resetPassword.setOnClickListener(v -> {
-            if(resetPasswordManager.resetPassword()){
-                Toast.makeText(this, "Password Reset Successfully", Toast.LENGTH_SHORT).show();
-                newPasswordbottomSheetDialog.dismiss();//close the bottom sheet if the password is reset successfully
-                openSignInPage();//open the sign in page
-            }
-        });
+    public void setNewPasswordSheet(EditText setPasswordEmail){
+            BottomSheetDialog newPasswordbottomSheetDialog = new BottomSheetDialog(getStarted.this);
+            View newPasswordView = LayoutInflater.from(this).inflate(R.layout.newpassword_sheet, null);
+            newPasswordbottomSheetDialog.setContentView(newPasswordView);
+            newPasswordbottomSheetDialog.show();
+            EditText newPassword = newPasswordView.findViewById(R.id.newPasswordInput);
+            EditText confirmPassword = newPasswordView.findViewById(R.id.confirmPasswordInput);
+            Button resetPassword = newPasswordView.findViewById(R.id.resetPasswordBtn);
+            forgotPasswordManager resetPasswordManager = new forgotPasswordManager(newPassword,confirmPassword,setPasswordEmail,this,this);
+            resetPassword.setOnClickListener(v -> {
+                resetPasswordManager.resetPassword();
+            });
 
-}
+    }
 
 
 
