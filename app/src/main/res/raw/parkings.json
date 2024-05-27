@@ -37,7 +37,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "ENOCH SONTONGA EAST",
+            "Name": "ENOCH SONT EAST",
             "Lot_ID": "ST5",
             "Type": "Student",
             "Latitude": -26.192623191498985,
@@ -46,7 +46,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "ENOCH SONTONGA WEST",
+            "Name": "ENOCH SONT WEST",
             "Lot_ID": "ST6",
             "Type": "Student",
             "Latitude": -26.192622139933935,

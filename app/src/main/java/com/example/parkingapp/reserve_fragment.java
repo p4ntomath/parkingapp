@@ -1,64 +1,146 @@
 package com.example.parkingapp;
 
+import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
+
+import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link reserve_fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.CompletableFuture;
+
+
 public class reserve_fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    navigationDrawerAcess navigationDrawerAcess;
+    public reserve_fragment(navigationDrawerAcess navigationDrawerAcess) {
+        this.navigationDrawerAcess = navigationDrawerAcess;
+    }
     public reserve_fragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment myreservations_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static reserve_fragment newInstance(String param1, String param2) {
-        reserve_fragment fragment = new reserve_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    TextView parkingName,parkimgSpot,parkingType,parkingEntry,parkingExit;
+    public NavigationView navigationView;
+    CardView reserve;
+    MaterialButton cancel;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.myreservations_fragment, container, false);
+        navigationView = navigationDrawerAcess.getNavigationDrawer();
+        navigationView.setCheckedItem(R.id.nav_reserve);
+        view = inflater.inflate(R.layout.myreservations_fragment, container, false);
+        BookingSession bookingSession = new BookingSession(getContext());
+
+        if(bookingSession.isBooked()){
+            bookedUser(view,bookingSession);
+            return view;
+        }else{
+            View view2 = inflater.inflate(R.layout.noreserve, container, false);
+            MaterialButton findParking = view2.findViewById(R.id.toGetParking);
+            findParking.setOnClickListener(v -> toFindParking());
+            return view2;
+        }
+
     }
+
+    public void bookedUser(View view,BookingSession bookingSession){
+        userSessionManager userSessionManager = new userSessionManager(getContext());
+        reserve = view.findViewById(R.id.reservationCard);
+        cancel = view.findViewById(R.id.cancelBooking);
+        parkingName = view.findViewById(R.id.bookedParkingName);
+        parkimgSpot = view.findViewById(R.id.bookedSpotNumber);
+        parkingType = view.findViewById(R.id.typeOfParking);
+        parkingEntry = view.findViewById(R.id.bookedEntry);
+        parkingExit = view.findViewById(R.id.bookedExit);
+        parkingName.setText(bookingSession.getParkingName());
+        parkimgSpot.setText(bookingSession.getBookedSpotNumber());
+        parkingType.setText(userSessionManager.getUserType());
+        parkingEntry.setText(bookingSession.getEntryTime());
+        parkingExit.setText(bookingSession.getLeavingTime());
+        cancel.setOnClickListener(v -> confirmDialog());
+        reserve.setOnLongClickListener(v -> {confirmDialog();
+            return true;
+        });
+
+    }
+    public void confirmDialog(){
+        Button dialogCancelBtn,DialogConfirmbtn;
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.confirmcancel);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        dialog.show();
+        dialogCancelBtn = dialog.findViewById(R.id.btn_cancel);
+        DialogConfirmbtn = dialog.findViewById(R.id.btn_confirm);
+        dialogCancelBtn.setOnClickListener(v -> dialog.dismiss());
+        DialogConfirmbtn.setOnClickListener(v -> {
+            removeBooking().thenAccept(result -> {
+                dialog.dismiss();
+            });
+        });
+    }
+
+
+
+    public void toFindParking(){
+
+        navigationView.setCheckedItem(R.id.nav_home);
+        Fragment newFragment = new home_fragment(navigationDrawerAcess);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }public CompletableFuture<Boolean> removeBooking() {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        bookingManager bookingManager = new bookingManager(getContext());
+        bookingManager.deleteFromDatabase().thenAccept(deleteSuccess -> {
+            if (deleteSuccess) {
+                getActivity().runOnUiThread(() -> {
+                    BookingSession bookingSession = new BookingSession(getContext());
+                    bookingSession.deleteBooking();
+                    Toast.makeText(getContext(), "Booking deleted successfully", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.remove(this); //
+                    Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
+                    transaction.replace(R.id.fragmentLayout, reservationFragmentNew); // Replace with the new instance
+                    transaction.commit();
+
+                });
+
+                future.complete(true); // Complete the future when deletion is successful
+            } else {
+                Toast.makeText(getContext(), "Failed to delete booking", Toast.LENGTH_SHORT).show();
+                future.complete(false); // Complete the future when deletion fails
+            }
+        }).exceptionally(ex -> {
+            // Handle exceptions here
+            ex.printStackTrace();
+            future.complete(false); // Complete the future exceptionally
+            return null;
+        });
+
+        return future;
+    }
+
+
+
+
 }

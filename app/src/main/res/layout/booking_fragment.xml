@@ -123,7 +123,7 @@
              app:icon="@drawable/scheduleicon"
              app:rippleColor="@color/secondary"
              app:srcCompat="@drawable/scheduleicon"
-             android:layout_marginBottom="40dp"/>
+             android:layout_marginBottom="40dp" />
 
          <!-- Floating Action Button 2 -->
          <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -140,7 +140,24 @@
              android:textStyle="bold"
              app:rippleColor="@color/secondary"
              android:layout_alignParentEnd="true"
-             android:layout_marginBottom="40dp"/>
+             android:layout_marginBottom="40dp" />
+
+         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+             android:id="@+id/toReservations"
+             android:layout_width="250dp"
+             android:layout_height="65dp"
+             android:layout_marginRight="15dp"
+             android:layout_gravity="bottom"
+             android:contentDescription="Book"
+             android:layout_alignParentBottom="true"
+             android:text="My Bookings"
+             android:textSize="20dp"
+             android:textColor="@color/primary"
+             android:textStyle="bold"
+             app:rippleColor="@color/secondary"
+             android:layout_centerInParent="true"
+             android:layout_marginBottom="40dp"
+             android:visibility="gone"/>
 
       </RelativeLayout>
 

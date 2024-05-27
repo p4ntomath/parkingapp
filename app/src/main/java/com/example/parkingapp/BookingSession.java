@@ -11,6 +11,7 @@ public class BookingSession {
     private static final String KEY_SPOT_NUMBER = "spot_number";
     private static final String KEY_ENTRY_TIME = "entry_time";
     private static final String KEY_LEAVING_TIME = "leaving_time";
+    private static final String KEY_IMAGE = "image";
     private static final String KEY_IS_BOOKED = "is_booked";
 
     private SharedPreferences sharedPreferences;
@@ -19,12 +20,13 @@ public class BookingSession {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public void bookParkingSpot(String spotNumber,String parkingName ,String lotId,String entryTime) {
+    public void bookParkingSpot(String spotNumber,String parkingName ,String lotId,String entryTime,int image) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_LOT_ID, lotId);
         editor.putString(KEY_SPOT_NUMBER, spotNumber);
         editor.putString(KEY_PARKING_NAME, parkingName);
         editor.putString(KEY_ENTRY_TIME, entryTime);
+        editor.putInt(KEY_IMAGE,image);
         editor.putBoolean(KEY_IS_BOOKED, true);
         editor.apply();
     }
@@ -45,7 +47,13 @@ public class BookingSession {
 
     public String getLeavingTime() {
         return sharedPreferences.getString(KEY_LEAVING_TIME, "-1"); // -1 indicates no leaving time recorded
+    }public int getImage() {
+        return sharedPreferences.getInt(KEY_IMAGE, -1); // -1 indicates no image
     }
+    public String getParkingName() {
+        return sharedPreferences.getString(KEY_PARKING_NAME, "-1"); // -1 indicates no parking name
+    }
+
     public boolean isBooked() {
         return sharedPreferences.getBoolean(KEY_IS_BOOKED, false);
     }

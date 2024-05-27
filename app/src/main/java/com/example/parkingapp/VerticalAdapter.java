@@ -1,5 +1,6 @@
 package com.example.parkingapp;
 
+import static java.lang.Integer.parseInt;
 import static java.security.AccessController.getContext;
 
 import android.annotation.SuppressLint;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -30,14 +32,19 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
     int parentPosition;
     Context context;
    List<android.util.Pair<Integer, Integer>> bookedSpots;
+   Boolean isBooked;
 
-    public VerticalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images, int parentPosition,List<android.util.Pair<Integer, Integer>> bookedSpots) {
+   String choosenParking;
+    public VerticalAdapter(Context context,int itemCount, selectListener itemClickListener, parkingSlotItem images,
+                           int parentPosition,List<android.util.Pair<Integer, Integer>> bookedSpots,Boolean isBooked,String choosenParking) {
         this.itemCount = itemCount;
         this.listner = itemClickListener;
         this.images = images;
         this.parentPosition = parentPosition;
         this.context = context;
         this.bookedSpots = bookedSpots;
+        this.isBooked = isBooked;
+        this.choosenParking = choosenParking;
     }
 
     @NonNull
@@ -53,16 +60,20 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         holder.slot2.setImageResource(0);
 
         Quartet<Integer,Integer,Integer,Integer> selectedChoice =  listner.getChoice();
-        Pair<Character,Integer> label = label(position);
+        init(position,holder);
 
-        String slot1Label = label.getFirst() + String.valueOf(label.getSecond()-1);
-        String slot2Label =  label.getFirst() + String.valueOf(label.getSecond());
-        holder.slot1Label.setText(slot1Label);
-        holder.slot2Label.setText(slot2Label);
+        if(isBooked){
+            BookingSession bookingSession = new BookingSession(context);
+            String parkingName = bookingSession.getParkingName();
+            if(parkingName.equals(choosenParking)){
+                isBooked = bookingSession.isBooked();
+                String spot = bookingSession.getBookedSpotNumber();
 
-        int initialColor = ContextCompat.getColor(context, R.color.tertiary); // Using the "green" color resource
-        holder.slot1.setBackgroundTintList(ColorStateList.valueOf(initialColor));
-        holder.slot2.setBackgroundTintList(ColorStateList.valueOf(initialColor));
+                int image = bookingSession.getImage();
+                selectedChoice = convertToQuartet(spot,image);
+            }
+
+        }
 
 
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1){
@@ -74,17 +85,19 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
             holder.slot2Label.setText("");
         }
 
-        if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1 && selectedChoice.getIsBooked()){
+        if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1 && isBooked){
             int greenColor = ContextCompat.getColor(context, R.color.Green);
             holder.slot1.setBackgroundTintList(ColorStateList.valueOf(greenColor));
-        }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2 && selectedChoice.getIsBooked()){
+        }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2 && isBooked){
             int greenColor = ContextCompat.getColor(context, R.color.Green);
             holder.slot2.setBackgroundTintList(ColorStateList.valueOf(greenColor));
+
         }
 
         if(bookedSpots != null){
             handleBookedSpots(holder,position);//fills cars on booked spots
         }
+
 
             holder.slot1.setOnClickListener(v -> leftSlotOnClick(position,holder));
             holder.slot2.setOnClickListener(v -> rightSlotOnClick(position,holder));
@@ -93,6 +106,15 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
 
 
 
+    }public void init(int position,VerticalAdapter.ViewHolder holder){
+        Pair<Character,Integer> label = label(position);
+        String slot1Label = label.getFirst() + String.valueOf(label.getSecond()-1);
+        String slot2Label =  label.getFirst() + String.valueOf(label.getSecond());
+        holder.slot1Label.setText(slot1Label);
+        holder.slot2Label.setText(slot2Label);
+        int initialColor = ContextCompat.getColor(context, R.color.tertiary); // Using the "green" color resource
+        holder.slot1.setBackgroundTintList(ColorStateList.valueOf(initialColor));
+        holder.slot2.setBackgroundTintList(ColorStateList.valueOf(initialColor));
     }
     public Pair<Character,Integer> label(int position){
         char capital = 'A';
@@ -121,6 +143,34 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         }
     }
 
+    public Quartet<Integer,Integer,Integer,Integer> convertToQuartet(String Spot,int Image) {
+        char c = Character.toUpperCase(Spot.charAt(0));
+        int asciiValue = (int) c;
+
+
+        int index = 1; // Start after the first character (which is a letter)
+        // Find the index of the first non-digit character
+        while (index < Spot.length() && Character.isDigit(Spot.charAt(index))) {
+            index++;
+        }
+
+        // Extract the digits substring and parse it as an integer
+        String numberString = Spot.substring(1, index);
+
+        int num = Integer.parseInt(numberString);
+        int parent = asciiValue - 'A';
+        int slot = 0;
+        int position = 0;
+        if(num%2 == 0){
+            slot = 2;
+            position = (num/2)-1;
+        }else{
+            slot = 1;
+            position = (num-1)/2;
+        }
+        return new Quartet<>(parent,position,slot,Image);
+    }
+
 
 
 
@@ -129,12 +179,20 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         return itemCount;
     }
     public void rightSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
-        listner.onVerticalItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position);
-        notifyDataSetChanged();
+        if(!isBooked){
+            listner.onVerticalItemClick(holder.slot2,holder.slot2Label,2,parentPosition,position);
+            notifyDataSetChanged();
+        }else{
+            Toast.makeText(context, "You have already booked", Toast.LENGTH_SHORT).show();
+        }
     }
     public void leftSlotOnClick(int position, VerticalAdapter.ViewHolder holder){
-        listner.onVerticalItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position);
-        notifyDataSetChanged();
+        if(!isBooked){
+            listner.onVerticalItemClick(holder.slot1,holder.slot1Label,1,parentPosition,position);
+             notifyDataSetChanged();
+        }else{
+            Toast.makeText(context, "You have already booked", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
