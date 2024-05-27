@@ -21,6 +21,7 @@
         />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/reservationCard"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:backgroundTint="@color/primary"
@@ -186,6 +187,27 @@
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/cancelBooking"
+            android:layout_width="250dp"
+            android:layout_height="65dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="Book"
+            android:layout_alignParentBottom="true"
+            android:text="Cancel Booking"
+            android:textSize="20dp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            app:rippleColor="@color/secondary"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            />
+    </RelativeLayout>
 
 
 

@@ -35,6 +35,9 @@ public class bookingManager {
         this.entryTime = entryTime;
         this.exitTime = exitTime;
     }
+    public  bookingManager(Context context){
+        this.context = context;
+    }
 
     private void showToast(String message) {
         Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -163,14 +166,15 @@ public class bookingManager {
     }
 
 
-    public void deleteFromDatabase(){
-        userSessionManager userSessionManager = new userSessionManager(context);
+    public CompletableFuture<Boolean> deleteFromDatabase() {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
+        userSessionManager userSessionManager = new userSessionManager(context);
         String userId = userSessionManager.getUserId();
 
         OkHttpClient client = new OkHttpClient();
 
-        String parseUrl = "https://lamp.ms.wits.ac.za/home/s2691450/booking.php";
+        String parseUrl = "https://lamp.ms.wits.ac.za/home/s2691450/deleteBooking.php";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(parseUrl).newBuilder();
         urlBuilder.addQueryParameter("userId", userId);
         String url = urlBuilder.build().toString();
@@ -180,20 +184,22 @@ public class bookingManager {
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
+            @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast("Failed to connect to server");
-                    }
+                ((Activity) context).runOnUiThread(() -> {
+                    showToast("Failed to connect to server");
+                    future.complete(false);
                 });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    showToast("Failed to connect to server");
+                    ((Activity) context).runOnUiThread(() -> {
+                        showToast("Failed to connect");
+                        future.complete(false);
+                    });
                     return;
                 }
 
@@ -201,18 +207,19 @@ public class bookingManager {
                     String responseBody = response.body().string();
 
                     if (responseBody.equals("success")) {
-                        //
+                        future.complete(true);
                     } else {
-                        //
+                        future.complete(false);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-
         });
 
+        return future;
     }
+
 
 
 
