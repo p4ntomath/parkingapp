@@ -80,7 +80,8 @@ public class logInManager {
         });
     }
 
-    private void storeToSharedPreferences(String userIdString,String uType) {
+
+    private void storeToSharedPreferences(String userIdString, String uType) {
         userSessionManager sessionManager = new userSessionManager(context);
         sessionManager.createSession(userIdString, uType);
     }
@@ -104,7 +105,7 @@ public class logInManager {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showToast("Failed to connect to server");
+                        showToast("Server doesn't exist");
                     }
                 });
             }
@@ -112,7 +113,7 @@ public class logInManager {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    showToast("Failed to connect to server");
+                    showToast("Server couldn't respond");
                     return;
                 }
 
@@ -127,7 +128,14 @@ public class logInManager {
 
                         storeToSharedPreferences(userId, uType);
                         openNavigationDrawer();
-                    } else {
+                    }
+                    else if(outcome.equals("could not connect")){
+                        showToastOnUiThread("Failed to connect to server");
+                    }
+                    else if(outcome.equals("incorrect password")){
+                        showToastOnUiThread("Incorrect password");
+                    }
+                    else if(outcome.equals("does not exist")){
                         showToastOnUiThread("User does not exist");
                     }
                 } catch (JSONException e) {

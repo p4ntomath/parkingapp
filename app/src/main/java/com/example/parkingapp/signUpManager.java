@@ -109,6 +109,17 @@ public class signUpManager {
         });
     }
 
+    private void storeToSharedPreferences(String userIdString, String uType) {
+        userSessionManager sessionManager = new userSessionManager(context);
+        sessionManager.createSession(userIdString, uType);
+    }
+
+    private void openNavigationDrawer() {
+        Intent intent = new Intent(context, navigationDrawer.class);
+        context.startActivity(intent);
+        ((Activity) context).finish();
+    }
+
     private void SQLReq(String userIdString, String email, String password, String uType) {
         String url = "https://lamp.ms.wits.ac.za/home/s2691450/signup.php";
 
@@ -134,17 +145,26 @@ public class signUpManager {
                     String responseBody = response.body().string();
                     if (responseBody.equals("success")) {
                         showToastOnUiThread("Account created successfully");
-                        ((Activity) context).runOnUiThread(() -> {
-                            getStartedActivity.openSignInPage();
-                        });
-                    } else if (responseBody.equals("failed")) {
+                        storeToSharedPreferences(userIdString, uType);
+                        openNavigationDrawer();
+                    }else if(responseBody.equals("could not connect")){
+                        showToastOnUiThread("Failed to connect to server");
+                    }
+                    else if (responseBody.equals("failed")) {
                         showToastOnUiThread("Failed to create an account");
                     } else if (responseBody.equals("exists")) {
                         showToastOnUiThread("Account already exists. Sign in");
                     }
+                    else if(responseBody.equals("userid exists")) {
+                        showToastOnUiThread("Account with this UserID already exists. Sign in");
+                    }
+                    else if(responseBody.equals("email exists")) {
+                        showToastOnUiThread("Account with this email already exists. Sign in");
+                    }
                 } else {
-                    showToastOnUiThread("Failed to create an account");
+                    showToastOnUiThread("Server couldn't respond");
                 }
+
             } catch (IOException e) {
                 showToastOnUiThread("No response from server");
                 e.printStackTrace();
