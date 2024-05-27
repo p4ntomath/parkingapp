@@ -93,8 +93,9 @@ public class booking_Fragment extends Fragment implements selectListener {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
-
-        bookedSpots = null;
+        bookingManager bookingManager = new bookingManager(getContext());
+        bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
+        Log.d("bookedSpots", bookedSpots.toString());
         BookingSession bookingSession = new BookingSession(getContext());
         if(bookingSession.isBooked()){
             toReservation = view.findViewById(R.id.toReservations);
@@ -281,11 +282,10 @@ public class booking_Fragment extends Fragment implements selectListener {
                         bookingManager.addToSharedPreferences();
                         Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
                         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                        transaction.remove(this);
-                        Fragment reservationFragmentNew = new booking_Fragment(navigationDrawerAcess,parkingNameSelected,parkingSpace,parkingType); // Create a new instance of the fragment
+                        transaction.remove(this); //
+                        Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
                         transaction.replace(R.id.fragmentLayout, reservationFragmentNew); // Replace with the new instance
                         transaction.commit();
-
                     } else {
                         Toast.makeText(getContext(), "Booking Failed", Toast.LENGTH_SHORT).show();
                     }
@@ -321,8 +321,8 @@ public class booking_Fragment extends Fragment implements selectListener {
                           bookingManager.addToSharedPreferences();
                           Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
                           FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                          transaction.remove(this);
-                          Fragment reservationFragmentNew = new booking_Fragment(navigationDrawerAcess); // Create a new instance of the fragment
+                          transaction.remove(this); //
+                          Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
                           transaction.replace(R.id.fragmentLayout, reservationFragmentNew); // Replace with the new instance
                           transaction.commit();
                       } else {
