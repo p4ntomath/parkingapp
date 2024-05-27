@@ -205,7 +205,7 @@
             android:textStyle="bold"
             app:rippleColor="@color/secondary"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="60dp"
             />
     </RelativeLayout>
 

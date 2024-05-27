@@ -152,6 +152,8 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
     public void logout() {
         userSessionManager userSessionManager = new userSessionManager(this);
         userSessionManager.logout();
+        BookingSession bookingSession = new BookingSession(getApplicationContext());
+        bookingSession.deleteBooking();
         Intent intent = new Intent(this, getStarted.class);
         startActivity(intent);
         finish();

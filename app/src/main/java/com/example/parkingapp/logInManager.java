@@ -125,6 +125,20 @@ public class logInManager {
                         showToastOnUiThread("Login Successful");
                         String uType = jsonObject.getString("USER_TYPE");
                         String userId = jsonObject.getString("USER_ID");
+                        String booking = jsonObject.getString("BOOKING");
+                        if(booking.equals("true")){
+                            String lotId = jsonObject.getString("LOT_ID");
+                            String spotNumber = jsonObject.getString("SPOT_NUMBER");
+                            String entry = jsonObject.getString("ENTRY_TIME");
+                            String exit = jsonObject.getString("EXIT_TIME");
+                            String parkingName = jsonObject.getString("PARKING_NAME");
+                            int spot = Integer.parseInt(spotNumber.substring(1));
+                            parkingSlotItem image = new parkingSlotItem(context.getApplicationContext());
+                            int imageId = (spot%2== 0 )? image.getImage2() : image.getImage1();
+                            BookingSession bookingSession = new BookingSession(context);
+                            bookingSession.bookParkingSpot(spotNumber, parkingName, lotId, entry,imageId);
+                            bookingSession.setLeavingTime(exit);
+                        }
 
                         storeToSharedPreferences(userId, uType);
                         openNavigationDrawer();

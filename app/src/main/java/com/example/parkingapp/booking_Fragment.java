@@ -96,6 +96,9 @@ public class booking_Fragment extends Fragment implements selectListener {
         bookingManager bookingManager = new bookingManager(getContext());
         bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
         Log.d("bookedSpots", bookedSpots.toString());
+        parkingSpace = parkingSpace - bookedSpots.size();
+
+
         BookingSession bookingSession = new BookingSession(getContext());
         if(bookingSession.isBooked()){
             toReservation = view.findViewById(R.id.toReservations);
@@ -449,7 +452,8 @@ public class booking_Fragment extends Fragment implements selectListener {
 
                 //Avoiding the time conflict,users booking time behind the current time
                 int hourToSet = Math.max(hourOfDay, hourNow);
-                int minToSet = hourToSet == hourNow ? minuteNow : minute;
+                int minToSet = (hourToSet == hourNow) ? minuteNow : minute;
+
                 if(hourToSet == hourOfDay){
                     minToSet = Math.max(minute, minuteNow);
                 }
