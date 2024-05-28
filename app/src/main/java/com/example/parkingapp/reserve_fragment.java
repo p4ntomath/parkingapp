@@ -89,6 +89,16 @@ public class reserve_fragment extends Fragment {
             bookingManager.updateExitTime(exitTime).thenAccept(result -> {
                 requireActivity().runOnUiThread(() -> {
                     if (!result) {
+                        int hour = Integer.parseInt(exitTime.split(":")[0]);
+                        int minute = Integer.parseInt(exitTime.split(":")[1]);
+                        int hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                        int minuteNow = Calendar.getInstance().get(Calendar.MINUTE);
+                        if(hourNow > hour || (hourNow == hour && minuteNow > minute)){
+                            exitDialog.dismiss();
+                            Toast.makeText(getContext(), "Exit time cannot be set in the past", Toast.LENGTH_SHORT).show();
+                            return;
+
+                        }
                         Toast.makeText(getContext(), "Exit time updated successfully", Toast.LENGTH_SHORT).show();
                         bookingSession.setLeavingTime(exitTime);
                         bookingSession.setIsReminded(false);
@@ -282,7 +292,6 @@ public class reserve_fragment extends Fragment {
 
             }
         }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
-
         timePickerDialog.show();
 
     }
