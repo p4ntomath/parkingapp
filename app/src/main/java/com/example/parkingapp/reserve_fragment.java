@@ -72,6 +72,7 @@ public class reserve_fragment extends Fragment {
     public void setExitTimeDialog(BookingSession bookingSession){
         Dialog exitDialog = new Dialog(getContext());
         exitDialog.setContentView(R.layout.setexitdialog);
+        exitDialog.getWindow().setBackgroundDrawable(requireContext().getDrawable(R.drawable.dialog_bg));
         exitDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         exitDialog.setCancelable(true);
         CardView cardView = exitDialog.findViewById(R.id.exitTimeCard);
@@ -194,6 +195,7 @@ public class reserve_fragment extends Fragment {
         Button dialogCancelBtn,DialogConfirmbtn;
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.confirmcancel);
+        dialog.getWindow().setBackgroundDrawable(requireContext().getDrawable(R.drawable.dialog_bg));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false);
         dialog.show();
