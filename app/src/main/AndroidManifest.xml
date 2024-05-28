@@ -34,14 +34,6 @@
             android:exported="false">
         </activity>
 
-
-        <activity
-            android:name=".login"
-            android:exported="false" />
-
-        <activity
-            android:name=".signup"
-            android:exported="false" />
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
