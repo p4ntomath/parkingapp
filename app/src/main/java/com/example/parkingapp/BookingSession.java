@@ -31,6 +31,9 @@ public class BookingSession {
         editor.apply();
     }
 
+
+
+
     public void setLeavingTime(String leavingTime) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_LEAVING_TIME, leavingTime);

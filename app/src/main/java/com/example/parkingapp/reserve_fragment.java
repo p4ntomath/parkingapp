@@ -2,23 +2,30 @@ package com.example.parkingapp;
 
 import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 
+import static java.util.Calendar.getInstance;
+
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Calendar;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -36,7 +43,7 @@ public class reserve_fragment extends Fragment {
     TextView parkingName,parkimgSpot,parkingType,parkingEntry,parkingExit;
     public NavigationView navigationView;
     CardView reserve;
-    MaterialButton cancel;
+    MaterialButton cancel,remind;
     View view;
 
     @Override
@@ -49,6 +56,9 @@ public class reserve_fragment extends Fragment {
 
         if(bookingSession.isBooked()){
             bookedUser(view,bookingSession);
+            if(approachingTime(bookingSession)){
+                remind.setText("Extend Exit");
+            }
             return view;
         }else{
             View view2 = inflater.inflate(R.layout.noreserve, container, false);
@@ -59,7 +69,7 @@ public class reserve_fragment extends Fragment {
 
     }
 
-    public void bookedUser(View view,BookingSession bookingSession){
+    public void bookedUser(View view,BookingSession bookingSession) {
         userSessionManager userSessionManager = new userSessionManager(getContext());
         reserve = view.findViewById(R.id.reservationCard);
         cancel = view.findViewById(R.id.cancelBooking);
@@ -74,11 +84,64 @@ public class reserve_fragment extends Fragment {
         parkingEntry.setText(bookingSession.getEntryTime());
         parkingExit.setText(bookingSession.getLeavingTime());
         cancel.setOnClickListener(v -> confirmDialog());
-        reserve.setOnLongClickListener(v -> {confirmDialog();
+        reserve.setOnLongClickListener(v -> {
+            confirmDialog();
             return true;
+        });
+        remind = view.findViewById(R.id.remainder);
+        remind.setOnClickListener(v -> {
+            if(setReminder(bookingSession)){
+                Toast.makeText(getContext(), "Reminder set successfully", Toast.LENGTH_SHORT).show();
+                }else{
+                Toast.makeText(getContext(), "Failed to set reminder", Toast.LENGTH_SHORT).show();
+            };
         });
 
     }
+
+    private boolean approachingTime(BookingSession bookingSession) {
+        int hour = Integer.parseInt(bookingSession.getLeavingTime().split(":")[0]);
+        int minute = Integer.parseInt(bookingSession.getLeavingTime().split(":")[1]);
+        int hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int minuteNow = Calendar.getInstance().get(Calendar.MINUTE);
+        if(hourNow > hour || (hourNow == hour && minuteNow > minute)){
+            return true;
+        }else if(hourNow == hour && minuteNow > (minute-10)){
+            return true;
+        }
+        return false;
+    }
+
+
+    private Boolean setReminder(BookingSession bookingSession) {
+
+        try {
+            Calendar notificationTime = Calendar.getInstance();
+            String leavingTime = bookingSession.getLeavingTime();
+            String[] timeParts = leavingTime.split(":");
+            int hour = Integer.parseInt(timeParts[0]);
+            int minute = Integer.parseInt(timeParts[1]);
+            int newMin = minute - 10;
+            if (newMin < 0) {
+                hour = hour - 1;
+                newMin = 60 + newMin;
+            }
+            notificationTime.set(Calendar.HOUR_OF_DAY, hour);
+            notificationTime.set(Calendar.MINUTE, newMin);
+            notificationTime.set(Calendar.SECOND, 0);
+            notificationTime.set(Calendar.MILLISECOND, 0);
+            long delayMillis = notificationTime.getTimeInMillis() - System.currentTimeMillis();
+            if (delayMillis <= 0) {
+                delayMillis += 86400000;
+            }
+            NotificationScheduler.scheduleNotification(getContext(), delayMillis);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
     public void confirmDialog(){
         Button dialogCancelBtn,DialogConfirmbtn;
         Dialog dialog = new Dialog(getContext());

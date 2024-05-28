@@ -68,7 +68,6 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
             if(parkingName.equals(choosenParking)){
                 isBooked = bookingSession.isBooked();
                 String spot = bookingSession.getBookedSpotNumber();
-
                 int image = bookingSession.getImage();
                 selectedChoice = convertToQuartet(spot,image);
             }
