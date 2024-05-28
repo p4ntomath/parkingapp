@@ -1,5 +1,7 @@
 package com.example.parkingapp;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -268,6 +270,49 @@ public class bookingManager {
                 } catch (JSONException e) {
                     future.completeExceptionally(e);
                 }
+            }
+        });
+
+        return future;
+    }
+
+    public CompletableFuture<Boolean> updateExitTime(String exitTime) {
+        userSessionManager userSessionManager = new userSessionManager(context);
+        String userId = userSessionManager.getUserId();
+
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/home/s2691450/updateExitTime.php").newBuilder();
+        urlBuilder.addQueryParameter("userId", userId);
+        urlBuilder.addQueryParameter("exitTime", exitTime);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    boolean isSuccess = responseBody.equals("success");
+                    future.complete(isSuccess);
+                } else {
+                    ((Activity) context).runOnUiThread(() -> {
+                        showToast("Failed: " + response.code() + " " + response.message());
+                    });
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                ((Activity) context).runOnUiThread(() -> {
+                    showToast("Failed to connect: " + e.getMessage());
+                });
+                future.complete(false);
             }
         });
 

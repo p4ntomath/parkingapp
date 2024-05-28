@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="220dp"
+        android:background="@color/primary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Exit Time"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/exitTimeCard"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="12dp"
+            android:backgroundTint="@color/tertiary">
+
+            <TextView
+                android:id="@+id/exitTimeDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="12:30"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/comfirmExitTime"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:background="@drawable/btn_logout"
+            app:backgroundTint="@color/tertiary"
+            android:layout_marginBottom="20dp">
+
+        </Button>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

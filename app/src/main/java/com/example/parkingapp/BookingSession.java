@@ -13,6 +13,7 @@ public class BookingSession {
     private static final String KEY_LEAVING_TIME = "leaving_time";
     private static final String KEY_IMAGE = "image";
     private static final String KEY_IS_BOOKED = "is_booked";
+    private static final String KEY_IS_REMINDED = "is_reminded";
 
     private SharedPreferences sharedPreferences;
 
@@ -28,10 +29,18 @@ public class BookingSession {
         editor.putString(KEY_ENTRY_TIME, entryTime);
         editor.putInt(KEY_IMAGE,image);
         editor.putBoolean(KEY_IS_BOOKED, true);
+        editor.putBoolean(KEY_IS_REMINDED, false);
         editor.apply();
     }
 
-
+    public void setIsReminded(boolean isReminded) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_IS_REMINDED, isReminded);
+        editor.apply();
+    }
+    public boolean getIsReminded() {
+        return sharedPreferences.getBoolean(KEY_IS_REMINDED, false);
+    }
 
 
     public void setLeavingTime(String leavingTime) {

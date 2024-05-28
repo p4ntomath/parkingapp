@@ -56,8 +56,8 @@ public class reserve_fragment extends Fragment {
 
         if(bookingSession.isBooked()){
             bookedUser(view,bookingSession);
-            if(approachingTime(bookingSession)){
-                remind.setText("Extend Exit");
+            if(approachingTime(bookingSession) || bookingSession.getIsReminded()){
+                changeOnClick(remind,bookingSession);
             }
             return view;
         }else{
@@ -67,6 +67,52 @@ public class reserve_fragment extends Fragment {
             return view2;
         }
 
+    }
+
+    public void setExitTimeDialog(BookingSession bookingSession){
+        Dialog exitDialog = new Dialog(getContext());
+        exitDialog.setContentView(R.layout.setexitdialog);
+        exitDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        exitDialog.setCancelable(true);
+        CardView cardView = exitDialog.findViewById(R.id.exitTimeCard);
+        TextView displayExit = exitDialog.findViewById(R.id.exitTimeDisplay);
+        Button setExit = exitDialog.findViewById(R.id.comfirmExitTime);
+        displayExit.setText(bookingSession.getLeavingTime());
+        exitDialog.show();
+        cardView.setOnClickListener(v -> {
+            setExitTime(displayExit);
+        });
+        setExit.setOnClickListener(v -> {
+            bookingManager bookingManager = new bookingManager(getContext());
+            String exitTime = displayExit.getText().toString();
+            bookingManager.updateExitTime(exitTime).thenAccept(result -> {
+                requireActivity().runOnUiThread(() -> {
+                    if (!result) {
+                        Toast.makeText(getContext(), "Exit time updated successfully", Toast.LENGTH_SHORT).show();
+                        bookingSession.setLeavingTime(exitTime);
+                        bookingSession.setIsReminded(false);
+                        parkingExit.setText(exitTime);
+                        exitDialog.dismiss();
+                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                        transaction.remove(this); //
+                        Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
+                        transaction.replace(R.id.fragmentLayout, reservationFragmentNew); // Replace with the new instance
+                        transaction.commit();
+                    } else {
+                        exitDialog.dismiss();
+                        Toast.makeText(getContext(), "Failed to update exit time", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        });
+
+    }
+
+    private void changeOnClick(MaterialButton remind,BookingSession bookingSession) {
+        remind.setText("Extend Exit");
+        remind.setOnClickListener(v->{
+            setExitTimeDialog(bookingSession);
+        });
     }
 
     public void bookedUser(View view,BookingSession bookingSession) {
@@ -92,6 +138,7 @@ public class reserve_fragment extends Fragment {
         remind.setOnClickListener(v -> {
             if(setReminder(bookingSession)){
                 Toast.makeText(getContext(), "Reminder set successfully", Toast.LENGTH_SHORT).show();
+                changeOnClick(remind,bookingSession);
                 }else{
                 Toast.makeText(getContext(), "Failed to set reminder", Toast.LENGTH_SHORT).show();
             };
@@ -135,6 +182,7 @@ public class reserve_fragment extends Fragment {
                 delayMillis += 86400000;
             }
             NotificationScheduler.scheduleNotification(getContext(), delayMillis);
+            bookingSession.setIsReminded(true);
         }
         catch (Exception e){
             return false;
@@ -203,7 +251,39 @@ public class reserve_fragment extends Fragment {
         return future;
     }
 
+    public void setExitTime(TextView displayExitTime){
 
+        int hourNow = getInstance().get(Calendar.HOUR_OF_DAY);
+        int minuteNow = getInstance().get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                //Avoiding the time conflict,users booking time behind the current time
+                int hourToSet = Math.max(hourOfDay, hourNow);
+                int minToSet;
+                if(hourNow == hourOfDay){
+                    minToSet = Math.max(minute,minuteNow);
+                }else if(hourNow > hourOfDay){
+                    minToSet = minuteNow;
+                }
+                else{
+                    minToSet = minute;
+                }
+                String sHourToSet = String.valueOf(hourToSet);
+                if (sHourToSet.length() == 1) {sHourToSet = "0" + sHourToSet;} //add 0 if the hour is less than 10
+                String sMinToSet = String.valueOf(minToSet);
+                if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}//add 0 if the minute is less than 10
+                displayExitTime.setText(sHourToSet + ":" + sMinToSet);//display the exit time
+
+            }
+        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+
+        timePickerDialog.show();
+
+    }
 
 
 }
