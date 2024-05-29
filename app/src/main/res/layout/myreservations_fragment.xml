@@ -193,19 +193,38 @@
         android:layout_height="match_parent">
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/cancelBooking"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="65dp"
             android:layout_marginRight="15dp"
             android:layout_gravity="bottom"
             android:contentDescription="Book"
             android:layout_alignParentBottom="true"
-            android:text="Cancel Booking"
+            android:text="Cancel"
             android:textSize="20dp"
             android:textColor="@color/primary"
             android:textStyle="bold"
             app:rippleColor="@color/secondary"
+            android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
             android:layout_marginBottom="60dp"
+            android:layout_marginLeft="25dp"
+            />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/remainder"
+            android:layout_width="150dp"
+            android:layout_height="65dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="Book"
+            android:layout_alignParentBottom="true"
+            android:text="Remind Me"
+            android:textSize="20dp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            app:rippleColor="@color/secondary"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginEnd="25dp"
             />
     </RelativeLayout>
 

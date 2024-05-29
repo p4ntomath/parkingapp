@@ -61,14 +61,13 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
 
         Quartet<Integer,Integer,Integer,Integer> selectedChoice =  listner.getChoice();
         init(position,holder);
-
+        BookingSession bookingSession = new BookingSession(context);
         if(isBooked){
-            BookingSession bookingSession = new BookingSession(context);
+
             String parkingName = bookingSession.getParkingName();
             if(parkingName.equals(choosenParking)){
                 isBooked = bookingSession.isBooked();
                 String spot = bookingSession.getBookedSpotNumber();
-
                 int image = bookingSession.getImage();
                 selectedChoice = convertToQuartet(spot,image);
             }
@@ -88,9 +87,11 @@ public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHo
         if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 1 && isBooked){
             int greenColor = ContextCompat.getColor(context, R.color.Green);
             holder.slot1.setBackgroundTintList(ColorStateList.valueOf(greenColor));
+            holder.slot1.setImageResource(bookingSession.getImage());
         }if(selectedChoice.getFirst() == parentPosition && selectedChoice.getSecond() == position && selectedChoice.getThird() == 2 && isBooked){
             int greenColor = ContextCompat.getColor(context, R.color.Green);
             holder.slot2.setBackgroundTintList(ColorStateList.valueOf(greenColor));
+            holder.slot2.setImageResource(bookingSession.getImage());
 
         }
 
