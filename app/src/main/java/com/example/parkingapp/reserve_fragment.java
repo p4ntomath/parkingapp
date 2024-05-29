@@ -196,6 +196,7 @@ public class reserve_fragment extends Fragment {
             bookingSession.setIsReminded(true);
         }
         catch (Exception e){
+            Log.e("Error",e.getMessage());
             return false;
         }
         return true;
