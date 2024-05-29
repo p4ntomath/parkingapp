@@ -114,6 +114,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         mMap.setLatLngBoundsForCameraTarget(bounds);
         mMap.setMaxZoomPreference(18);
+        mMap.setMinZoomPreference(18);
 
         LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));

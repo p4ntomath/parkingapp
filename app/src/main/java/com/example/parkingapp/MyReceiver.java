@@ -35,6 +35,11 @@ public class MyReceiver extends BroadcastReceiver {
         String contentTitle = "Exit Time Approaching";
         String contentText = "Your exit time is approaching!";
 
+        // Create intent to launch the app when notification is clicked
+        Intent intent = new Intent(context, navigationDrawer.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
         // Create Notification
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
@@ -42,6 +47,7 @@ public class MyReceiver extends BroadcastReceiver {
                         .setContentTitle(contentTitle)
                         .setContentText(contentText)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)  // Set the intent to open when notification is clicked
                         .setAutoCancel(true); // Dismiss notification on click
 
         // Show the notification
@@ -57,16 +63,15 @@ public class MyReceiver extends BroadcastReceiver {
             );
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
-            } else {
             }
         }
 
         // Show notification
         if (notificationManager != null) {
             notificationManager.notify(NOTIFICATION_ID, builder.build());
-        } else {
         }
     }
+
 }
 
 class NotificationScheduler {
