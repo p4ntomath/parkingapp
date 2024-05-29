@@ -7,9 +7,13 @@ import static java.util.Calendar.getInstance;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -174,6 +178,12 @@ public class reserve_fragment extends Fragment {
     private Boolean setReminder(BookingSession bookingSession) {
 
         try {
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+                }
+            }
             Calendar notificationTime = Calendar.getInstance();
             String leavingTime = bookingSession.getLeavingTime();
             String[] timeParts = leavingTime.split(":");
