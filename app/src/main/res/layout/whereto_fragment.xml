@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".whereto_fragment"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="70dp">
+
+    <SearchView
+        android:id="@+id/whereToSearch"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_gravity="center|top"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_logout"
+        android:queryHint="Where You Heading?"
+        android:focusable="false"
+        app:searchHintIcon="@null"
+        android:iconifiedByDefault="false"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/whereToSearch"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:scrollbars="vertical"
+        android:id="@+id/whereToRecyclerView"/>
+
+    <TextView
+        android:id="@+id/whereToNoParking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchView"
+        android:gravity="center"
+        android:text="No Parking Found"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        android:textSize="15dp" />
+
+</LinearLayout>

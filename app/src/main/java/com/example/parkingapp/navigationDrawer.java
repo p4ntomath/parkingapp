@@ -115,6 +115,9 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
                 }else if (id == R.id.nav_about) {
                     replaceFragment(new about_fragment());
                     return true;
+                }else if (id == R.id.nav_where) {
+                    replaceFragment(new whereto_fragment());
+                    return true;
                 }
                 return false;
             }
@@ -123,7 +126,6 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
         userSessionManager userSessionManager = new userSessionManager(this);
 
         if(userSessionManager.isLoggedIn()){
-
             String userId = userSessionManager.getUserId();
             String userType = userSessionManager.getUserType();
             View headerView = navigationView.getHeaderView(0);

@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".home_fragment">
+
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:id="@+id/nearby"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="60dp"
+    android:layout_marginRight="30dp"
+    app:icon="@drawable/nearby"
+    app:iconTint="@color/primary"
+    app:backgroundTint="@color/secondary"
+    app:rippleColor="@color/tertiary"/>
 
     <fragment
         android:id="@+id/map"
@@ -13,7 +25,9 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         />
 
-
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
@@ -73,6 +87,7 @@
 
     </FrameLayout>
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

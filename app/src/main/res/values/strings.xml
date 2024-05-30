@@ -3,6 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="google_maps_key">AIzaSyABnKVzyyFNito7s0AcUpe-9P0-XeJR9ko</string>
+    <string name="google_places_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCoBmXGjstyGgaAfuB3tr_RONc4b19dSLE</string>
 
     <string name="terms_and_conditions">
     <![CDATA[
@@ -118,8 +119,6 @@
        - Reserve parking spaces in advance based on destination, time, and duration of stay.\n
     ]]>
 </string>
-
-
 
 
 </resources>

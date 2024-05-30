@@ -1,7 +1,11 @@
 package com.example.parkingapp;
 
+import static android.content.ContentValues.TAG;
 import static okhttp3.internal.Util.filterList;
 
+import android.text.TextUtils;
+
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,6 +34,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
@@ -41,11 +54,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
-public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
+import okhttp3.*;
+
+public class home_fragment extends Fragment implements OnMapReadyCallback, onCardViewSelected {
 
     private GoogleMap mMap;
     NavigationView navigationView;
@@ -66,6 +84,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     String parkingName, parkingSpace, parkingType;
+    private PlacesClient placesClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +94,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
         navigationView = accessNavigationDrawer.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_home);
+        // Define a variable to hold the Places API key.
 
 
         bottomSheetBehavior(view);
@@ -99,6 +119,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
 
 
+
+
         return view;
     }
 
@@ -111,11 +133,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
 
+
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         mMap.setLatLngBoundsForCameraTarget(bounds);
         mMap.setMaxZoomPreference(18);
         mMap.setMinZoomPreference(18);
-
         LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));
 
@@ -123,8 +145,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
-
-
             for (int i = 0; i < parkingsArray.length(); i++) {
                 JSONObject parking = parkingsArray.getJSONObject(i);
                 String name = parking.getString("Name");
@@ -148,10 +168,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
 
@@ -201,12 +217,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
     }
     public void bottomSheetBehavior(View view){
-        // Initialize the BottomSheetBehavior
         bottomSheet = view.findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(600);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
     }
 
     public void addParkings() throws JSONException {
@@ -271,6 +285,12 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.commit();
 
     }
+
+
+
+
+
+
     // Read JSON file from raw directory
     private String readJSONFromRaw(int rawResourceId) {
         StringBuilder stringBuilder = new StringBuilder();
