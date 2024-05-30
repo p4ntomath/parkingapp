@@ -7,13 +7,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,15 +40,19 @@ List<parkingModel> parkings = new ArrayList<>();
 Map<String, Pair<Double, Double>> placeToCoordinates = new HashMap<>();
 List<String>namePlaces = new ArrayList<>();
 
-    public whereto_fragment() {
+    navigationDrawerAcess accessNavigationDrawer;
+    NavigationView navigationView;
+    public whereto_fragment(navigationDrawer navigationDrawer) {
         // Required empty public constructor
+        this.accessNavigationDrawer = navigationDrawer;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.whereto_fragment, container, false);
         parkings.add(new parkingModel("Students","Barnato","West Campus",20,0,0,R.drawable.parkinglot));
-
+        navigationView = accessNavigationDrawer.getNavigationDrawer();
+        navigationView.setCheckedItem(R.id.nav_where);
         searchView = view.findViewById(R.id.whereToSearch);
         noParking = view.findViewById(R.id.whereToNoParking);
         recyclerView = view.findViewById(R.id.whereToRecyclerView);
@@ -140,7 +145,13 @@ List<String>namePlaces = new ArrayList<>();
 
     @Override
     public void onCardViewSelected(String parkingName, String parkingSpace, String parkingType) {
-
+        int space = Integer.parseInt(parkingSpace);
+        navigationView.setCheckedItem(R.id.nav_booking);
+        Fragment newFragment = new booking_Fragment(accessNavigationDrawer,parkingName,space,parkingType);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
     }
 }

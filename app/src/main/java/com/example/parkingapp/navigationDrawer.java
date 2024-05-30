@@ -116,7 +116,7 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
                     replaceFragment(new about_fragment());
                     return true;
                 }else if (id == R.id.nav_where) {
-                    replaceFragment(new whereto_fragment());
+                    replaceFragment(new whereto_fragment(navigationDrawer.this));
                     return true;
                 }
                 return false;
