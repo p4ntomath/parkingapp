@@ -47,6 +47,7 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -92,7 +93,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     String parkingName, parkingSpace, parkingType;
     private PlacesClient placesClient;
-    FloatingActionButton button;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,10 +127,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
             }
         });
 
-        button = view.findViewById(R.id.nearby);
-        button.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Wait for a moment", Toast.LENGTH_SHORT).show();
-        });
+
 
 
 
@@ -143,9 +141,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
         mMap = googleMap;
 
 
-        button.setOnClickListener(v -> {
-            nearbyParking();
-        });
+
         // Define the southwest and northeast corners of the boundary
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
@@ -209,11 +205,14 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
                 for (Location location : locationResult.getLocations()) {
                     Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
                     nearByParkings near = new nearByParkings(getContext());
+                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
                     try {
                         near.compareLocations(location.getLatitude(), location.getLongitude());
                     } catch (JSONException e) {
+                        Log.e(TAG, "onLocationResult: ", e);
                         Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
+
                     List<parkingModel> filteredList = new ArrayList<>();
                     filteredList = near.getParkings();
                     if (filteredList.isEmpty()) {
