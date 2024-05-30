@@ -37,7 +37,7 @@
     {
         "latitude": -26.1905612,
         "longitude": 28.0268317,
-        "name": "Mathematical Sciences Laboratories"
+        "name": "Mathematical Sciences Laboratories (MSL)"
     },
     {
         "latitude": -26.1926237,
@@ -468,6 +468,52 @@
         "name": "Jimmy's West Campus",
         "latitude": -26.189119899999998,
         "longitude": 28.026171899999998
+    },
+    {   "name" : "Wits Chris Seabrooke Music Hall",
+        "latitude" : -26.19300752605768,
+        "longitude" : 28.03243186630891
+
+    },
+    {
+        "name" : "Wits School of Arts",
+        "latitude" : -26.19308326021393,
+        "longitude" :  28.032386347783195
+    },
+
+    {   "name" : "Wits Arts Museum",
+        "latitude" : -26.19297304040948,
+        "longitude" :  28.033018363461437
+    },
+    {   "name" : "Richard Ward",
+        "latitude" : -26.193272453553302,
+        "longitude" :  28.02959637275429
+    },
+    {   "name" : "Van Riet Lowe Building",
+        "latitude" : -26.19303783242327,
+        "longitude" :  28.02907758326551
+    },
+    {   "name" : "School of Mechanical, Industrial and Aeronautical Engineering, WITS",
+        "latitude" : -26.191799818805816,
+        "longitude" : 28.02940057398911
+    },
+    {   "name" : "Hillman Building",
+        "latitude" : -26.192238356880686,
+        "longitude" : 28.029488256089817
+    },
+    {   "name" : "North West Engineering Building",
+        "latitude" : -26.19128489290995,
+        "longitude" : 28.029026534893724
+    },
+    {   "name" : "Wits Library Lawns",
+        "latitude" : -26.190685611939635,
+        "longitude" : 28.030096468376527
+    },
+    {   "name" : "Umthombo Building",
+        "latitude" : -26.190566051790576,
+        "longitude" : 28.031023663931773
+    },
+    {   "name" : "Old Mutual Sports Hall",
+        "latitude" : -26.18960953347882,
+        "longitude" : 28.029300983169545
     }
-    
 ]

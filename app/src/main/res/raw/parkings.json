@@ -125,6 +125,140 @@
             "Longitude": 28.0290822,
             "Capacity": 55,
             "Location": "West Campus"
+        },
+        {
+            "Name": "BARNATO PATKING",
+            "Lot_ID": "ST9",
+            "Type": "Student",
+            "Latitude": -26.18654605500696,
+            "Longitude": 28.02497764054957,
+            "Capacity": 20,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "DIGS FIELD",
+            "Lot_ID": "ST10",
+            "Type": "Student",
+            "Latitude": -26.186583836916046,
+            "Longitude": 28.02420054781208,
+            "Capacity": 30,
+            "Location": "West Campus"
+        },
+        {
+            "Name": "West Campus Village 1",
+            "Lot_ID": "ST11",
+            "Type": "Student",
+            "Latitude": -26.187137555865302,
+            "Longitude": 28.023413986933896,
+            "Capacity": 10,
+            "Location": "East Campus"
+        },{
+            "Name": "West Campus Village 2",
+            "Lot_ID": "ST12",
+            "Type": "Student",
+            "Latitude": -26.187246864991526,
+            "Longitude": 28.02323023616576,
+            "Capacity": 16,
+            "Location": "East Campus"
+        },{
+            "Name": "West Campus Village 3",
+            "Lot_ID": "ST13",
+            "Type": "Student",
+            "Latitude": -26.187419165609377,
+            "Longitude":  28.023226106935017,
+            "Capacity": 30,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "DJ Du Plessis",
+            "Lot_ID": "FF7",
+            "Type": "Staff",
+            "Latitude": -26.188731002407955,
+            "Longitude":  28.023637328085268,
+            "Capacity": 20,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Commerce Parkings",
+            "Lot_ID": "FF8",
+            "Type": "Staff",
+            "Latitude": -26.18974622170574,
+            "Longitude":  28.025426079094437,
+            "Capacity": 60,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Science Stadium",
+            "Lot_ID": "FF9",
+            "Type": "Staff",
+            "Latitude": -26.19000824144674,
+            "Longitude":  28.025309861283173,
+            "Capacity": 40,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Bidvest Stadium",
+            "Lot_ID": "ST14",
+            "Type": "Student",
+            "Latitude": -26.19332947523354,
+            "Longitude":  28.022724655295757,
+            "Capacity": 50,
+            "Location": "East Campus"
+        },
+
+        {
+            "Name": "Planeterium Parkings",
+            "Lot_ID": "ST15",
+            "Type": "Student",
+            "Latitude": -26.189030295437124,
+            "Longitude": 28.028502296093947,
+            "Capacity": 80,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Sports Field",
+            "Lot_ID": "ST16",
+            "Type": "Student",
+            "Latitude": -26.18848791353764,
+            "Longitude":  28.030296736490957,
+            "Capacity": 80,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Biology Building",
+            "Lot_ID": "FF10",
+            "Type": "Staff",
+            "Latitude": -26.190719824428314,
+            "Longitude":  28.031297383711042,
+            "Capacity": 80,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Sunnyside Parkings",
+            "Lot_ID": "FF11",
+            "Type": "Staff",
+            "Latitude": -26.190036605210857,
+            "Longitude":   28.031494004097087,
+            "Capacity": 20,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Wits Theater",
+            "Lot_ID": "FF12",
+            "Type": "Staff",
+            "Latitude": -26.192333895045596,
+            "Longitude":  28.031334511687863,
+            "Capacity": 20,
+            "Location": "East Campus"
+        },
+        {
+            "Name": "Reserved Labs",
+            "Lot_ID": "FF13",
+            "Type": "Staff",
+            "Latitude": -26.192082257646135,
+            "Longitude": 28.029419288883087,
+            "Capacity": 30,
+            "Location": "East Campus"
         }
     ]
 }
