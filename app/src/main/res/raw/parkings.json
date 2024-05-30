@@ -145,7 +145,7 @@
             "Location": "West Campus"
         },
         {
-            "Name": "West Campus Village 1",
+            "Name": "WEST CAMPUS VILLAGE 1",
             "Lot_ID": "ST11",
             "Type": "Student",
             "Latitude": -26.187137555865302,
@@ -153,7 +153,7 @@
             "Capacity": 10,
             "Location": "East Campus"
         },{
-            "Name": "West Campus Village 2",
+            "Name": "WEST CAMPUS VILLAGE 2",
             "Lot_ID": "ST12",
             "Type": "Student",
             "Latitude": -26.187246864991526,
@@ -161,7 +161,7 @@
             "Capacity": 16,
             "Location": "East Campus"
         },{
-            "Name": "West Campus Village 3",
+            "Name": "WEST CAMPUS VILLAGE 3",
             "Lot_ID": "ST13",
             "Type": "Student",
             "Latitude": -26.187419165609377,
@@ -170,7 +170,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "DJ Du Plessis",
+            "Name": "DJ DU PLESSIS",
             "Lot_ID": "FF7",
             "Type": "Staff",
             "Latitude": -26.188731002407955,
@@ -179,7 +179,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Commerce Parkings",
+            "Name": "COMMERCE PARKINGS",
             "Lot_ID": "FF8",
             "Type": "Staff",
             "Latitude": -26.18974622170574,
@@ -188,7 +188,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Science Stadium",
+            "Name": "SCIENCE STADIUM",
             "Lot_ID": "FF9",
             "Type": "Staff",
             "Latitude": -26.19000824144674,
@@ -197,7 +197,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Bidvest Stadium",
+            "Name": "BIDVEST STADIUM",
             "Lot_ID": "ST14",
             "Type": "Student",
             "Latitude": -26.19332947523354,
@@ -207,7 +207,7 @@
         },
 
         {
-            "Name": "Planeterium Parkings",
+            "Name": "PLANETERIUM PARKINGS",
             "Lot_ID": "ST15",
             "Type": "Student",
             "Latitude": -26.189030295437124,
@@ -216,7 +216,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Sports Field",
+            "Name": "SPORT FIELD",
             "Lot_ID": "ST16",
             "Type": "Student",
             "Latitude": -26.18848791353764,
@@ -225,7 +225,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Biology Building",
+            "Name": "BIOLOGY BUILDING",
             "Lot_ID": "FF10",
             "Type": "Staff",
             "Latitude": -26.190719824428314,
@@ -234,7 +234,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Sunnyside Parkings",
+            "Name": "SUNNYSIDE PARKINGS",
             "Lot_ID": "FF11",
             "Type": "Staff",
             "Latitude": -26.190036605210857,
@@ -243,7 +243,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Wits Theater",
+            "Name": "WITS THEATER",
             "Lot_ID": "FF12",
             "Type": "Staff",
             "Latitude": -26.192333895045596,
@@ -252,7 +252,7 @@
             "Location": "East Campus"
         },
         {
-            "Name": "Reserved Labs",
+            "Name": "RESEVERED LABS",
             "Lot_ID": "FF13",
             "Type": "Staff",
             "Latitude": -26.192082257646135,
