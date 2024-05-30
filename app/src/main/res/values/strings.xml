@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">parkingapp</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Wits Parking</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="google_maps_key">AIzaSyABnKVzyyFNito7s0AcUpe-9P0-XeJR9ko</string>
     <string name="google_places_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCoBmXGjstyGgaAfuB3tr_RONc4b19dSLE</string>
