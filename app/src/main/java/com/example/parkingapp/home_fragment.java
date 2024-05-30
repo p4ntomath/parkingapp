@@ -3,6 +3,7 @@ package com.example.parkingapp;
 import static android.content.ContentValues.TAG;
 import static okhttp3.internal.Util.filterList;
 
+import android.location.Location;
 import android.text.TextUtils;
 
 import android.content.pm.PackageManager;
@@ -26,6 +27,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,6 +47,7 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -78,6 +83,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     }
 
     List<parkingModel> parkings = new ArrayList<>();
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
@@ -129,6 +136,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Define the southwest and northeast corners of the boundary
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
@@ -169,6 +177,49 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
         }
     }
 
+
+    public void nearbyParking(View view){
+
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        // Create location request
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000); // Update interval in milliseconds
+
+        // Create location callback
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                    nearByParkings near = new nearByParkings(getContext());
+                    try {
+                        near.compareLocations(location.getLatitude(), location.getLongitude());
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    }
+                    List<parkingModel> filteredList = new ArrayList<>();
+                    filteredList = near.getParkings();
+                    if (filteredList.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        noParking.setVisibility(View.VISIBLE);
+                    } else {
+                        findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
+                        adapter.setFilteredList(filteredList);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noParking.setVisibility(View.GONE);
+                    }
+                }
+            }
+        };
+    }
 
 
     public void supportMapFragment(){

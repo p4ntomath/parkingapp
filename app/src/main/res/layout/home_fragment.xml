@@ -11,12 +11,12 @@
     android:layout_width="60dp"
     android:layout_height="wrap_content"
     android:layout_alignParentEnd="true"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="160dp"
     android:layout_marginRight="30dp"
     app:icon="@drawable/nearby"
     app:iconTint="@color/primary"
-    app:backgroundTint="@color/secondary"
-    app:rippleColor="@color/tertiary"/>
+    app:backgroundTint="@color/tertiary"
+    app:rippleColor="@color/secondary"/>
 
     <fragment
         android:id="@+id/map"
