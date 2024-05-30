@@ -288,7 +288,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
         JSONObject jsonObject = new JSONObject(json);
         JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
         nameToLotIDMap = new HashMap<>();
-
+        userSessionManager userSessionManager = new userSessionManager(getContext());
+        String userType = userSessionManager.getUserType();
         for (int i = 0; i < parkingsArray.length(); i++) {
             JSONObject parking = parkingsArray.getJSONObject(i);
             String name = parking.getString("Name");
@@ -297,9 +298,11 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
             String Location = parking.getString("Location");
             String lotID = parking.getString("Lot_ID");
 
+            if(userType.equals(parkingType)){
+                nameToLotIDMap.put(name, lotID); // Store the name and lotID in the map
+                parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
+            }
 
-            nameToLotIDMap.put(name, lotID); // Store the name and lotID in the map
-            parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
         }
 
         GlobalData globalData = GlobalData.getInstance();

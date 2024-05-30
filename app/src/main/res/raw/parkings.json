@@ -145,29 +145,29 @@
             "Location": "West Campus"
         },
         {
-            "Name": "WEST CAMPUS VILLAGE 1",
+            "Name": "WC VILLAGE 1",
             "Lot_ID": "ST11",
             "Type": "Student",
             "Latitude": -26.187137555865302,
             "Longitude": 28.023413986933896,
             "Capacity": 10,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },{
-            "Name": "WEST CAMPUS VILLAGE 2",
+            "Name": "WC VILLAGE 2",
             "Lot_ID": "ST12",
             "Type": "Student",
             "Latitude": -26.187246864991526,
             "Longitude": 28.02323023616576,
             "Capacity": 16,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },{
-            "Name": "WEST CAMPUS VILLAGE 3",
+            "Name": "WC VILLAGE 3",
             "Lot_ID": "ST13",
             "Type": "Student",
             "Latitude": -26.187419165609377,
             "Longitude":  28.023226106935017,
             "Capacity": 30,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },
         {
             "Name": "DJ DU PLESSIS",
@@ -176,7 +176,7 @@
             "Latitude": -26.188731002407955,
             "Longitude":  28.023637328085268,
             "Capacity": 20,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },
         {
             "Name": "COMMERCE PARKINGS",
@@ -185,7 +185,7 @@
             "Latitude": -26.18974622170574,
             "Longitude":  28.025426079094437,
             "Capacity": 60,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },
         {
             "Name": "SCIENCE STADIUM",
@@ -194,7 +194,7 @@
             "Latitude": -26.19000824144674,
             "Longitude":  28.025309861283173,
             "Capacity": 40,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },
         {
             "Name": "BIDVEST STADIUM",
@@ -203,7 +203,7 @@
             "Latitude": -26.19332947523354,
             "Longitude":  28.022724655295757,
             "Capacity": 50,
-            "Location": "East Campus"
+            "Location": "West Campus"
         },
 
         {

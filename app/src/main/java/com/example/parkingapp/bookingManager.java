@@ -198,6 +198,8 @@ public class bookingManager {
 
                     if (responseBody.equals("success")) {
                         future.complete(true);
+                    } else if (responseBody.equals("no booking")) {
+                        future.complete(true);
                     } else {
                         future.complete(false);
                     }
