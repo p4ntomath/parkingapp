@@ -1,7 +1,12 @@
 package com.example.parkingapp;
 
+import static android.content.ContentValues.TAG;
 import static okhttp3.internal.Util.filterList;
 
+import android.location.Location;
+import android.text.TextUtils;
+
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +20,16 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +38,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -41,11 +60,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
-public class home_fragment extends Fragment implements OnMapReadyCallback,onCardViewSelected {
+import okhttp3.*;
+
+public class home_fragment extends Fragment implements OnMapReadyCallback, onCardViewSelected {
 
     private GoogleMap mMap;
     NavigationView navigationView;
@@ -60,12 +84,16 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
 
     List<parkingModel> parkings = new ArrayList<>();
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     String parkingName, parkingSpace, parkingType;
+    private PlacesClient placesClient;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +103,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
 
         navigationView = accessNavigationDrawer.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_home);
+        // Define a variable to hold the Places API key.
 
 
         bottomSheetBehavior(view);
@@ -99,6 +128,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
 
 
+
+
+
+
         return view;
     }
 
@@ -107,15 +140,17 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
+
         // Define the southwest and northeast corners of the boundary
         LatLng southwest = new LatLng(-26.192660, 28.02390);
         LatLng northeast = new LatLng(-26.1859, 28.032700);
+
 
         LatLngBounds bounds = new LatLngBounds(southwest, northeast);
         mMap.setLatLngBoundsForCameraTarget(bounds);
         mMap.setMaxZoomPreference(18);
         mMap.setMinZoomPreference(18);
-
         LatLng centerOfWits = new LatLng(-26.190026236576962, 28.02761784931059);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfWits, 18));
 
@@ -123,8 +158,6 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray parkingsArray = jsonObject.getJSONArray("Parkings");
-
-
             for (int i = 0; i < parkingsArray.length(); i++) {
                 JSONObject parking = parkingsArray.getJSONObject(i);
                 String name = parking.getString("Name");
@@ -150,9 +183,51 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
     }
 
 
+    public void nearbyParking(){
 
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
 
+        // Create location request
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000); // Update interval in milliseconds
 
+        // Create location callback
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                    nearByParkings near = new nearByParkings(getContext());
+                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                    try {
+                        near.compareLocations(location.getLatitude(), location.getLongitude());
+                    } catch (JSONException e) {
+                        Log.e(TAG, "onLocationResult: ", e);
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    }
+
+                    List<parkingModel> filteredList = new ArrayList<>();
+                    filteredList = near.getParkings();
+                    if (filteredList.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        noParking.setVisibility(View.VISIBLE);
+                    } else {
+                        findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
+                        adapter.setFilteredList(filteredList);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noParking.setVisibility(View.GONE);
+                    }
+                }
+            }
+        };
+    }
 
 
     public void supportMapFragment(){
@@ -201,12 +276,10 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         });
     }
     public void bottomSheetBehavior(View view){
-        // Initialize the BottomSheetBehavior
         bottomSheet = view.findViewById(R.id.bottomSheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setPeekHeight(600);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
     }
 
     public void addParkings() throws JSONException {
@@ -271,6 +344,12 @@ public class home_fragment extends Fragment implements OnMapReadyCallback,onCard
         transaction.commit();
 
     }
+
+
+
+
+
+
     // Read JSON file from raw directory
     private String readJSONFromRaw(int rawResourceId) {
         StringBuilder stringBuilder = new StringBuilder();

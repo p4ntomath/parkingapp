@@ -11,6 +11,10 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/homeicon"
             android:title="Home"/>
+        <item
+            android:id="@+id/nav_where"
+            android:icon="@drawable/wheretoicon"
+            android:title="Where To"/>
 
         <item
             android:id="@+id/nav_booking"
@@ -30,6 +34,7 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/abouticon"
             android:title="About Us"/>
+
     </group>
     <item
         android:title=" ">

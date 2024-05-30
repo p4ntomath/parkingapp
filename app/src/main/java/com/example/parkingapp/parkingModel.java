@@ -1,5 +1,7 @@
 package com.example.parkingapp;
 
+import java.util.Objects;
+
 public class parkingModel {
 
     private String parkingName;
@@ -68,5 +70,19 @@ public class parkingModel {
     }
     public void setImages(int image) {
         this.image = image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        parkingModel that = (parkingModel) o;
+        return Objects.equals(parkingName, that.parkingName) &&
+                Objects.equals(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parkingName, location);
     }
 }

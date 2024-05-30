@@ -1,0 +1,519 @@
+[
+    {
+        "latitude": -26.1920835,
+        "longitude": 28.023521100000004,
+        "name": "Sturrock Park Football Complex"
+    },
+    {
+        "latitude": -26.189387099999998,
+        "longitude": 28.02576,
+        "name": "Wits Old Grandstand Building"
+    },
+    {
+        "latitude": -26.191524599999997,
+        "longitude": 28.032057000000002,
+        "name": "Oppenheimer Life Sciences Building"
+    },
+    {
+        "latitude": -26.190000599999998,
+        "longitude": 28.030738699999997,
+        "name": "Standard Bank The Matrix"
+    },
+    {
+        "latitude": -26.1926116,
+        "longitude": 28.029200099999997,
+        "name": "Bernard Price Building"
+    },
+    {
+        "latitude": -26.1895228,
+        "longitude": 28.0306771,
+        "name": "Jimmy's Killer Express"
+    },
+    {
+        "latitude": -26.193946999999998,
+        "longitude": 28.027390999999998,
+        "name": "Absa bank"
+    },
+    {
+        "latitude": -26.1905612,
+        "longitude": 28.0268317,
+        "name": "Mathematical Sciences Laboratories (MSL)"
+    },
+    {
+        "latitude": -26.1926237,
+        "longitude": 28.0270482,
+        "name": "WITS 3rd+ Year Parking"
+    },
+    {
+        "latitude": -26.193947299999998,
+        "longitude": 28.0273914,
+        "name": "Medical Electronic Library of South Africa"
+    },
+    {
+        "latitude": -26.189973,
+        "longitude": 28.030863999999998,
+        "name": "FNB"
+    },
+    {
+        "latitude": -26.1914819,
+        "longitude": 28.0270964,
+        "name": "Chamber of Mines Building Library, University of the Witwatersrand"
+    },
+    {
+        "latitude": -26.191860400000003,
+        "longitude": 28.025227899999997,
+        "name": "Giyani's Restaurant"
+    },
+    {
+        "latitude": -26.1925803,
+        "longitude": 28.0266049,
+        "name": "Enoch Sontanga Wits Entrance"
+    },
+    {
+        "latitude": -26.1899293,
+        "longitude": 28.031948200000002,
+        "name": "WITS Gym Fitness"
+    },
+    {
+        "latitude": -26.1900962,
+        "longitude": 28.026489200000004,
+        "name": "TW Kambule Mathematical Sciences Building"
+    },
+    {
+        "latitude": -26.191171699999998,
+        "longitude": 28.0284041,
+        "name": "Wits Inter Campus Bus Service"
+    },
+    {
+        "latitude": -26.19213,
+        "longitude": 28.029819999999997,
+        "name": "Ithemba Labs, Wits Campus: Library and Information Services"
+    },
+    {
+        "latitude": -26.1894171,
+        "longitude": 28.025756599999998,
+        "name": "Commerce library"
+    },
+    {
+        "latitude": -26.1864648,
+        "longitude": 28.026166,
+        "name": "Hall 29 (Wits - West Campus)"
+    },
+    {
+        "latitude": -26.1929344,
+        "longitude": 28.030650599999998,
+        "name": "GeoMaths Library"
+    },
+    {
+        "latitude": -26.1894903,
+        "longitude": 28.030790099999997,
+        "name": "Main Dining Hall"
+    },
+    {
+        "latitude": -26.190044999999998,
+        "longitude": 28.030782,
+        "name": "Absa | ATM | Wits Campus 1"
+    },
+    {
+        "latitude": -26.1935033,
+        "longitude": 28.0288741,
+        "name": "Wits South Entrance"
+    },
+    {
+        "latitude": -26.189765599999998,
+        "longitude": 28.026751,
+        "name": "New Commerce Building"
+    },
+    {
+        "latitude": -26.1897389,
+        "longitude": 28.030742,
+        "name": "Debonairs Pizza"
+    },
+    {
+        "latitude": -26.189943099999997,
+        "longitude": 28.030813199999997,
+        "name": "Just Taste"
+    },
+    {
+        "latitude": -26.191821299999997,
+        "longitude": 28.0303197,
+        "name": "Wits Great Hall"
+    },
+    {
+        "latitude": -26.193849999999998,
+        "longitude": 28.028460000000003,
+        "name": "Apex Studios - Student Accommodation"
+    },
+    {
+        "latitude": -26.188415300000003,
+        "longitude": 28.0282023,
+        "name": "Wits Anglo American Digital Dome"
+    },
+    {
+        "latitude": -26.190044999999998,
+        "longitude": 28.030782,
+        "name": "Absa | ATM | Wits Campus 2"
+    },
+    {
+        "latitude": -26.1897952,
+        "longitude": 28.026292500000004,
+        "name": "Nedbank ATM"
+    },
+    {
+        "latitude": -26.1909492,
+        "longitude": 28.031371,
+        "name": "Wits Biology Building"
+    },
+    {
+        "latitude": -26.1893507,
+        "longitude": 28.0264074,
+        "name": "CLM Building"
+    },
+    {
+        "latitude": -26.189119899999998,
+        "longitude": 28.026171899999998,
+        "name": "Jimmy's West Campus"
+    },
+    {
+        "latitude": -26.1927532,
+        "longitude": 28.0281448,
+        "name": "Origins Centre, Wits University"
+    },
+    {
+        "latitude": -26.1911186,
+        "longitude": 28.0307621,
+        "name": "Wartenweiler Library"
+    },
+    {
+        "latitude": -26.1903081,
+        "longitude": 28.0271722,
+        "name": "Wits MSB Staff Parking Lot"
+    },
+    {
+        "latitude": -26.192576000000003,
+        "longitude": 28.0266044,
+        "name": "WITS Entrance 9"
+    },
+    {
+        "latitude": -26.1901461,
+        "longitude": 28.0309384,
+        "name": "Absa | Branch | Killarney"
+    },
+    {
+        "latitude": -26.187032799999997,
+        "longitude": 28.0242096,
+        "name": "Convocation Dining Hall"
+    },
+    {
+        "latitude": -26.1924194,
+        "longitude": 28.0288737,
+        "name": "Post Graduate Club"
+    },
+    {
+        "latitude": -26.1899293,
+        "longitude": 28.031948200000002,
+        "name": "Wits School of Geoscience"
+    },
+    {
+        "latitude": -26.190774599999997,
+        "longitude": 28.026077800000003,
+        "name": "Wits School of Chemistry AECI Lab"
+    },
+    {
+        "latitude": -26.1899343,
+        "longitude": 28.0307334,
+        "name": "Delhi Delicious - Wits University"
+    },
+    {
+        "latitude": -26.1899293,
+        "longitude": 28.031948200000002,
+        "name": "University of Witwatesrand"
+    },
+    {
+        "latitude": -26.1899293,
+        "longitude": 28.031948200000002,
+        "name": "Modern Day Levites"
+    },
+    {
+        "latitude": -26.1897749,
+        "longitude": 28.0306945,
+        "name": "Nedbank ATM Wits University"
+    },
+    {
+        "latitude": -26.188313299999997,
+        "longitude": 28.024178799999998,
+        "name": "DJ Du Plessis Centre"
+    },
+    {
+        "latitude": -26.191163399999997,
+        "longitude": 28.0322521,
+        "name": "BioPhy Library"
+    },
+    {
+        "latitude": -26.1901073,
+        "longitude": 28.029356399999998,
+        "name": "University of the Witwatersrand School of Architecture & Planning"
+    },
+    {
+        "latitude": -26.188923499999998,
+        "longitude": 28.0265089,
+        "name": "Wits FNB Building"
+    },
+    {
+        "latitude": -26.189606599999998,
+        "longitude": 28.0292964,
+        "name": "Old Mutual Sports Hall"
+    },
+    {
+        "latitude": -26.192106499999998,
+        "longitude": 28.0305018,
+        "name": "Robert Sobukwe Block"
+    },
+    {
+        "latitude": -26.194452199999997,
+        "longitude": 28.0277079,
+        "name": "Braamfontein Cemetery"
+    },
+    {
+        "latitude": -26.1893182,
+        "longitude": 28.0253533,
+        "name": "Wits Law Clinic"
+    },
+    {
+        "latitude": -26.191730000000003,
+        "longitude": 28.026064899999998,
+        "name": "Flower Hall"
+    },
+    {
+        "latitude": -26.1927894,
+        "longitude": 28.0306288,
+        "name": "Senate House West Wing Drawing Hall - SHWWDH"
+    },
+    {
+        "latitude": -26.189363,
+        "longitude": 28.028203599999998,
+        "name": "Njuc"
+    },
+    {
+        "latitude": -26.1895308,
+        "longitude": 28.0304014,
+        "name": "University of the Witwatersrand, Johannesburg"
+    },
+    {
+        "latitude": -26.192999999999998,
+        "longitude": 28.02951,
+        "name": "University of the Witwatersrand School of Chemical and Metallurgical Engineering"
+    },
+    {
+        "latitude": -26.1886994,
+        "longitude": 28.025171099999998,
+        "name": "Oliver Shreiner Law School"
+    },
+    {
+        "latitude": -26.1901283,
+        "longitude": 28.0310515,
+        "name": "Wits School of Literature & Language Studies"
+    },
+    {
+        "latitude": -26.1887857,
+        "longitude": 28.0321003,
+        "name": "Hofmeyr House"
+    },
+    {
+        "latitude": -26.1906461,
+        "longitude": 28.030208499999997,
+        "name": "The Pits"
+    },
+    {
+        "latitude": -26.193113999999998,
+        "longitude": 28.031187499999998,
+        "name": "Wits Journalism Department"
+    },
+    
+    {
+        "latitude": -26.193026699999997,
+        "longitude": 28.030450599999998,
+        "name": "Solomon Mahlangu House, Wits University"
+    },
+    {
+        "latitude": -26.190710499999998,
+        "longitude": 28.0294955,
+        "name": "William Cullen Library"
+    },
+    {
+        "latitude": -26.1914785,
+        "longitude": 28.0271273,
+        "name": "Wits Mining Institute WMI"
+    },
+    {
+        "latitude": -26.187551,
+        "longitude": 28.0312337,
+        "name": "Wits Rugby Stadium"
+    },
+    {
+        "latitude": -26.190662099999997,
+        "longitude": 28.025339799999998,
+        "name": "Wits Science Stadium"
+    },
+    {
+        "latitude": -26.190128,
+        "longitude": 28.030752999999997,
+        "name": "Capitec Bank Johannesburg Wits Campus"
+    },
+    {
+        "latitude": -26.1904279,
+        "longitude": 28.028194,
+        "name": "University of the Witwatersrand"
+    },
+    {
+        "latitude": -26.1901279,
+        "longitude": 28.0307534,
+        "name": "Capitec Bank DNR JHB Wits Campus"
+    },
+    {
+        "latitude": -26.18862,
+        "longitude": 28.025136,
+        "name": "Law Library"
+    },
+    {
+        "latitude": -26.1899293,
+        "longitude": 28.031948200000002,
+        "name": "Tubatsi Grill House"
+    },
+    {
+        "latitude": -26.192169699999997,
+        "longitude": 28.025751600000003,
+        "name": "The Centre for Learning, Teaching and Development (CLTD)"
+    },
+    {
+        "latitude": -26.190748,
+        "longitude": 28.025661399999997,
+        "name": "University of the Witwatersrand Faculty of Science"
+    },
+    {
+        "latitude": -26.1916196,
+        "longitude": 28.0270148,
+        "name": "ARM Building, University of the Witwatersrand"
+    },
+    {
+        "latitude": -26.191974199999997,
+        "longitude": 28.029737200000003,
+        "name": "Wits Graduation Office - Certificate collection"
+    },
+    {
+        "latitude": -26.1917194,
+        "longitude": 28.0299132,
+        "name": "Wits Res"
+    },
+    {
+        "latitude": -26.193034599999997,
+        "longitude": 28.029141199999998,
+        "name": "Evolutionary Studies Institute. Wits University"
+    },{
+        "name": "Van Schaik WITS MATRIX",
+        "latitude": -26.190126300000003,
+        "longitude": 28.0306982
+    },
+    { "name" :"I H Pentz Booksellers",
+        "latitude": -26.1901504,
+        "longitude": 28.0306467
+    },{
+        "name" : "Matrix",
+        "latitude": -26.1897839,
+        "longitude": 28.0306774
+    },{
+        "name" : "Bidvest Stadium",
+        "latitude": -26.187742900000003,
+        "longitude": 28.0285209
+    },{
+        "name": "Barnato Hall",
+        "latitude": -26.1869782,
+        "longitude": 28.0250231
+    },
+    {
+        "name": "Sunnyside Residence",
+        "latitude": -26.189932199999998,
+        "longitude": 28.0314694
+    },
+    {
+        "name": "Wits, International House Residence",
+        "latitude": -26.1899308,
+        "longitude": 28.0319492
+    },{
+        "name": "Zesti Lemonz",
+        "latitude": -26.189681699999998,
+        "longitude": 28.0277939
+    },
+    {
+        "name": "Okoa Coffee Co.",
+        "latitude": -26.191177399999997,
+        "longitude": 28.028413
+    },
+    {
+        "name": "Granny's coffee Shop",
+        "latitude": -26.189431499999998,
+        "longitude": 28.030844899999998
+    },
+    {
+        "name": "Theo's Cafe",
+        "latitude": -26.1927551,
+        "longitude": 28.030422599999998
+    },
+    {
+        "name": "Wiesenhof Coffees",
+        "latitude": -26.193947299999998,
+        "longitude": 28.0273914
+    },
+    {
+        "name": "Jimmy's West Campus",
+        "latitude": -26.189119899999998,
+        "longitude": 28.026171899999998
+    },
+    {   "name" : "Wits Chris Seabrooke Music Hall",
+        "latitude" : -26.19300752605768,
+        "longitude" : 28.03243186630891
+
+    },
+    {
+        "name" : "Wits School of Arts",
+        "latitude" : -26.19308326021393,
+        "longitude" :  28.032386347783195
+    },
+
+    {   "name" : "Wits Arts Museum",
+        "latitude" : -26.19297304040948,
+        "longitude" :  28.033018363461437
+    },
+    {   "name" : "Richard Ward",
+        "latitude" : -26.193272453553302,
+        "longitude" :  28.02959637275429
+    },
+    {   "name" : "Van Riet Lowe Building",
+        "latitude" : -26.19303783242327,
+        "longitude" :  28.02907758326551
+    },
+    {   "name" : "School of Mechanical, Industrial and Aeronautical Engineering, WITS",
+        "latitude" : -26.191799818805816,
+        "longitude" : 28.02940057398911
+    },
+    {   "name" : "Hillman Building",
+        "latitude" : -26.192238356880686,
+        "longitude" : 28.029488256089817
+    },
+    {   "name" : "North West Engineering Building",
+        "latitude" : -26.19128489290995,
+        "longitude" : 28.029026534893724
+    },
+    {   "name" : "Wits Library Lawns",
+        "latitude" : -26.190685611939635,
+        "longitude" : 28.030096468376527
+    },
+    {   "name" : "Umthombo Building",
+        "latitude" : -26.190566051790576,
+        "longitude" : 28.031023663931773
+    },
+    {   "name" : "Old Mutual Sports Hall",
+        "latitude" : -26.18960953347882,
+        "longitude" : 28.029300983169545
+    }
+]
