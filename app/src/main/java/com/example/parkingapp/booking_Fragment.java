@@ -109,6 +109,11 @@ public class booking_Fragment extends Fragment implements selectListener {
         bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
         parkingSpace = parkingSpace - bookedSpots.size();
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
+        }
 
         BookingSession bookingSession = new BookingSession(getContext());
         if(bookingSession.isBooked()){
