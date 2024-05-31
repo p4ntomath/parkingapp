@@ -2,11 +2,23 @@ package com.example.parkingapp;
 
 import static java.util.Calendar.getInstance;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,6 +109,11 @@ public class booking_Fragment extends Fragment implements selectListener {
         bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
         parkingSpace = parkingSpace - bookedSpots.size();
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
+        }
 
         BookingSession bookingSession = new BookingSession(getContext());
         if(bookingSession.isBooked()){
@@ -283,6 +300,11 @@ public class booking_Fragment extends Fragment implements selectListener {
                     if (insertSuccess) {
                         bookingManager.addToSharedPreferences();
                         Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
+                        try{
+                            showNotification(getContext());
+                        }catch (Exception e){
+                            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                        }
                         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                         transaction.remove(this); //
                         Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
@@ -322,11 +344,17 @@ public class booking_Fragment extends Fragment implements selectListener {
                       if (insertSuccess) {
                           bookingManager.addToSharedPreferences();
                           Toast.makeText(getContext(), "Booking Successful", Toast.LENGTH_SHORT).show();
+                          try{
+                              showNotification(getContext());
+                          }catch (Exception e){
+                              Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                          }
                           FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                           transaction.remove(this); //
                           Fragment reservationFragmentNew = new reserve_fragment(navigationDrawerAcess); // Create a new instance of the fragment
                           transaction.replace(R.id.fragmentLayout, reservationFragmentNew); // Replace with the new instance
                           transaction.commit();
+
                       } else {
                           Toast.makeText(getContext(), "Schedule Failed", Toast.LENGTH_SHORT).show();
                       }
@@ -467,7 +495,7 @@ public class booking_Fragment extends Fragment implements selectListener {
                 displayExitTime.setText(sHourToSet + ":" + sMinToSet);//display the exit time
 
             }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        }, hourNow, minuteNow, true);
 
         timePickerDialog.show();
 
@@ -502,7 +530,7 @@ public class booking_Fragment extends Fragment implements selectListener {
                 if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}//add 0 if the minute is less than 10
                 displayEntryTime.setText(sHourToSet + ":" + sMinToSet);//display the entry time
             }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        }, hourNow, minuteNow, true);
 
         timePickerDialog.show();
 
@@ -564,7 +592,10 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
         navigationView.setCheckedItem(R.id.nav_home);
-        Fragment newFragment = new home_fragment(navigationDrawerAcess);
+        Fragment newFragment = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            newFragment = new home_fragment(navigationDrawerAcess);
+        }
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, newFragment);
         transaction.addToBackStack(null);
@@ -626,6 +657,64 @@ public class booking_Fragment extends Fragment implements selectListener {
             }
         });
     }
+
+
+
+    public  void showNotification(Context context) {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
+        }
+
+
+
+        final String CHANNEL_ID = "booking_channel";
+        final String CHANNEL_NAME = "Booking Notifications";
+        final int NOTIFICATION_ID = 4;
+        String contentTitle = "Booking Success";
+        String contentText = "Your Booking at " + parkingNameSelected + " Was Successful";
+
+        // Create intent to launch the app when notification is clicked
+        Intent intent = new Intent(context, navigationDrawer.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Create Notification
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle(contentTitle)
+                        .setContentText(contentText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)  // Set the intent to open when notification is clicked
+                        .setAutoCancel(true); // Dismiss notification on click
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Check if Android version is Oreo or higher and create notification channel if needed
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        // Show notification
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+        }
+    }
+
+
+
 
 }
 
