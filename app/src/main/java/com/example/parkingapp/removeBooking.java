@@ -57,7 +57,7 @@ public class removeBooking extends BroadcastReceiver {
         String contentText = "Your Booking Has Been Removed";
 
         // Create intent to launch the app when notification is clicked
-        Intent intent = new Intent(context, reserve_fragment.class);
+        Intent intent = new Intent(context, navigationDrawer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 

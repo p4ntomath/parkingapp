@@ -3,8 +3,14 @@ package com.example.parkingapp;
 import static android.content.ContentValues.TAG;
 import static okhttp3.internal.Util.filterList;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import java.time.LocalTime;
 import android.content.pm.PackageManager;
@@ -21,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -65,6 +72,7 @@ import java.util.Locale;
 
 import okhttp3.*;
 
+@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class home_fragment extends Fragment implements OnMapReadyCallback, onCardViewSelected {
 
     private GoogleMap mMap;
@@ -87,6 +95,8 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     String parkingName, parkingSpace, parkingType;
+    private static final int REQUEST_PERMISSIONS = 1;
+
 
 
 
@@ -99,11 +109,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
         navigationView = accessNavigationDrawer.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_home);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
-            }
-        }
+
         BookingSession bookingSession = new BookingSession(getContext());
         if(bookingSession.isBooked()){
             String exitTime = bookingSession.getLeavingTime();
@@ -153,9 +159,92 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
 
 
 
-
+        requestPermissions();
 
         return view;
+    }
+    private void requestPermissions() {
+        // Check if the permissions are already granted
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request the permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM}, 5);
+        }
+        final String[] PERMISSIONS = {
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.INTERNET,
+                android.Manifest.permission.ACCESS_NETWORK_STATE,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.POST_NOTIFICATIONS,
+                android.Manifest.permission.SCHEDULE_EXACT_ALARM,
+                android.Manifest.permission.WAKE_LOCK,
+                android.Manifest.permission.SET_ALARM
+        };
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request the permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 6);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request the permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.INTERNET}, 7);
+        }
+
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM}, 8);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 9);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 11);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WAKE_LOCK)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WAKE_LOCK}, 12);
+        }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SET_ALARM)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SET_ALARM}, 13);
+        }
+
+
+
+
+    }
+
+
+
+    private boolean isConnectedToInternet() {
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
+        NetworkCapabilities networkCapabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    }
+
+    private void showDialogToSwitchOnInternet() {
+        new AlertDialog.Builder(requireContext())
+                .setMessage("Please switch on the internet to continue using the app.")
+                .setPositiveButton("Switch on internet", (dialog, which) -> {
+                    startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), 5);
+                })
+                .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isConnectedToInternet()) {
+            showDialogToSwitchOnInternet();
+        }
     }
 
 

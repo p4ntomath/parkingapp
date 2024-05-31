@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -585,7 +586,10 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
         navigationView.setCheckedItem(R.id.nav_home);
-        Fragment newFragment = new home_fragment(navigationDrawerAcess);
+        Fragment newFragment = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            newFragment = new home_fragment(navigationDrawerAcess);
+        }
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, newFragment);
         transaction.addToBackStack(null);
@@ -649,14 +653,12 @@ public class booking_Fragment extends Fragment implements selectListener {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     public  void showNotification(Context context) {
 
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Request the permission
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM},
-                    5);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM}, 5);
         }
         final String CHANNEL_ID = "booking_channel";
         final String CHANNEL_NAME = "Booking Notifications";
@@ -665,7 +667,7 @@ public class booking_Fragment extends Fragment implements selectListener {
         String contentText = "Your Booking at " + parkingNameSelected + " Was Successful";
 
         // Create intent to launch the app when notification is clicked
-        Intent intent = new Intent(context, reserve_fragment.class);
+        Intent intent = new Intent(context, navigationDrawer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 

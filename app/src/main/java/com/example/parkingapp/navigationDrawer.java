@@ -60,7 +60,7 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
             return insets;
         });
 
-        permisions();
+
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.logout_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -150,51 +150,7 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
 
     }
 
-    private void permisions() {
 
-        // Check if the permission is already granted
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 3);
-        }
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.INTERNET}, 1);
-        }
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-        }if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
-            }
-        }
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WAKE_LOCK}, 1);
-        }
-        if (!isConnectedToInternet()) {
-            // Show a dialog to the user to switch on the internet
-            showDialogToSwitchOnInternet();
-        }
-    }
-
-    // Function to check if the internet is connected
-    private boolean isConnectedToInternet() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
-    // Function to show a dialog to switch on the internet
-    private void showDialogToSwitchOnInternet() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Please switch on the internet to continue using the app.")
-                .setPositiveButton("Switch on internet", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-                    }
-                });
-        builder.show();
-    }
 
     @Override
     public void onBackPressed() {
