@@ -9,11 +9,14 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -647,6 +650,14 @@ public class booking_Fragment extends Fragment implements selectListener {
 
 
     public  void showNotification(Context context) {
+
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request the permission
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM},
+                    5);
+        }
         final String CHANNEL_ID = "booking_channel";
         final String CHANNEL_NAME = "Booking Notifications";
         final int NOTIFICATION_ID = 4;
