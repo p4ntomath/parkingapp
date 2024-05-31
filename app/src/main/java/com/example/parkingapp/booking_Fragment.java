@@ -2,6 +2,7 @@ package com.example.parkingapp;
 
 import static java.util.Calendar.getInstance;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -489,7 +490,7 @@ public class booking_Fragment extends Fragment implements selectListener {
                 displayExitTime.setText(sHourToSet + ":" + sMinToSet);//display the exit time
 
             }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        }, hourNow, minuteNow, true);
 
         timePickerDialog.show();
 
@@ -524,7 +525,7 @@ public class booking_Fragment extends Fragment implements selectListener {
                 if (sMinToSet.length() == 1) {sMinToSet = "0" + sMinToSet;}//add 0 if the minute is less than 10
                 displayEntryTime.setText(sHourToSet + ":" + sMinToSet);//display the entry time
             }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        }, hourNow, minuteNow, true);
 
         timePickerDialog.show();
 
@@ -653,13 +654,17 @@ public class booking_Fragment extends Fragment implements selectListener {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.S)
+
     public  void showNotification(Context context) {
 
-        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.SCHEDULE_EXACT_ALARM)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.SCHEDULE_EXACT_ALARM}, 5);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
         }
+
+
+
         final String CHANNEL_ID = "booking_channel";
         final String CHANNEL_NAME = "Booking Notifications";
         final int NOTIFICATION_ID = 4;

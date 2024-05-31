@@ -4,6 +4,7 @@ import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 
 import static java.util.Calendar.getInstance;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -118,6 +119,14 @@ public class reserve_fragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
             }
         }
+
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM},101);
+            }
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.USE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.USE_EXACT_ALARM},101);
+        }
+
         String exitTime = bookingSession.getLeavingTime();
         String enterTime = bookingSession.getEntryTime();
         LocalTime startTime = LocalTime.parse(enterTime);
@@ -240,11 +249,15 @@ public class reserve_fragment extends Fragment {
 
         try {
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+
+            if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SCHEDULE_EXACT_ALARM))
+                    != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, 8);
                 }
+
             }
+
             Calendar notificationTime = Calendar.getInstance();
             String leavingTime = bookingSession.getLeavingTime();
             String[] timeParts = leavingTime.split(":");
