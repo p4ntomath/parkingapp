@@ -23,11 +23,13 @@ public class nearByParkings {
     private List<parkingModel> parkings;
     private static final double EARTH_RADIUS = 6371000;
     Context context;
+    String userType;
     List<Pair<Double, Double>> coord = new ArrayList<>();
     public nearByParkings(Context context) {
         parkings = new ArrayList<>();
         this.context = context;
-
+        userSessionManager userSessionManager = new userSessionManager(context);
+        userType = userSessionManager.getUserType();
         try {
             addAllCoordinates();
         } catch (JSONException e) {
@@ -58,9 +60,12 @@ public class nearByParkings {
         String parkingType = parking.getString("Type");
         int parkingCapacity = parking.getInt("Capacity");
         String Location = parking.getString("Location");
-        String lotID = parking.getString("Lot_ID");
 
-        parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
+
+
+        if(userType.equals(parkingType)){
+            parkings.add(new parkingModel(parkingType,name,Location,parkingCapacity,0,0,R.drawable.parkinglot));
+        }
     }
 
 

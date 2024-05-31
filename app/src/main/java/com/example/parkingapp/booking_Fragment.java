@@ -95,7 +95,6 @@ public class booking_Fragment extends Fragment implements selectListener {
         View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
         bookingManager bookingManager = new bookingManager(getContext());
         bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
-        Log.d("bookedSpots", bookedSpots.toString());
         parkingSpace = parkingSpace - bookedSpots.size();
 
 

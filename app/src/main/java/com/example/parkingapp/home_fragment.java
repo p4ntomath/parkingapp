@@ -4,8 +4,9 @@ import static android.content.ContentValues.TAG;
 import static okhttp3.internal.Util.filterList;
 
 import android.location.Location;
+import android.os.Build;
 import android.text.TextUtils;
-
+import java.time.LocalTime;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,15 +22,14 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,14 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,8 +52,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -84,15 +80,14 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     }
 
     List<parkingModel> parkings = new ArrayList<>();
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
+
     SearchView searchView;
     TextView noParking;
     RecyclerView recyclerView;
     FrameLayout bottomSheet;
     BottomSheetBehavior<FrameLayout> bottomSheetBehavior;
     String parkingName, parkingSpace, parkingType;
-    private PlacesClient placesClient;
+
 
 
     @Override
@@ -103,7 +98,35 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
 
         navigationView = accessNavigationDrawer.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_home);
-        // Define a variable to hold the Places API key.
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
+        }
+        BookingSession bookingSession = new BookingSession(getContext());
+        if(bookingSession.isBooked()){
+            String exitTime = bookingSession.getLeavingTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            Calendar currentNow = Calendar.getInstance();
+            int hour = currentNow.get(Calendar.HOUR_OF_DAY);
+            int minute = currentNow.get(Calendar.MINUTE);
+            String currentTime = String.format("%02d:%02d", hour, minute);
+            LocalTime time = LocalTime.parse(exitTime, formatter);
+            LocalTime currentTimeObj = LocalTime.parse(currentTime, formatter);
+
+            if(time.isBefore(currentTimeObj)){
+                bookingManager bookingManager = new bookingManager(getContext());
+                bookingManager.deleteFromDatabase().thenAccept(success -> {
+                    if (success) {
+                        Toast.makeText(getContext(), "Booking Was Removed At Exit Time", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Failed To Remove Booking,Please Manually Remove", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
 
 
         bottomSheetBehavior(view);
@@ -183,51 +206,7 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
     }
 
 
-    public void nearbyParking(){
 
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-
-        // Create location request
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000); // Update interval in milliseconds
-
-        // Create location callback
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
-                    nearByParkings near = new nearByParkings(getContext());
-                    Log.d("LocationUpdate", "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
-                    try {
-                        near.compareLocations(location.getLatitude(), location.getLongitude());
-                    } catch (JSONException e) {
-                        Log.e(TAG, "onLocationResult: ", e);
-                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-                    }
-
-                    List<parkingModel> filteredList = new ArrayList<>();
-                    filteredList = near.getParkings();
-                    if (filteredList.isEmpty()) {
-                        recyclerView.setVisibility(View.GONE);
-                        noParking.setVisibility(View.VISIBLE);
-                    } else {
-                        findParkingAdapter adapter = (findParkingAdapter) recyclerView.getAdapter();
-                        adapter.setFilteredList(filteredList);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        noParking.setVisibility(View.GONE);
-                    }
-                }
-            }
-        };
-    }
 
 
     public void supportMapFragment(){

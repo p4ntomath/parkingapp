@@ -29,6 +29,9 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.concurrent.CompletableFuture;
 
@@ -53,10 +56,45 @@ public class reserve_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+        BookingSession bookingSession = new BookingSession(getContext());
+
+        if(bookingSession.isBooked() && !bookingSession.getNotificationKey()){
+
+            autoCancel(bookingSession);
+
+
+        }
+
+
+
+
+
         navigationView = navigationDrawerAcess.getNavigationDrawer();
         navigationView.setCheckedItem(R.id.nav_reserve);
         view = inflater.inflate(R.layout.myreservations_fragment, container, false);
-        BookingSession bookingSession = new BookingSession(getContext());
+
+        if(bookingSession.isBooked()){
+            String exitTime = bookingSession.getLeavingTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            Calendar currentNow = Calendar.getInstance();
+            int hour = currentNow.get(Calendar.HOUR_OF_DAY);
+            int minute = currentNow.get(Calendar.MINUTE);
+            String currentTime = String.format("%02d:%02d", hour, minute);
+            LocalTime time = LocalTime.parse(exitTime, formatter);
+            LocalTime currentTimeObj = LocalTime.parse(currentTime, formatter);
+            if(time.isBefore(currentTimeObj)){
+                removeBooking().thenAccept(success -> {
+                    if (success) {
+                        Toast.makeText(getContext(), "Booking Was Removed At Exit Time", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Failed To Remove Booking,Please Manually Remove", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
 
         if(bookingSession.isBooked()){
             bookedUser(view,bookingSession);
@@ -71,6 +109,23 @@ public class reserve_fragment extends Fragment {
             return view2;
         }
 
+    }
+
+    private void autoCancel(BookingSession bookingSession) {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(getContext(),android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{android.Manifest.permission.POST_NOTIFICATIONS},101);
+            }
+        }
+        String exitTime = bookingSession.getLeavingTime();
+        String enterTime = bookingSession.getEntryTime();
+        LocalTime startTime = LocalTime.parse(enterTime);
+        LocalTime endTime = LocalTime.parse(exitTime);
+        long duration = Math.abs(ChronoUnit.MILLIS.between(startTime, endTime));
+        NotificationRemove.scheduleNotification(getContext(), duration);
+        bookingSession.setNotificationKey(true);
+        Toast.makeText(getContext(), "Auto Cancel Scheduled", Toast.LENGTH_SHORT).show();
     }
 
     public void setExitTimeDialog(BookingSession bookingSession){
@@ -89,24 +144,30 @@ public class reserve_fragment extends Fragment {
         });
         setExit.setOnClickListener(v -> {
             bookingManager bookingManager = new bookingManager(getContext());
+            String prevExitTime = bookingSession.getLeavingTime();
             String exitTime = displayExit.getText().toString();
+            LocalTime startTime = LocalTime.parse(prevExitTime);
+            LocalTime endTime = LocalTime.parse(exitTime);
+            long duration = Math.abs(ChronoUnit.MINUTES.between(startTime, endTime));
+            if(prevExitTime.equals(exitTime)){
+                exitDialog.dismiss();
+                Toast.makeText(getContext(), "Exit time is already set", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(duration < 10){
+                Toast.makeText(getContext(), "Exit time cannot be extended by 10 minutes", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(endTime.isBefore(startTime)){
+                Toast.makeText(getContext(), "Exit time cannot be set in the past", Toast.LENGTH_SHORT).show();
+                return;
+            }
             bookingManager.updateExitTime(exitTime).thenAccept(result -> {
                 requireActivity().runOnUiThread(() -> {
                     if (!result) {
-                        int hour = Integer.parseInt(exitTime.split(":")[0]);
-                        int minute = Integer.parseInt(exitTime.split(":")[1]);
-                        int hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                        int minuteNow = Calendar.getInstance().get(Calendar.MINUTE);
-                        if(hourNow > hour || (hourNow == hour && minuteNow > minute)){
-                            exitDialog.dismiss();
-                            Toast.makeText(getContext(), "Exit time cannot be set in the past", Toast.LENGTH_SHORT).show();
-                            return;
-
-                        }
                         Toast.makeText(getContext(), "Exit time updated successfully", Toast.LENGTH_SHORT).show();
                         bookingSession.setLeavingTime(exitTime);
                         bookingSession.setIsReminded(false);
                         parkingExit.setText(exitTime);
+                        autoCancel(bookingSession);
                         exitDialog.dismiss();
                         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                         transaction.remove(this); //
@@ -243,13 +304,10 @@ public class reserve_fragment extends Fragment {
 
     }public CompletableFuture<Boolean> removeBooking() {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
-
         bookingManager bookingManager = new bookingManager(getContext());
         bookingManager.deleteFromDatabase().thenAccept(deleteSuccess -> {
             if (deleteSuccess) {
                 getActivity().runOnUiThread(() -> {
-                    BookingSession bookingSession = new BookingSession(getContext());
-                    bookingSession.deleteBooking();
                     Toast.makeText(getContext(), "Booking deleted successfully", Toast.LENGTH_SHORT).show();
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.remove(this); //
@@ -302,7 +360,7 @@ public class reserve_fragment extends Fragment {
                 displayExitTime.setText(sHourToSet + ":" + sMinToSet);//display the exit time
 
             }
-        }, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+        }, hourNow, minuteNow, true);
         timePickerDialog.show();
 
     }

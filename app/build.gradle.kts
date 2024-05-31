@@ -43,7 +43,6 @@ buildscript {
 }
 
 dependencies {
-    implementation("com.google.android.libraries.places:places:3.5.0")
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
     implementation ("com.sun.mail:android-mail:1.6.7")
     implementation ("com.sun.mail:android-activation:1.6.7")

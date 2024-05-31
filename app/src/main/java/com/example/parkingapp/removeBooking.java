@@ -5,36 +5,56 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.SystemClock;
 
 import androidx.core.app.NotificationCompat;
 
-public class MyReceiver extends BroadcastReceiver {
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
-    private static final String CHANNEL_ID = "exitRemainder";
-    private static final String CHANNEL_NAME = "Bookings";
-    private static final int NOTIFICATION_ID = 1;
-
-    @SuppressLint("NotificationTrampoline")
+public class removeBooking extends BroadcastReceiver {
+    private static final String CHANNEL_ID = "RemovedBooking";
+    private static final String CHANNEL_NAME = "RemoveBooking";
+    private static final int NOTIFICATION_ID = 2;
     @Override
     public void onReceive(Context context, Intent intent) {
+        bookingManager bookingManager = new bookingManager(context);
+        BookingSession bookingSession = new BookingSession(context);
+        String exitTime = bookingSession.getLeavingTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        Calendar currentNow = Calendar.getInstance();
+        int hour = currentNow.get(Calendar.HOUR_OF_DAY);
+        int minute = currentNow.get(Calendar.MINUTE);
+        String currentTime = String.format("%02d:%02d", hour, minute);
+        LocalTime time = LocalTime.parse(exitTime, formatter);
+        LocalTime currentTimeObj = LocalTime.parse(currentTime, formatter);
+        if(currentTimeObj.isAfter(time)){
+            bookingManager.deleteFromDatabase().thenAccept(success -> {
+                if (success) {
+                    showNotification(context);
+                }
+            });
+        }else if(!currentTimeObj.isBefore(time)){
+            bookingManager.deleteFromDatabase().thenAccept(success -> {
+                if (success) {
+                    showNotification(context);
+                }
+            });
+        }
 
-        showNotification(context);
     }
-
     public static void showNotification(Context context) {
-        String contentTitle = "Exit Time Approaching";
-        String contentText = "Your exit time is approaching! Do you wanna extend?";
+        String contentTitle = "Booking";
+        String contentText = "Your Booking Has Been Removed";
 
         // Create intent to launch the app when notification is clicked
         Intent intent = new Intent(context, navigationDrawer.class);
@@ -73,17 +93,16 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
-}
 
-class NotificationScheduler {
+}
+class NotificationRemove {
 
     @SuppressLint("ScheduleExactAlarm")
     public static void scheduleNotification(Context context, long delay) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, MyReceiver.class);
+        Intent intent = new Intent(context, removeBooking.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT); // Use FLAG_UPDATE_CURRENT
         long triggerTime = System.currentTimeMillis() + delay; // Adjust trigger time based on delay
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
-        Log.d("TAG", "Notification scheduled");
     }
 }

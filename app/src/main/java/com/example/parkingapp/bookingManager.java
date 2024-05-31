@@ -197,8 +197,12 @@ public class bookingManager {
                     String responseBody = response.body().string();
 
                     if (responseBody.equals("success")) {
+                        BookingSession bookingSession = new BookingSession(context);
+                        bookingSession.deleteBooking();
                         future.complete(true);
                     } else if (responseBody.equals("no booking")) {
+                        BookingSession bookingSession = new BookingSession(context);
+                        bookingSession.deleteBooking();
                         future.complete(true);
                     } else {
                         future.complete(false);

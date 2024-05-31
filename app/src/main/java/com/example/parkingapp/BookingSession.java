@@ -14,6 +14,7 @@ public class BookingSession {
     private static final String KEY_IMAGE = "image";
     private static final String KEY_IS_BOOKED = "is_booked";
     private static final String KEY_IS_REMINDED = "is_reminded";
+    public static final String NOTIFICATION_KEY = "notification_key";
 
     private SharedPreferences sharedPreferences;
 
@@ -30,6 +31,7 @@ public class BookingSession {
         editor.putInt(KEY_IMAGE,image);
         editor.putBoolean(KEY_IS_BOOKED, true);
         editor.putBoolean(KEY_IS_REMINDED, false);
+        editor.putBoolean(NOTIFICATION_KEY,false);
         editor.apply();
     }
 
@@ -37,6 +39,15 @@ public class BookingSession {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_IS_REMINDED, isReminded);
         editor.apply();
+    }
+    public void setNotificationKey(boolean isReminded) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(NOTIFICATION_KEY, isReminded);
+        editor.apply();
+    }
+
+    public boolean getNotificationKey() {
+        return sharedPreferences.getBoolean(NOTIFICATION_KEY, false);
     }
     public boolean getIsReminded() {
         return sharedPreferences.getBoolean(KEY_IS_REMINDED, false);
