@@ -32,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -87,7 +88,12 @@ public class reserve_fragment extends Fragment {
             String currentTime = String.format("%02d:%02d", hour, minute);
             LocalTime time = LocalTime.parse(exitTime, formatter);
             LocalTime currentTimeObj = LocalTime.parse(currentTime, formatter);
-            if(time.isBefore(currentTimeObj)){
+            LocalDate nowDate = LocalDate.now();
+            String currentDate= nowDate.toString();
+            String bookedDates = bookingSession.getDate();
+            LocalDate current = LocalDate.parse(currentDate);
+            LocalDate booked = LocalDate.parse(bookedDates);
+            if((currentTimeObj.isAfter(time) || current.isAfter(booked)) || time.equals(currentTimeObj) && booked.equals(current)){
                 removeBooking().thenAccept(success -> {
                     if (success) {
                         Toast.makeText(getContext(), "Booking Was Removed At Exit Time", Toast.LENGTH_SHORT).show();

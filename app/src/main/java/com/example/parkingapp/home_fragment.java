@@ -12,6 +12,9 @@ import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -65,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -119,8 +123,13 @@ public class home_fragment extends Fragment implements OnMapReadyCallback, onCar
             String currentTime = String.format("%02d:%02d", hour, minute);
             LocalTime time = LocalTime.parse(exitTime, formatter);
             LocalTime currentTimeObj = LocalTime.parse(currentTime, formatter);
-
-            if(time.isBefore(currentTimeObj)){
+            LocalDate nowDate = LocalDate.now();
+            String currentDate= nowDate.toString();
+            String bookedDates = bookingSession.getDate();
+            LocalDate current = LocalDate.parse(currentDate);
+            LocalDate booked = LocalDate.parse(bookedDates);
+            if((currentTimeObj.isAfter(time) || current.isAfter(booked)) || time.equals(currentTimeObj) && booked.equals(current)){
+                Log.d("Exceed", "it is time to exit: ");
                 bookingManager bookingManager = new bookingManager(getContext());
                 bookingManager.deleteFromDatabase().thenAccept(success -> {
                     if (success) {

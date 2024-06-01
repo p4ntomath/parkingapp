@@ -3,6 +3,9 @@ package com.example.parkingapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class BookingSession {
 
     private static final String PREF_NAME = "BookingPreferences";
@@ -15,6 +18,7 @@ public class BookingSession {
     private static final String KEY_IS_BOOKED = "is_booked";
     private static final String KEY_IS_REMINDED = "is_reminded";
     public static final String NOTIFICATION_KEY = "notification_key";
+    public static final String KEY_DATE = "date";
 
     private SharedPreferences sharedPreferences;
 
@@ -32,9 +36,15 @@ public class BookingSession {
         editor.putBoolean(KEY_IS_BOOKED, true);
         editor.putBoolean(KEY_IS_REMINDED, false);
         editor.putBoolean(NOTIFICATION_KEY,false);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateString = dateFormat.format(new Date());
+        editor.putString(KEY_DATE, currentDateString);
         editor.apply();
     }
 
+    public String getDate(){
+        return sharedPreferences.getString(KEY_DATE,"");
+    }
     public void setIsReminded(boolean isReminded) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_IS_REMINDED, isReminded);
