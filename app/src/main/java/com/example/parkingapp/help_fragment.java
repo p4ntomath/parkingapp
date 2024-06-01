@@ -4,6 +4,7 @@ package com.example.parkingapp;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,15 +31,18 @@ public class help_fragment extends Fragment {
 
 
         View viewParam;
-    public help_fragment() {
-        // Required empty public constructor
+    navigationDrawerAcess navigationDrawerAcess;
+    public help_fragment(navigationDrawerAcess navigationDrawerAcess) {
+       this.navigationDrawerAcess = navigationDrawerAcess;
     }
-    public help_fragment(View view) {
+    public help_fragment(View view,navigationDrawerAcess navigationDrawerAcess) {
         this.viewParam = view;
+        this.navigationDrawerAcess = navigationDrawerAcess;
     }
 
     RelativeLayout howToUse,faq,support;
     TextView howToUseText,faqText,supportText;
+    NavigationView navigationView;
     Quartet<Map<String, List<String>>, List<String>, List<Integer>, List<String>> cards = new Quartet<>(
             new HashMap<>(),
             new ArrayList<>(),
@@ -50,6 +56,7 @@ public class help_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        navigationView =  navigationDrawerAcess.getNavigationDrawer();
 
         view = inflater.inflate(R.layout.help_fragment, container, false);
         initVariables(view);
@@ -65,15 +72,31 @@ public class help_fragment extends Fragment {
 
 
         if(viewParam!=null){
-            view = viewParam;
+            return viewParam;
 
         }
-
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                toFindParking();
+            }
+        });
         return view;
+
+    }
+    public void toFindParking(){
+        navigationView.setCheckedItem(R.id.nav_home);
+        Fragment newFragment = new home_fragment(navigationDrawerAcess);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentLayout, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
+
     public void replaceView(View view){
-        Fragment about = new help_fragment(view);
+        Fragment about = new help_fragment(view,navigationDrawerAcess);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout,about);
         transaction.addToBackStack(null);

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -96,6 +98,13 @@ public class reserve_fragment extends Fragment {
             }
         }
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+               toFindParking();
+            }
+        });
+
 
         if(bookingSession.isBooked()){
             bookedUser(view,bookingSession);
@@ -109,6 +118,7 @@ public class reserve_fragment extends Fragment {
             findParking.setOnClickListener(v -> toFindParking());
             return view2;
         }
+
 
     }
 
@@ -315,7 +325,11 @@ public class reserve_fragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
 
-    }public CompletableFuture<Boolean> removeBooking() {
+    }
+
+
+
+    public CompletableFuture<Boolean> removeBooking() {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         bookingManager bookingManager = new bookingManager(getContext());
         bookingManager.deleteFromDatabase().thenAccept(deleteSuccess -> {

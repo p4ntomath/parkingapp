@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -104,6 +105,14 @@ public class booking_Fragment extends Fragment implements selectListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                toFindParking();
+            }
+        });
         View view = inflater.inflate(R.layout.booking_fragment, container, false);//Inflating the layout
         bookingManager bookingManager = new bookingManager(getContext());
         bookedSpots = bookingManager.getBookedSpots(bookingManager.getlotID(parkingName));
@@ -184,7 +193,6 @@ public class booking_Fragment extends Fragment implements selectListener {
         Fragment reservationFragment = new reserve_fragment(navigationDrawerAcess);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, reservationFragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -589,13 +597,8 @@ public class booking_Fragment extends Fragment implements selectListener {
     }
 
     public void toFindParking(){
-
-
         navigationView.setCheckedItem(R.id.nav_home);
-        Fragment newFragment = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            newFragment = new home_fragment(navigationDrawerAcess);
-        }
+        Fragment newFragment = new home_fragment(navigationDrawerAcess);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentLayout, newFragment);
         transaction.addToBackStack(null);

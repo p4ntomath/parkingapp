@@ -120,10 +120,10 @@ public class navigationDrawer extends AppCompatActivity implements navigationDra
                     replaceFragment(new reserve_fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_help) {
-                    replaceFragment(new help_fragment());
+                    replaceFragment(new help_fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_about) {
-                    replaceFragment(new about_fragment());
+                    replaceFragment(new about_fragment(navigationDrawer.this));
                     return true;
                 }else if (id == R.id.nav_where) {
                     replaceFragment(new whereto_fragment(navigationDrawer.this));
