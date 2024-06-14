@@ -115,7 +115,7 @@ public class signUpManager {
     }
 
     private void openNavigationDrawer() {
-        Intent intent = new Intent(context, navigationDrawer.class);
+        Intent intent = new Intent(context, getStarted.class);
         context.startActivity(intent);
         ((Activity) context).finish();
     }

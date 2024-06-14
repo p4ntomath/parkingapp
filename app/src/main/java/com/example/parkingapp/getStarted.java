@@ -64,9 +64,6 @@ TextView signUpText;
         signUpPage = findViewById(R.id.signUpPage);
         signUpPage.setOnClickListener(v -> openSignUpPage(v));
 
-
-
-
     }
     public void openSignInPage() {
          signInbottomSheetDialog = new BottomSheetDialog(getStarted.this);

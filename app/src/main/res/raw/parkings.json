@@ -216,12 +216,20 @@
             "Location": "East Campus"
         },
         {
-            "Name": "SPORT FIELD",
+            "Name": "SPORTS FIELD",
             "Lot_ID": "ST16",
             "Type": "Student",
             "Latitude": -26.18848791353764,
             "Longitude":  28.030296736490957,
             "Capacity": 80,
+            "Location": "East Campus"
+        },{
+            "Name": "1ST YEAR",
+            "Lot_ID": "ST17",
+            "Type": "Student",
+            "Latitude": -26.18524252617116,
+            "Longitude":  28.02611014008966,
+            "Capacity": 100,
             "Location": "East Campus"
         },
         {
